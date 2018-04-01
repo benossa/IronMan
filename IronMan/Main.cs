@@ -28,9 +28,10 @@ namespace IronMan
         private void Main_Load(object sender, EventArgs e)
         {
             
-            cbSerialPort.SelectedIndex = 3;
-            cbBaudRate.SelectedIndex = 1;
+            cbSerialPort.SelectedIndex = 8;
+            cbBaudRate.SelectedIndex = 9;
             SerialData = "";
+            serial = new SerialPort();
             //SetupTimer();
             //Thread TimerThread = new Thread(new ThreadStart(SetupTimer));
             //TimerThread.IsBackground = true;
@@ -39,7 +40,8 @@ namespace IronMan
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            serial.Close();
+            if(!serial.IsOpen)
+                serial.Close();
         }
 
         private void ReadSerialData(object sender, SerialDataReceivedEventArgs e)
@@ -48,12 +50,12 @@ namespace IronMan
             SerialData = serial.ReadLine();
 
             if (SerialData.Contains("CH1Input") && UseRemote)
-                SendCommands(1,SerialData.Substring(SerialData.IndexOf(":") + 1));
+                SendCommands("Servo1",SerialData.Substring(SerialData.IndexOf(":") + 1));
 
 
             if (SerialData.Contains("CH2Input") && UseRemote)
-                SendCommands(2,SerialData.Substring(SerialData.IndexOf(":") + 1));
-
+                SendCommands("Servo2",SerialData.Substring(SerialData.IndexOf(":") + 1));
+            Thread.Sleep(300);
         }
 
         private void btnOpenSerial_Click(object sender, EventArgs e)
@@ -81,18 +83,17 @@ namespace IronMan
 
         private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
         {
-            SendCommands(1, Servo1Scroll.Value.ToString());
+            SendCommands("Servo1", Servo1Scroll.Value.ToString());
         }
 
         private void Servo2Scroll_MouseCaptureChanged(object sender, EventArgs e)
         {
-            SendCommands(2, Servo2Scroll.Value.ToString());
+            SendCommands("Servo2", Servo2Scroll.Value.ToString());
         }
     #endregion Namjestanje interfejsa
 
         private void cbUseRemoteControl_CheckedChanged(object sender, EventArgs e)
         {
-            
             UseRemote = cbUseRemoteControl.Checked;
             Servo1Scroll.Enabled = !UseRemote;
             Servo2Scroll.Enabled = !UseRemote;
@@ -100,12 +101,6 @@ namespace IronMan
             Servo4Scroll.Enabled = !UseRemote;
             Servo5Scroll.Enabled = !UseRemote;
             Servo6Scroll.Enabled = !UseRemote;
-
-            if (!serial.IsOpen) return;
-            if (UseRemote)
-                serial.WriteLine("RemoteON");
-            else
-                serial.WriteLine("RemoteOFF");
         }
 
         private void OpenSerialPort()
@@ -123,18 +118,10 @@ namespace IronMan
             lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
         }
 
-        private void SendCommands(int ServoNumber, string Value)
+        private void SendCommands(string ServoNumber, string Value)
         {
-            if(ServoNumber == 1)
-            {
-                serial.WriteLine(Value);
-                serial.WriteLine("0");
-            }
-            else if(ServoNumber == 2)
-            {
-                serial.WriteLine("0");
-                serial.WriteLine(Value);
-            }
+            if(serial.IsOpen)
+                serial.WriteLine($"<{ServoNumber},{Value}>");
         }
 
         

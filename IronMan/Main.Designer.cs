@@ -121,8 +121,21 @@
             this.cbBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBaudRate.FormattingEnabled = true;
             this.cbBaudRate.Items.AddRange(new object[] {
+            "300",
+            "1200",
+            "2400",
+            "4800",
             "9600",
-            "115200"});
+            "19200",
+            "38400",
+            "57600",
+            "74880",
+            "115200",
+            "230400",
+            "250000",
+            "500000",
+            "1000000",
+            "2000000"});
             this.cbBaudRate.Location = new System.Drawing.Point(12, 76);
             this.cbBaudRate.Name = "cbBaudRate";
             this.cbBaudRate.Size = new System.Drawing.Size(177, 21);
@@ -162,9 +175,9 @@
             this.lblServo1Value.AutoSize = true;
             this.lblServo1Value.Location = new System.Drawing.Point(124, 275);
             this.lblServo1Value.Name = "lblServo1Value";
-            this.lblServo1Value.Size = new System.Drawing.Size(53, 13);
+            this.lblServo1Value.Size = new System.Drawing.Size(68, 13);
             this.lblServo1Value.TabIndex = 10;
-            this.lblServo1Value.Text = "Servo 1 : ";
+            this.lblServo1Value.Text = "Servo 1 :  90";
             // 
             // Servo1Scroll
             // 
@@ -197,9 +210,9 @@
             this.lblServo2Value.AutoSize = true;
             this.lblServo2Value.Location = new System.Drawing.Point(124, 335);
             this.lblServo2Value.Name = "lblServo2Value";
-            this.lblServo2Value.Size = new System.Drawing.Size(53, 13);
+            this.lblServo2Value.Size = new System.Drawing.Size(68, 13);
             this.lblServo2Value.TabIndex = 12;
-            this.lblServo2Value.Text = "Servo 2 : ";
+            this.lblServo2Value.Text = "Servo 2 :  90";
             // 
             // Servo3Scroll
             // 
@@ -217,9 +230,9 @@
             this.lblServo3Value.AutoSize = true;
             this.lblServo3Value.Location = new System.Drawing.Point(124, 396);
             this.lblServo3Value.Name = "lblServo3Value";
-            this.lblServo3Value.Size = new System.Drawing.Size(53, 13);
+            this.lblServo3Value.Size = new System.Drawing.Size(68, 13);
             this.lblServo3Value.TabIndex = 14;
-            this.lblServo3Value.Text = "Servo 3 : ";
+            this.lblServo3Value.Text = "Servo 3 :  90";
             // 
             // Servo6Scroll
             // 
@@ -237,9 +250,9 @@
             this.lblServo6Value.AutoSize = true;
             this.lblServo6Value.Location = new System.Drawing.Point(396, 396);
             this.lblServo6Value.Name = "lblServo6Value";
-            this.lblServo6Value.Size = new System.Drawing.Size(53, 13);
+            this.lblServo6Value.Size = new System.Drawing.Size(68, 13);
             this.lblServo6Value.TabIndex = 20;
-            this.lblServo6Value.Text = "Servo 6 : ";
+            this.lblServo6Value.Text = "Servo 6 :  90";
             // 
             // Servo5Scroll
             // 
@@ -257,9 +270,9 @@
             this.lblServo5Value.AutoSize = true;
             this.lblServo5Value.Location = new System.Drawing.Point(396, 335);
             this.lblServo5Value.Name = "lblServo5Value";
-            this.lblServo5Value.Size = new System.Drawing.Size(53, 13);
+            this.lblServo5Value.Size = new System.Drawing.Size(68, 13);
             this.lblServo5Value.TabIndex = 18;
-            this.lblServo5Value.Text = "Servo 5 : ";
+            this.lblServo5Value.Text = "Servo 5 :  90";
             // 
             // Servo4Scroll
             // 
@@ -277,9 +290,9 @@
             this.lblServo4Value.AutoSize = true;
             this.lblServo4Value.Location = new System.Drawing.Point(396, 275);
             this.lblServo4Value.Name = "lblServo4Value";
-            this.lblServo4Value.Size = new System.Drawing.Size(53, 13);
+            this.lblServo4Value.Size = new System.Drawing.Size(68, 13);
             this.lblServo4Value.TabIndex = 16;
-            this.lblServo4Value.Text = "Servo 4 : ";
+            this.lblServo4Value.Text = "Servo 4 :  90";
             // 
             // cbUseRemoteControl
             // 
