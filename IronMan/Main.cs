@@ -54,7 +54,7 @@ namespace IronMan
                 serial.PortName = cbSerialPort.Text;
                 serial.Open();
             }
-            lblPortStatus.Text = serial.IsOpen ? "Open" : "Closed";
+            lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
         }
 
         private void btnCloseSerial_Click(object sender, EventArgs e)
