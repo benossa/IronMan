@@ -50,6 +50,7 @@
             this.lblServo5Value = new System.Windows.Forms.Label();
             this.Servo4Scroll = new System.Windows.Forms.HScrollBar();
             this.lblServo4Value = new System.Windows.Forms.Label();
+            this.cbUseRemoteControl = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbSerialPort
@@ -180,7 +181,7 @@
             // 
             // Servo2Scroll
             // 
-            this.Servo2Scroll.Location = new System.Drawing.Point(15, 346);
+            this.Servo2Scroll.Location = new System.Drawing.Point(15, 353);
             this.Servo2Scroll.Maximum = 189;
             this.Servo2Scroll.Minimum = 1;
             this.Servo2Scroll.Name = "Servo2Scroll";
@@ -192,7 +193,7 @@
             // lblServo2Value
             // 
             this.lblServo2Value.AutoSize = true;
-            this.lblServo2Value.Location = new System.Drawing.Point(124, 328);
+            this.lblServo2Value.Location = new System.Drawing.Point(124, 335);
             this.lblServo2Value.Name = "lblServo2Value";
             this.lblServo2Value.Size = new System.Drawing.Size(53, 13);
             this.lblServo2Value.TabIndex = 12;
@@ -200,7 +201,7 @@
             // 
             // Servo3Scroll
             // 
-            this.Servo3Scroll.Location = new System.Drawing.Point(15, 395);
+            this.Servo3Scroll.Location = new System.Drawing.Point(15, 412);
             this.Servo3Scroll.Maximum = 189;
             this.Servo3Scroll.Minimum = 1;
             this.Servo3Scroll.Name = "Servo3Scroll";
@@ -212,7 +213,7 @@
             // lblServo3Value
             // 
             this.lblServo3Value.AutoSize = true;
-            this.lblServo3Value.Location = new System.Drawing.Point(124, 379);
+            this.lblServo3Value.Location = new System.Drawing.Point(124, 396);
             this.lblServo3Value.Name = "lblServo3Value";
             this.lblServo3Value.Size = new System.Drawing.Size(53, 13);
             this.lblServo3Value.TabIndex = 14;
@@ -220,7 +221,7 @@
             // 
             // Servo6Scroll
             // 
-            this.Servo6Scroll.Location = new System.Drawing.Point(287, 395);
+            this.Servo6Scroll.Location = new System.Drawing.Point(287, 412);
             this.Servo6Scroll.Maximum = 189;
             this.Servo6Scroll.Minimum = 1;
             this.Servo6Scroll.Name = "Servo6Scroll";
@@ -232,7 +233,7 @@
             // lblServo6Value
             // 
             this.lblServo6Value.AutoSize = true;
-            this.lblServo6Value.Location = new System.Drawing.Point(396, 379);
+            this.lblServo6Value.Location = new System.Drawing.Point(396, 396);
             this.lblServo6Value.Name = "lblServo6Value";
             this.lblServo6Value.Size = new System.Drawing.Size(53, 13);
             this.lblServo6Value.TabIndex = 20;
@@ -240,7 +241,7 @@
             // 
             // Servo5Scroll
             // 
-            this.Servo5Scroll.Location = new System.Drawing.Point(287, 346);
+            this.Servo5Scroll.Location = new System.Drawing.Point(287, 353);
             this.Servo5Scroll.Maximum = 189;
             this.Servo5Scroll.Minimum = 1;
             this.Servo5Scroll.Name = "Servo5Scroll";
@@ -252,7 +253,7 @@
             // lblServo5Value
             // 
             this.lblServo5Value.AutoSize = true;
-            this.lblServo5Value.Location = new System.Drawing.Point(396, 328);
+            this.lblServo5Value.Location = new System.Drawing.Point(396, 335);
             this.lblServo5Value.Name = "lblServo5Value";
             this.lblServo5Value.Size = new System.Drawing.Size(53, 13);
             this.lblServo5Value.TabIndex = 18;
@@ -278,12 +279,25 @@
             this.lblServo4Value.TabIndex = 16;
             this.lblServo4Value.Text = "Servo 4 : ";
             // 
+            // cbUseRemoteControl
+            // 
+            this.cbUseRemoteControl.AutoSize = true;
+            this.cbUseRemoteControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.cbUseRemoteControl.Location = new System.Drawing.Point(23, 181);
+            this.cbUseRemoteControl.Name = "cbUseRemoteControl";
+            this.cbUseRemoteControl.Size = new System.Drawing.Size(154, 21);
+            this.cbUseRemoteControl.TabIndex = 22;
+            this.cbUseRemoteControl.Text = "Use Remote Control";
+            this.cbUseRemoteControl.UseVisualStyleBackColor = true;
+            this.cbUseRemoteControl.CheckedChanged += new System.EventHandler(this.cbUseRemoteControl_CheckedChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(564, 439);
+            this.ClientSize = new System.Drawing.Size(564, 450);
+            this.Controls.Add(this.cbUseRemoteControl);
             this.Controls.Add(this.Servo6Scroll);
             this.Controls.Add(this.lblServo6Value);
             this.Controls.Add(this.Servo5Scroll);
@@ -339,5 +353,6 @@
         private System.Windows.Forms.Label lblServo5Value;
         private System.Windows.Forms.HScrollBar Servo4Scroll;
         private System.Windows.Forms.Label lblServo4Value;
+        private System.Windows.Forms.CheckBox cbUseRemoteControl;
     }
 }

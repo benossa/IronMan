@@ -16,7 +16,10 @@ namespace IronMan
     public partial class Main : Form
     {
         private SerialPort serial { get; set; }
-        private System.Windows.Forms.Timer timmer { get; set; }
+        private string SerialLine { get; set; }
+        private System.Timers.Timer timmer { get; set; }
+
+        private bool UseRemote { get; set; }
         public Main()
         {
             InitializeComponent();
@@ -24,15 +27,15 @@ namespace IronMan
 
         private void Main_Load(object sender, EventArgs e)
         {
-            timmer = new System.Windows.Forms.Timer();
+            
             serial = new SerialPort();
             cbSerialPort.SelectedIndex = 3;
             cbBaudRate.SelectedIndex = 1;
-
-            //timmer.Enabled = true;
-            //timmer.Interval = 1000;
-            //timmer.Tick += new EventHandler(timer_Tick);
-            //timmer.Start();
+            SerialLine = "";
+            SetupTimer();
+            //Thread TimerThread = new Thread(new ThreadStart(SetupTimer));
+            //TimerThread.IsBackground = true;
+            //TimerThread.Start();
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -40,10 +43,26 @@ namespace IronMan
             serial.Close();
         }
 
+        private void SetupTimer()
+        {
+            timmer = new System.Timers.Timer();
+            timmer.Enabled = true;
+            timmer.Interval = 100;
+            timmer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Tick);
+            //timmer.Interval += new EventHandler(timer_Tick);
+            timmer.Start();
+        }
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (serial.IsOpen)
-                tbSerialMonitor.Text += serial.ReadLine() + Environment.NewLine;
+            if (!serial.IsOpen) return;
+            SerialLine = serial.ReadLine();
+
+
+            if (SerialLine.Contains("CH1Input"))
+            {
+                Servo1Set(SerialLine.Substring(SerialLine.IndexOf(":"), SerialLine.IndexOf(";")));
+            }
+                tbSerialMonitor.Text += SerialLine + Environment.NewLine;
         }
 
         private void btnOpenSerial_Click(object sender, EventArgs e)
@@ -74,7 +93,30 @@ namespace IronMan
 
         private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
         {
-            serial.WriteLine(Servo1Scroll.Value.ToString());
+            Servo1Set(Servo1Scroll.Value.ToString());
+        }
+
+        private void cbUseRemoteControl_CheckedChanged(object sender, EventArgs e)
+        {
+            
+            UseRemote = cbUseRemoteControl.Checked;
+            Servo1Scroll.Enabled = !UseRemote;
+            Servo2Scroll.Enabled = !UseRemote;
+            Servo3Scroll.Enabled = !UseRemote;
+            Servo4Scroll.Enabled = !UseRemote;
+            Servo5Scroll.Enabled = !UseRemote;
+            Servo6Scroll.Enabled = !UseRemote;
+
+            if (!serial.IsOpen) return;
+            if (UseRemote)
+                serial.WriteLine("RemoteON");
+            else
+                serial.WriteLine("RemoteOFF");
+        }
+
+        private void Servo1Set(string Angle)
+        {
+            serial.WriteLine(Angle);
         }
     }
 }
