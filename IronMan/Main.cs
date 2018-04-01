@@ -26,13 +26,13 @@ namespace IronMan
         {
             timmer = new System.Windows.Forms.Timer();
             serial = new SerialPort();
-            cbSerialPort.SelectedIndex = 2;
-            cbBaudRate.SelectedIndex = 0;
+            cbSerialPort.SelectedIndex = 3;
+            cbBaudRate.SelectedIndex = 1;
 
-            timmer.Enabled = true;
-            timmer.Interval = 1000;
-            timmer.Tick += new EventHandler(timer_Tick);
-            timmer.Start();
+            //timmer.Enabled = true;
+            //timmer.Interval = 1000;
+            //timmer.Tick += new EventHandler(timer_Tick);
+            //timmer.Start();
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -53,6 +53,9 @@ namespace IronMan
                 serial.BaudRate = int.Parse(cbBaudRate.Text);
                 serial.PortName = cbSerialPort.Text;
                 serial.Open();
+
+                // posalji default vrijednosti 
+                serial.WriteLine(Servo1Scroll.Value.ToString());
             }
             lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
         }
@@ -62,6 +65,16 @@ namespace IronMan
             if (serial.IsOpen)
                 serial.Close();
             lblPortStatus.Text = serial.IsOpen ? "Open" : "Closed";
+        }
+
+        private void Servo1Scroll_ValueChanged(object sender, EventArgs e)
+        {
+            lblServo1Value.Text = "Servo 1: " + Servo1Scroll.Value.ToString();
+        }
+
+        private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            serial.WriteLine(Servo1Scroll.Value.ToString());
         }
     }
 }
