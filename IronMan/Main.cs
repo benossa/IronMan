@@ -16,10 +16,10 @@ namespace IronMan
     public partial class Main : Form
     {
         private SerialPort serial { get; set; }
-        private string SerialLine { get; set; }
-        private System.Timers.Timer timmer { get; set; }
+        private string SerialData { get; set; }
 
         private bool UseRemote { get; set; }
+
         public Main()
         {
             InitializeComponent();
@@ -28,11 +28,10 @@ namespace IronMan
         private void Main_Load(object sender, EventArgs e)
         {
             
-            serial = new SerialPort();
             cbSerialPort.SelectedIndex = 3;
             cbBaudRate.SelectedIndex = 1;
-            SerialLine = "";
-            SetupTimer();
+            SerialData = "";
+            //SetupTimer();
             //Thread TimerThread = new Thread(new ThreadStart(SetupTimer));
             //TimerThread.IsBackground = true;
             //TimerThread.Start();
@@ -43,40 +42,23 @@ namespace IronMan
             serial.Close();
         }
 
-        private void SetupTimer()
-        {
-            timmer = new System.Timers.Timer();
-            timmer.Enabled = true;
-            timmer.Interval = 100;
-            timmer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Tick);
-            //timmer.Interval += new EventHandler(timer_Tick);
-            timmer.Start();
-        }
-        private void timer_Tick(object sender, EventArgs e)
+        private void ReadSerialData(object sender, SerialDataReceivedEventArgs e)
         {
             if (!serial.IsOpen) return;
-            SerialLine = serial.ReadLine();
+            SerialData = serial.ReadLine();
+
+            if (SerialData.Contains("CH1Input") && UseRemote)
+                SendCommands(1,SerialData.Substring(SerialData.IndexOf(":") + 1));
 
 
-            if (SerialLine.Contains("CH1Input"))
-            {
-                Servo1Set(SerialLine.Substring(SerialLine.IndexOf(":"), SerialLine.IndexOf(";")));
-            }
-                tbSerialMonitor.Text += SerialLine + Environment.NewLine;
+            if (SerialData.Contains("CH2Input") && UseRemote)
+                SendCommands(2,SerialData.Substring(SerialData.IndexOf(":") + 1));
+
         }
 
         private void btnOpenSerial_Click(object sender, EventArgs e)
         {
-            if (!serial.IsOpen)
-            {
-                serial.BaudRate = int.Parse(cbBaudRate.Text);
-                serial.PortName = cbSerialPort.Text;
-                serial.Open();
-
-                // posalji default vrijednosti 
-                serial.WriteLine(Servo1Scroll.Value.ToString());
-            }
-            lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
+            OpenSerialPort();
         }
 
         private void btnCloseSerial_Click(object sender, EventArgs e)
@@ -86,15 +68,27 @@ namespace IronMan
             lblPortStatus.Text = serial.IsOpen ? "Open" : "Closed";
         }
 
+        #region 
         private void Servo1Scroll_ValueChanged(object sender, EventArgs e)
         {
             lblServo1Value.Text = "Servo 1: " + Servo1Scroll.Value.ToString();
         }
 
+        private void Servo2Scroll_ValueChanged(object sender, EventArgs e)
+        {
+            lblServo2Value.Text = "Servo 2: " + Servo2Scroll.Value.ToString();
+        }
+
         private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
         {
-            Servo1Set(Servo1Scroll.Value.ToString());
+            SendCommands(1, Servo1Scroll.Value.ToString());
         }
+
+        private void Servo2Scroll_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            SendCommands(2, Servo2Scroll.Value.ToString());
+        }
+    #endregion Namjestanje interfejsa
 
         private void cbUseRemoteControl_CheckedChanged(object sender, EventArgs e)
         {
@@ -114,9 +108,35 @@ namespace IronMan
                 serial.WriteLine("RemoteOFF");
         }
 
-        private void Servo1Set(string Angle)
+        private void OpenSerialPort()
         {
-            serial.WriteLine(Angle);
+            if (serial != null)
+                if (serial.IsOpen)
+                    serial.Close();
+
+            serial = new SerialPort(cbSerialPort.Text, int.Parse(cbBaudRate.Text),Parity.None,8,StopBits.One);
+            serial.Open();
+            serial.DiscardOutBuffer();
+            serial.DiscardInBuffer();
+            serial.DataReceived += ReadSerialData;
+            SerialData = "";
+            lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
         }
+
+        private void SendCommands(int ServoNumber, string Value)
+        {
+            if(ServoNumber == 1)
+            {
+                serial.WriteLine(Value);
+                serial.WriteLine("0");
+            }
+            else if(ServoNumber == 2)
+            {
+                serial.WriteLine("0");
+                serial.WriteLine(Value);
+            }
+        }
+
+        
     }
 }

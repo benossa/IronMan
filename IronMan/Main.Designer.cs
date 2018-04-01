@@ -189,6 +189,8 @@
             this.Servo2Scroll.SmallChange = 5;
             this.Servo2Scroll.TabIndex = 13;
             this.Servo2Scroll.Value = 90;
+            this.Servo2Scroll.ValueChanged += new System.EventHandler(this.Servo2Scroll_ValueChanged);
+            this.Servo2Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo2Scroll_MouseCaptureChanged);
             // 
             // lblServo2Value
             // 
