@@ -23,41 +23,45 @@ namespace IronMan
             InitializeComponent();
         }
 
-        public void DetectShape()
+        private Image<Bgr, Byte> SourceImg;
+        private Image<Gray, Byte> BlueOnlyImg;
+        private Image<Gray, Byte> RedOnlyImg;
+        private double BlueHueMin = 45;
+        private double BlueHueMax = 145;
+        private double BlueValMin = 150; //150 def
+        private double BlueValMax = 255; //255
+
+        private double RedHueMin = 110;
+        private double RedHueMax = 195;
+        private double RedValMin = 150;
+        private double RedValMax = 255;
+
+        public void DetectShape(bool IsBlue)
         {
             //Load the image from file and resize it for display
-            Image<Bgr, Byte> img =
-               new Image<Bgr, byte>(fileNameTextBox.Text)
-               .Resize(400, 400, Emgu.CV.CvEnum.Inter.Linear, true);
-
-            
+            //SourceImg =
+            //   new Image<Bgr, byte>(fileNameTextBox.Text)
+            //   .Resize(400, 400, Emgu.CV.CvEnum.Inter.Linear, true);
 
             //Convert the image to grayscale and filter out the noise
             UMat uimage = new UMat();
-            CvInvoke.CvtColor(img, uimage, ColorConversion.Bgr2Gray);
+            CvInvoke.CvtColor(SourceImg, uimage, ColorConversion.Bgr2Gray);
 
             //use image pyr to remove noise
             UMat pyrDown = new UMat();
             CvInvoke.PyrDown(uimage, pyrDown);
             CvInvoke.PyrUp(pyrDown, uimage);
 
-            //Image<Gray, Byte> gray = img.Convert<Gray, Byte>().PyrDown().PyrUp();
             Stopwatch watch = Stopwatch.StartNew();
 
-            //#region circle detection
-            //double circleAccumulatorThreshold = 120;
-            //CircleF[] circles = CvInvoke.HoughCircles(uimage, HoughType.Gradient, 2.0, 20.0, cannyThreshold, circleAccumulatorThreshold, 5);
-
-            //watch.Stop();
-            //msgBuilder.Append(String.Format("Hough circles - {0} ms; ", watch.ElapsedMilliseconds));
-            //#endregion
-
-            //#region Canny and edge detection
-            //watch.Reset(); watch.Start();
             double cannyThreshold = 180.0;
             double cannyThresholdLinking = 120.0;
             UMat cannyEdges = new UMat();
-            CvInvoke.Canny(uimage, cannyEdges, cannyThreshold, cannyThresholdLinking);
+            //CvInvoke.Canny(uimage, cannyEdges, cannyThreshold, cannyThresholdLinking); ORGINAL
+            if(IsBlue)
+                CvInvoke.Canny(BlueOnlyImg, cannyEdges, cannyThreshold, cannyThresholdLinking);
+            else
+                CvInvoke.Canny(RedOnlyImg, cannyEdges, cannyThreshold, cannyThresholdLinking);
 
             LineSegment2D[] lines = CvInvoke.HoughLinesP(
                cannyEdges,
@@ -90,6 +94,7 @@ namespace IronMan
                         {
                             if (approxContour.Size == 4) //Ako oblik ima 4 ugla onda je kvadrat
                             {
+                                
                                 #region determine if all the angles in the contour are within [80, 100] degree
                                 bool isRectangle = true;
                                 Point[] pts = approxContour.ToArray();
@@ -119,44 +124,53 @@ namespace IronMan
             #endregion
 
 
-            originalImageBox.Image = img.ToBitmap(); 
+            originalImageBox.Image = SourceImg.ToBitmap(); 
             originalImageBox.Refresh();
 
             //#region draw triangles and rectangles
-            Image<Bgr, Byte> BlueRectangleImage = img.CopyBlank();
+            Image<Bgr, Byte> RectangleImage = SourceImg.CopyBlank();
             foreach (RotatedRect box in boxList)
-                BlueRectangleImage.Draw(box, new Bgr(Color.DarkOrange), 2);
+                RectangleImage.Draw(box, new Bgr(Color.DarkOrange), 2);
 
-            BlueRectangleImageBox.Image = BlueRectangleImage.ToBitmap();
-            BlueRectangleImageBox.Refresh();
+            if(IsBlue)
+                BlueRectangleImageBox.Image = RectangleImage.ToBitmap();
+            else
+                RedRectangleImageBox.Image = RectangleImage.ToBitmap();
             //#endregion
         }
 
-        public void DetectBlue()
+        public Image<Gray, byte> FilterRectangles(bool IsBlue)
         {
-            Image<Bgr, Byte> img =
-               new Image<Bgr, byte>(fileNameTextBox.Text)
-               .Resize(400, 400, Emgu.CV.CvEnum.Inter.Linear, true);
-
             // 1. Convert the image to HSV
-            using (Image<Hsv, byte> hsv = img.Convert<Hsv, byte>())
+            using (Image<Hsv, byte> hsv = SourceImg.Convert<Hsv, byte>())
             {
                 // 2. Obtain the 3 channels (hue, saturation and value) that compose the HSV image
                 Image<Gray, byte>[] channels = hsv.Split();
 
                 try
                 {
-                    // 3. Remove all pixels from the hue channel that are not in the range [40, 60]
-                    //CvInvoke.cvInRangeS(channels[0], new Gray(40).MCvScalar, new Gray(60).MCvScalar, channels[0]);
-                    //CvInvoke.CvtColor(channels[0], channels[0], new Gray(40).MCvScalar, new Gray(60).MCvScalar);
-                    //channels[0].ThresholdToZero()
-                    //channels[0].
-                    // 4. Display the result
-                    RedRectangleImageBox.Image = channels[0].ToBitmap();
-                    MessageBox.Show("");
-                    RedRectangleImageBox.Image = channels[1].ToBitmap();
-                    MessageBox.Show("");
-                    RedRectangleImageBox.Image = channels[2].ToBitmap();
+                    Image<Gray, Byte> imghue = channels[0];            //hsv, so channels[0] is hue.
+                    Image<Gray, Byte> imgval = channels[2];            //hsv, so channels[2] is value.
+                    Image<Gray, byte> Huefilter;
+                    Image<Gray, byte> Valfilter;
+                    if (IsBlue)
+                    {
+                        //filter out all but blue ...seems to be 0 to 128 ?
+                        Huefilter = imghue.InRange(new Gray(BlueHueMin), new Gray(BlueHueMax));
+
+                        //use the value channel to filter out all but brighter colors
+                        Valfilter = imgval.InRange(new Gray(BlueValMin), new Gray(BlueValMax));
+                    }
+                    else
+                    {
+                        Huefilter = imghue.InRange(new Gray(RedHueMin), new Gray(RedHueMax));
+                        Valfilter = imgval.InRange(new Gray(RedValMin), new Gray(RedValMax));
+                    }
+
+                    //now and the two to get the parts of the imaged that are colored and above some brightness.
+                    // 3. Return filtered image
+                    Image<Gray, byte> FinalImg = Huefilter.And(Valfilter);
+                    return FinalImg;
                 }
                 finally
                 {
@@ -165,9 +179,65 @@ namespace IronMan
                 }
             }
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            DetectShape();
+            DetectShape(true);
+            DetectShape(false);
+        }
+
+        private void ShapeDetection_Load(object sender, EventArgs e)
+        {
+            Bar1.Value = Convert.ToInt16(BlueHueMin);
+            Bar2.Value = Convert.ToInt16(BlueHueMax);
+            Bar3.Value = Convert.ToInt16(BlueValMin);
+            Bar4.Value = Convert.ToInt16(BlueValMax);
+            Bar5.Value = Convert.ToInt16(RedHueMin);
+            Bar6.Value = Convert.ToInt16(RedHueMax);
+            Bar7.Value = Convert.ToInt16(RedValMin);
+            Bar8.Value = Convert.ToInt16(RedValMax);
+
+            label3.Text = "Min: " + Bar1.Value.ToString();
+            label4.Text = "Max: " + Bar2.Value.ToString();
+            label5.Text = "Min: " + Bar3.Value.ToString();
+            label6.Text = "Max: " + Bar4.Value.ToString();
+            label7.Text = "Min: " + Bar5.Value.ToString();
+            label8.Text = "Max: " + Bar6.Value.ToString();
+            label9.Text = "Min: " + Bar7.Value.ToString();
+            label10.Text = "Max: " + Bar8.Value.ToString();
+
+            SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text)
+               .Resize(855, 594, Emgu.CV.CvEnum.Inter.Linear, true);
+            SetBlueSliders(sender, e);
+            SetRedSliders(sender, e);
+        }
+
+        private void SetBlueSliders(object sender, EventArgs e)
+        {
+            BlueHueMin = Bar1.Value;
+            BlueHueMax = Bar2.Value;
+            BlueValMin = Bar3.Value;
+            BlueValMax = Bar4.Value;
+            label3.Text = "Min: " + BlueHueMin.ToString();
+            label4.Text = "Max: " + BlueHueMax.ToString();
+            label5.Text = "Min: " + BlueValMin.ToString();
+            label6.Text = "Max: " + BlueValMax.ToString();
+            BlueOnlyImg = FilterRectangles(true);
+            BlueRectangleImageBox.Image = BlueOnlyImg.ToBitmap();
+        }
+
+        private void SetRedSliders(object sender, EventArgs e)
+        {
+            RedHueMin = Bar5.Value;
+            RedHueMax = Bar6.Value;
+            RedValMin = Bar7.Value;
+            RedValMax = Bar8.Value;
+            label7.Text = "Min: " + RedHueMin.ToString();
+            label8.Text = "Max: " + RedHueMax.ToString();
+            label9.Text = "Min: " + RedValMin.ToString();
+            label10.Text = "Max: " + RedValMax.ToString();
+            RedOnlyImg = FilterRectangles(false);
+            RedRectangleImageBox.Image = RedOnlyImg.ToBitmap();
         }
     }
 }
