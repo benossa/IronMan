@@ -26,8 +26,8 @@ namespace IronMan
         private Image<Bgr, Byte> SourceImg;
         private Image<Gray, Byte> BlueOnlyImg;
         private Image<Gray, Byte> RedOnlyImg;
-        private double BlueHueMin = 45;
-        private double BlueHueMax = 145;
+        private double BlueHueMin = 80;  //80;
+        private double BlueHueMax = 145; //145;
         private double BlueValMin = 150; //150 def
         private double BlueValMax = 255; //255
 
@@ -38,59 +38,38 @@ namespace IronMan
 
         public void DetectShape(bool IsBlue)
         {
-            //Load the image from file and resize it for display
-            //SourceImg =
-            //   new Image<Bgr, byte>(fileNameTextBox.Text)
-            //   .Resize(400, 400, Emgu.CV.CvEnum.Inter.Linear, true);
-
-            //Convert the image to grayscale and filter out the noise
-            UMat uimage = new UMat();
-            CvInvoke.CvtColor(SourceImg, uimage, ColorConversion.Bgr2Gray);
-
-            //use image pyr to remove noise
-            UMat pyrDown = new UMat();
-            CvInvoke.PyrDown(uimage, pyrDown);
-            CvInvoke.PyrUp(pyrDown, uimage);
-
             Stopwatch watch = Stopwatch.StartNew();
-
-            double cannyThreshold = 180.0;
-            double cannyThresholdLinking = 120.0;
+            double sizeTreshold = double.Parse(tbSizetreshold.Text);
+            double cannyThreshold = double.Parse(tbCannyTreshold.Text);
+            double cannyThresholdLinking = double.Parse(tbCannyTresholdLink.Text);
             UMat cannyEdges = new UMat();
-            //CvInvoke.Canny(uimage, cannyEdges, cannyThreshold, cannyThresholdLinking); ORGINAL
             if(IsBlue)
                 CvInvoke.Canny(BlueOnlyImg, cannyEdges, cannyThreshold, cannyThresholdLinking);
             else
                 CvInvoke.Canny(RedOnlyImg, cannyEdges, cannyThreshold, cannyThresholdLinking);
 
-            LineSegment2D[] lines = CvInvoke.HoughLinesP(
-               cannyEdges,
-               1, //Distance resolution in pixel-related units
-               Math.PI / 45.0, //Angle resolution measured in radians.
-               20, //threshold
-               30, //min Line width
-               10); //gap between lines
+            //LineSegment2D[] lines = CvInvoke.HoughLinesP(
+            //   cannyEdges,
+            //   1, //Udaljenost izrazrena u pixelima
+            //   Math.PI / 45.0, //ugao u radijanima.
+            //   20, //stepen tolerancje
+            //   30, //min sirina linije
+            //   10); //razmak izmedju linija
 
-            //watch.Stop();
-            //msgBuilder.Append(String.Format("Canny & Hough lines - {0} ms; ", watch.ElapsedMilliseconds));
-            //#endregion
-
-            #region Find triangles and rectangles
+            #region Petlja za prepoznavanje kontura objekta
             watch.Start();
-            //List<Triangle2DF> triangleList = new List<Triangle2DF>();
-            List<RotatedRect> boxList = new List<RotatedRect>(); //a box is a rotated rectangle
+            List<RotatedRect> boxList = new List<RotatedRect>();
 
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
             {
                 CvInvoke.FindContours(cannyEdges, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
-                int count = contours.Size;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < contours.Size; i++)
                 {
                     using (VectorOfPoint contour = contours[i])
                     using (VectorOfPoint approxContour = new VectorOfPoint())
                     {
                         CvInvoke.ApproxPolyDP(contour, approxContour, CvInvoke.ArcLength(contour, true) * 0.05, true);
-                        if (CvInvoke.ContourArea(approxContour, false) > 20) //u obzir uzima samo oblike cija je povrsina veca od 250
+                        if (CvInvoke.ContourArea(approxContour, false) >= sizeTreshold) //u obzir uzima samo oblike cija je povrsina veca od 250
                         {
                             if (approxContour.Size == 4) //Ako oblik ima 4 ugla onda je kvadrat
                             {
@@ -98,17 +77,19 @@ namespace IronMan
                                 #region determine if all the angles in the contour are within [80, 100] degree
                                 bool isRectangle = true;
                                 Point[] pts = approxContour.ToArray();
-                                LineSegment2D[] edges = PointCollection.PolyLine(pts, true);
+                                LineSegment2D[] edges = PointCollection.PolyLine(approxContour.ToArray(), true);
 
+                                //tbCoordinates.Text += $"P1:{pts[0].X.ToString()}, {pts[0].Y.ToString()}" + Environment.NewLine;
+                                //tbCoordinates.Text += $"P2:{pts[1].X.ToString()}, {pts[1].Y.ToString()}" + Environment.NewLine;
+                                //tbCoordinates.Text += $"P3:{pts[2].X.ToString()}, {pts[2].Y.ToString()}" + Environment.NewLine;
+                                //tbCoordinates.Text += $"P4:{pts[3].X.ToString()}, {pts[3].Y.ToString()}" + Environment.NewLine;
+                                tbCoordinates.Text += $"Size: {CvInvoke.ContourArea(approxContour, false)}" + Environment.NewLine;
+                                tbCoordinates.Text += $"{i}:{pts.Sum(S => S.X)/pts.Count()}, {pts.Sum(S => S.Y) / pts.Count()}" + Environment.NewLine;
+                                tbCoordinates.Text += "------------------------------" + Environment.NewLine;
                                 for (int j = 0; j < edges.Length; j++)
                                 {
-                                    double angle = Math.Abs(
-                                       edges[(j + 1) % edges.Length].GetExteriorAngleDegree(edges[j]));
-                                    if (angle < 80 || angle > 100)
-                                    {
-                                        isRectangle = false;
-                                        break;
-                                    }
+                                    double angle = Math.Abs(edges[(j + 1) % edges.Length].GetExteriorAngleDegree(edges[j]));
+                                    if (angle < 80 || angle > 100) { isRectangle = false; break; }
                                 }
                                 #endregion
 
@@ -127,7 +108,7 @@ namespace IronMan
             originalImageBox.Image = SourceImg.ToBitmap(); 
             originalImageBox.Refresh();
 
-            //#region draw triangles and rectangles
+            //# prikaz objekata
             Image<Bgr, Byte> RectangleImage = SourceImg.CopyBlank();
             foreach (RotatedRect box in boxList)
                 RectangleImage.Draw(box, new Bgr(Color.DarkOrange), 2);
@@ -182,6 +163,7 @@ namespace IronMan
 
         private void button1_Click(object sender, EventArgs e)
         {
+            tbCoordinates.Text = "";
             DetectShape(true);
             DetectShape(false);
         }
