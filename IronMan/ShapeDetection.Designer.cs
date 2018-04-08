@@ -60,12 +60,14 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.tbCoordinates = new System.Windows.Forms.TextBox();
-            this.tbSizetreshold = new System.Windows.Forms.TextBox();
+            this.tbSizeMin = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.tbCannyTreshold = new System.Windows.Forms.TextBox();
             this.tbCannyTresholdLink = new System.Windows.Forms.TextBox();
+            this.tbSizeMax = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -392,14 +394,14 @@
             this.tbCoordinates.Size = new System.Drawing.Size(187, 228);
             this.tbCoordinates.TabIndex = 18;
             // 
-            // tbSizetreshold
+            // tbSizeMin
             // 
-            this.tbSizetreshold.Location = new System.Drawing.Point(105, 621);
-            this.tbSizetreshold.Name = "tbSizetreshold";
-            this.tbSizetreshold.Size = new System.Drawing.Size(55, 20);
-            this.tbSizetreshold.TabIndex = 19;
-            this.tbSizetreshold.Text = "2000";
-            this.tbSizetreshold.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbSizeMin.Location = new System.Drawing.Point(100, 621);
+            this.tbSizeMin.Name = "tbSizeMin";
+            this.tbSizeMin.Size = new System.Drawing.Size(55, 20);
+            this.tbSizeMin.TabIndex = 19;
+            this.tbSizeMin.Text = "4000";
+            this.tbSizeMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label13
             // 
@@ -415,7 +417,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label14.Location = new System.Drawing.Point(359, 622);
+            this.label14.Location = new System.Drawing.Point(453, 623);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(165, 17);
             this.label14.TabIndex = 21;
@@ -425,7 +427,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label15.Location = new System.Drawing.Point(173, 621);
+            this.label15.Location = new System.Drawing.Point(267, 622);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(116, 17);
             this.label15.TabIndex = 22;
@@ -433,7 +435,7 @@
             // 
             // tbCannyTreshold
             // 
-            this.tbCannyTreshold.Location = new System.Drawing.Point(290, 620);
+            this.tbCannyTreshold.Location = new System.Drawing.Point(384, 621);
             this.tbCannyTreshold.Name = "tbCannyTreshold";
             this.tbCannyTreshold.Size = new System.Drawing.Size(51, 20);
             this.tbCannyTreshold.TabIndex = 23;
@@ -442,12 +444,31 @@
             // 
             // tbCannyTresholdLink
             // 
-            this.tbCannyTresholdLink.Location = new System.Drawing.Point(525, 621);
+            this.tbCannyTresholdLink.Location = new System.Drawing.Point(619, 622);
             this.tbCannyTresholdLink.Name = "tbCannyTresholdLink";
             this.tbCannyTresholdLink.Size = new System.Drawing.Size(51, 20);
             this.tbCannyTresholdLink.TabIndex = 24;
             this.tbCannyTresholdLink.Text = "120";
             this.tbCannyTresholdLink.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbSizeMax
+            // 
+            this.tbSizeMax.Location = new System.Drawing.Point(195, 621);
+            this.tbSizeMax.Name = "tbSizeMax";
+            this.tbSizeMax.Size = new System.Drawing.Size(55, 20);
+            this.tbSizeMax.TabIndex = 25;
+            this.tbSizeMax.Text = "12000";
+            this.tbSizeMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label16.Location = new System.Drawing.Point(155, 622);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(40, 17);
+            this.label16.TabIndex = 26;
+            this.label16.Text = "< = >";
             // 
             // ShapeDetection
             // 
@@ -455,12 +476,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1149, 650);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.tbSizeMax);
             this.Controls.Add(this.tbCannyTresholdLink);
             this.Controls.Add(this.tbCannyTreshold);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.tbSizetreshold);
+            this.Controls.Add(this.tbSizeMin);
             this.Controls.Add(this.tbCoordinates);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
@@ -536,11 +559,13 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tbCoordinates;
-        private System.Windows.Forms.TextBox tbSizetreshold;
+        private System.Windows.Forms.TextBox tbSizeMin;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox tbCannyTreshold;
         private System.Windows.Forms.TextBox tbCannyTresholdLink;
+        private System.Windows.Forms.TextBox tbSizeMax;
+        private System.Windows.Forms.Label label16;
     }
 }

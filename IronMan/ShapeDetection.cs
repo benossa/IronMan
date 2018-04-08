@@ -30,6 +30,7 @@ namespace IronMan
 
         private int ImageWidth = 855;
         private int ImageHeight = 594;
+
         private double Type1HueMin = 80;  //80;
         private double Type1HueMax = 145; //145;
         private double Type1ValMin = 150; //150 def
@@ -40,19 +41,21 @@ namespace IronMan
         private double Type2ValMin = 150;
         private double Type2ValMax = 255;
 
-        public void DetectShape(bool Type1)
+        public void DetectRectangles(bool Type1)
         {
             Stopwatch watch = Stopwatch.StartNew();
-            double sizeTreshold = double.Parse(tbSizetreshold.Text);
+            double sizeTresholdMin = double.Parse(tbSizeMin.Text);
+            double sizeTresholdMax = double.Parse(tbSizeMax.Text);
             double cannyThreshold = double.Parse(tbCannyTreshold.Text);
             double cannyThresholdLinking = double.Parse(tbCannyTresholdLink.Text);
+
             UMat cannyEdges = new UMat();
             if(Type1)
                 CvInvoke.Canny(Type1Img, cannyEdges, cannyThreshold, cannyThresholdLinking);
             else
                 CvInvoke.Canny(Type2Img, cannyEdges, cannyThreshold, cannyThresholdLinking);
 
-            #region Petlja za prepoznavanje kontura objekta
+            // Petlja za prepoznavanje kontura objekta
             watch.Start();
             List<RotatedRect> boxList = new List<RotatedRect>();
 
@@ -65,14 +68,15 @@ namespace IronMan
                     using (VectorOfPoint approxContour = new VectorOfPoint())
                     {
                         CvInvoke.ApproxPolyDP(contour, approxContour, CvInvoke.ArcLength(contour, true) * 0.05, true);
-                        if (CvInvoke.ContourArea(approxContour, true) >= sizeTreshold) //u obzir uzima samo oblike cija je povrsina veca od 250
+                        double approxContourSize = CvInvoke.ContourArea(approxContour, true);
+
+                        //u obzir se uzimaju samo oblici cija je povrsina veca od odredjene
+                        if (approxContourSize >= sizeTresholdMin && approxContourSize <= sizeTresholdMax) 
                         {
                             if (approxContour.Size == 4) //Ako oblik ima 4 ugla onda je kvadrat
                             {
-                                
                                 // potrebno je ustanoviti da li su uglovi u određenom rasponu [80, 100] stepeni
                                 bool isRectangle = true;
-                                Point[] pts = approxContour.ToArray();
                                 LineSegment2D[] edges = PointCollection.PolyLine(approxContour.ToArray(), true);
 
                                 for (int j = 0; j < edges.Length; j++)
@@ -88,7 +92,7 @@ namespace IronMan
                                     PickupObject obj = new PickupObject();
                                     obj.CenterX = tempRect.Center.X;
                                     obj.CenterY = tempRect.Center.Y;
-                                    obj.Size = CvInvoke.ContourArea(approxContour, true);
+                                    obj.Size = approxContourSize;
                                     obj.Type = Type1 ? "Type 1" : "Type 2";
                                     obj.Angle = tempRect.Angle;
                                     PickupObjects.Add(obj);
@@ -107,22 +111,19 @@ namespace IronMan
 
             watch.Stop();
             label2.Text = (String.Format("Rectangles - {0} ms; ", watch.ElapsedMilliseconds));
-            #endregion
-
-
+            
             originalImageBox.Image = SourceImg.ToBitmap(); 
             originalImageBox.Refresh();
 
-            //# prikaz objekata
+            //prikaz objekata
             Image<Bgr, Byte> RectangleImage = SourceImg.CopyBlank();
             foreach (RotatedRect box in boxList)
-                RectangleImage.Draw(box, new Bgr(Color.DarkOrange), 4);
+                RectangleImage.Draw(box, new Bgr(Color.Red), 4);
 
             if(Type1)
                 Type1mageBox.Image = RectangleImage.ToBitmap();
             else
                 Type2ImageBox.Image = RectangleImage.ToBitmap();
-            //#endregion
         }
 
         public Image<Gray, byte> FilterRectangles(bool Type1)
@@ -166,8 +167,8 @@ namespace IronMan
         {
             tbCoordinates.Text = "";
             SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text).Resize(ImageWidth, ImageHeight, Emgu.CV.CvEnum.Inter.Linear, true);
-            DetectShape(true);
-            DetectShape(false);
+            DetectRectangles(true);
+            DetectRectangles(false);
         }
 
         private void ShapeDetection_Load(object sender, EventArgs e)
