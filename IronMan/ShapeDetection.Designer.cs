@@ -32,8 +32,8 @@
             this.fileNameTextBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.originalImageBox = new System.Windows.Forms.PictureBox();
-            this.BlueRectangleImageBox = new System.Windows.Forms.PictureBox();
-            this.RedRectangleImageBox = new System.Windows.Forms.PictureBox();
+            this.Type1mageBox = new System.Windows.Forms.PictureBox();
+            this.Type2ImageBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -67,8 +67,8 @@
             this.tbCannyTreshold = new System.Windows.Forms.TextBox();
             this.tbCannyTresholdLink = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BlueRectangleImageBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RedRectangleImageBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Bar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bar1)).BeginInit();
@@ -121,23 +121,23 @@
             this.originalImageBox.TabIndex = 3;
             this.originalImageBox.TabStop = false;
             // 
-            // BlueRectangleImageBox
+            // Type1mageBox
             // 
-            this.BlueRectangleImageBox.Location = new System.Drawing.Point(389, 33);
-            this.BlueRectangleImageBox.Name = "BlueRectangleImageBox";
-            this.BlueRectangleImageBox.Size = new System.Drawing.Size(371, 331);
-            this.BlueRectangleImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BlueRectangleImageBox.TabIndex = 4;
-            this.BlueRectangleImageBox.TabStop = false;
+            this.Type1mageBox.Location = new System.Drawing.Point(389, 33);
+            this.Type1mageBox.Name = "Type1mageBox";
+            this.Type1mageBox.Size = new System.Drawing.Size(371, 331);
+            this.Type1mageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Type1mageBox.TabIndex = 4;
+            this.Type1mageBox.TabStop = false;
             // 
-            // RedRectangleImageBox
+            // Type2ImageBox
             // 
-            this.RedRectangleImageBox.Location = new System.Drawing.Point(766, 32);
-            this.RedRectangleImageBox.Name = "RedRectangleImageBox";
-            this.RedRectangleImageBox.Size = new System.Drawing.Size(371, 332);
-            this.RedRectangleImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.RedRectangleImageBox.TabIndex = 5;
-            this.RedRectangleImageBox.TabStop = false;
+            this.Type2ImageBox.Location = new System.Drawing.Point(766, 32);
+            this.Type2ImageBox.Name = "Type2ImageBox";
+            this.Type2ImageBox.Size = new System.Drawing.Size(371, 332);
+            this.Type2ImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Type2ImageBox.TabIndex = 5;
+            this.Type2ImageBox.TabStop = false;
             // 
             // label2
             // 
@@ -255,7 +255,7 @@
             this.groupBox3.Size = new System.Drawing.Size(457, 234);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Blue Filter";
+            this.groupBox3.Text = "Type 1 Filter";
             // 
             // groupBox4
             // 
@@ -266,7 +266,7 @@
             this.groupBox4.Size = new System.Drawing.Size(457, 234);
             this.groupBox4.TabIndex = 15;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Red Filter";
+            this.groupBox4.Text = "Type 2 Filter";
             // 
             // groupBox5
             // 
@@ -371,18 +371,18 @@
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(557, 15);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(71, 13);
+            this.label11.Size = new System.Drawing.Size(40, 13);
             this.label11.TabIndex = 16;
-            this.label11.Text = "Plavi kvadrati";
+            this.label11.Text = "Type 1";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(925, 13);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(78, 13);
+            this.label12.Size = new System.Drawing.Size(40, 13);
             this.label12.TabIndex = 17;
-            this.label12.Text = "Crveni kvadrati";
+            this.label12.Text = "Type 2";
             // 
             // tbCoordinates
             // 
@@ -467,8 +467,8 @@
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.RedRectangleImageBox);
-            this.Controls.Add(this.BlueRectangleImageBox);
+            this.Controls.Add(this.Type2ImageBox);
+            this.Controls.Add(this.Type1mageBox);
             this.Controls.Add(this.originalImageBox);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.fileNameTextBox);
@@ -477,8 +477,8 @@
             this.Text = "ShapeDetection";
             this.Load += new System.EventHandler(this.ShapeDetection_Load);
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BlueRectangleImageBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RedRectangleImageBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Bar2)).EndInit();
@@ -508,8 +508,8 @@
         private System.Windows.Forms.TextBox fileNameTextBox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox originalImageBox;
-        private System.Windows.Forms.PictureBox BlueRectangleImageBox;
-        private System.Windows.Forms.PictureBox RedRectangleImageBox;
+        private System.Windows.Forms.PictureBox Type1mageBox;
+        private System.Windows.Forms.PictureBox Type2ImageBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;

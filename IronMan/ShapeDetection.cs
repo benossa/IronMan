@@ -24,39 +24,33 @@ namespace IronMan
         }
 
         private Image<Bgr, Byte> SourceImg;
-        private Image<Gray, Byte> BlueOnlyImg;
-        private Image<Gray, Byte> RedOnlyImg;
+        private Image<Gray, Byte> Type1Img;
+        private Image<Gray, Byte> Type2Img;
         public List<PickupObject> PickupObjects;
 
-        private double BlueHueMin = 80;  //80;
-        private double BlueHueMax = 145; //145;
-        private double BlueValMin = 150; //150 def
-        private double BlueValMax = 255; //255
+        private int ImageWidth = 855;
+        private int ImageHeight = 594;
+        private double Type1HueMin = 80;  //80;
+        private double Type1HueMax = 145; //145;
+        private double Type1ValMin = 150; //150 def
+        private double Type1ValMax = 255; //255
 
-        private double RedHueMin = 110;
-        private double RedHueMax = 195;
-        private double RedValMin = 150;
-        private double RedValMax = 255;
+        private double Type2HueMin = 110;
+        private double Type2HueMax = 195;
+        private double Type2ValMin = 150;
+        private double Type2ValMax = 255;
 
-        public void DetectShape(bool IsBlue)
+        public void DetectShape(bool Type1)
         {
             Stopwatch watch = Stopwatch.StartNew();
             double sizeTreshold = double.Parse(tbSizetreshold.Text);
             double cannyThreshold = double.Parse(tbCannyTreshold.Text);
             double cannyThresholdLinking = double.Parse(tbCannyTresholdLink.Text);
             UMat cannyEdges = new UMat();
-            if(IsBlue)
-                CvInvoke.Canny(BlueOnlyImg, cannyEdges, cannyThreshold, cannyThresholdLinking);
+            if(Type1)
+                CvInvoke.Canny(Type1Img, cannyEdges, cannyThreshold, cannyThresholdLinking);
             else
-                CvInvoke.Canny(RedOnlyImg, cannyEdges, cannyThreshold, cannyThresholdLinking);
-
-            //LineSegment2D[] lines = CvInvoke.HoughLinesP(
-            //   cannyEdges,
-            //   1, //Udaljenost izrazrena u pixelima
-            //   Math.PI / 45.0, //ugao u radijanima.
-            //   20, //stepen tolerancje
-            //   30, //min sirina linije
-            //   10); //razmak izmedju linija
+                CvInvoke.Canny(Type2Img, cannyEdges, cannyThreshold, cannyThresholdLinking);
 
             #region Petlja za prepoznavanje kontura objekta
             watch.Start();
@@ -76,7 +70,7 @@ namespace IronMan
                             if (approxContour.Size == 4) //Ako oblik ima 4 ugla onda je kvadrat
                             {
                                 
-                                #region determine if all the angles in the contour are within [80, 100] degree
+                                // potrebno je ustanoviti da li su uglovi u određenom rasponu [80, 100] stepeni
                                 bool isRectangle = true;
                                 Point[] pts = approxContour.ToArray();
                                 LineSegment2D[] edges = PointCollection.PolyLine(approxContour.ToArray(), true);
@@ -86,7 +80,6 @@ namespace IronMan
                                     double angle = Math.Abs(edges[(j + 1) % edges.Length].GetExteriorAngleDegree(edges[j]));
                                     if (angle < 80 || angle > 100) { isRectangle = false; break; }
                                 }
-                                #endregion
 
                                 if (isRectangle)
                                 {
@@ -96,17 +89,13 @@ namespace IronMan
                                     obj.CenterX = tempRect.Center.X;
                                     obj.CenterY = tempRect.Center.Y;
                                     obj.Size = CvInvoke.ContourArea(approxContour, true);
-                                    obj.Color = IsBlue ? "Blue" : "Red";
+                                    obj.Type = Type1 ? "Type 1" : "Type 2";
                                     obj.Angle = tempRect.Angle;
                                     PickupObjects.Add(obj);
-                                    //tbCoordinates.Text += $"P1:{pts[0].X.ToString()}, {pts[0].Y.ToString()}" + Environment.NewLine;
-                                    //tbCoordinates.Text += $"P2:{pts[1].X.ToString()}, {pts[1].Y.ToString()}" + Environment.NewLine;
-                                    //tbCoordinates.Text += $"P3:{pts[2].X.ToString()}, {pts[2].Y.ToString()}" + Environment.NewLine;
-                                    //tbCoordinates.Text += $"P4:{pts[3].X.ToString()}, {pts[3].Y.ToString()}" + Environment.NewLine;
-                                    tbCoordinates.Text += $"Type: {obj.Color}" + Environment.NewLine;
+
+                                    tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
                                     tbCoordinates.Text += $"Size: {obj.Size}" + Environment.NewLine;
                                     tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
-                                    //tbCoordinates.Text += $"{i}:{pts.Sum(S => S.X) / pts.Count()}, {pts.Sum(S => S.Y) / pts.Count()}" + Environment.NewLine;
                                     tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
                                     tbCoordinates.Text += "------------------------------" + Environment.NewLine;
                                 }
@@ -129,40 +118,39 @@ namespace IronMan
             foreach (RotatedRect box in boxList)
                 RectangleImage.Draw(box, new Bgr(Color.DarkOrange), 4);
 
-            if(IsBlue)
-                BlueRectangleImageBox.Image = RectangleImage.ToBitmap();
+            if(Type1)
+                Type1mageBox.Image = RectangleImage.ToBitmap();
             else
-                RedRectangleImageBox.Image = RectangleImage.ToBitmap();
+                Type2ImageBox.Image = RectangleImage.ToBitmap();
             //#endregion
         }
 
-        public Image<Gray, byte> FilterRectangles(bool IsBlue)
+        public Image<Gray, byte> FilterRectangles(bool Type1)
         {
-            // 1. Convert the image to HSV
+            // 1. Pretvorimo sliku u HSV
             using (Image<Hsv, byte> hsv = SourceImg.Convert<Hsv, byte>())
             {
-                // 2. Obtain the 3 channels (hue, saturation and value) that compose the HSV image
+                // 2. Dobijemo 3 kanala (hue, saturation and value)
                 Image<Gray, byte>[] channels = hsv.Split();
 
                 try
-                {   //channels[0] is hue.       //channels[2] is value.
+                {   //kanal[0] je hue //kanal[2] je vrijednost.
                     Image<Gray, byte> Huefilter;
                     Image<Gray, byte> Valfilter;
-                    if (IsBlue)
+                    if (Type1)
                     {
-                        //filter out all but blue ...seems to be 0 to 128 ?
-                        Huefilter = channels[0].InRange(new Gray(BlueHueMin), new Gray(BlueHueMax));
-                        //use the value channel to filter out all but brighter colors
-                        Valfilter = channels[2].InRange(new Gray(BlueValMin), new Gray(BlueValMax));
+                        //filtriramo zeljenu boju
+                        Huefilter = channels[0].InRange(new Gray(Type1HueMin), new Gray(Type1HueMax));
+                        //filtriramo ostale boje
+                        Valfilter = channels[2].InRange(new Gray(Type1ValMin), new Gray(Type1ValMax));
                     }
                     else
                     {
-                        Huefilter = channels[0].InRange(new Gray(RedHueMin), new Gray(RedHueMax));
-                        Valfilter = channels[2].InRange(new Gray(RedValMin), new Gray(RedValMax));
+                        Huefilter = channels[0].InRange(new Gray(Type2HueMin), new Gray(Type2HueMax));
+                        Valfilter = channels[2].InRange(new Gray(Type2ValMin), new Gray(Type2ValMax));
                     }
 
-                    //now and the two to get the parts of the imaged that are colored and above some brightness.
-                    // 3. Return filtered image
+                    // 3. vratimo spojenu sliku
                     Image<Gray, byte> FinalImg = Huefilter.And(Valfilter);
                     return FinalImg;
                 }
@@ -177,20 +165,21 @@ namespace IronMan
         private void button1_Click(object sender, EventArgs e)
         {
             tbCoordinates.Text = "";
+            SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text).Resize(ImageWidth, ImageHeight, Emgu.CV.CvEnum.Inter.Linear, true);
             DetectShape(true);
             DetectShape(false);
         }
 
         private void ShapeDetection_Load(object sender, EventArgs e)
         {
-            Bar1.Value = Convert.ToInt16(BlueHueMin);
-            Bar2.Value = Convert.ToInt16(BlueHueMax);
-            Bar3.Value = Convert.ToInt16(BlueValMin);
-            Bar4.Value = Convert.ToInt16(BlueValMax);
-            Bar5.Value = Convert.ToInt16(RedHueMin);
-            Bar6.Value = Convert.ToInt16(RedHueMax);
-            Bar7.Value = Convert.ToInt16(RedValMin);
-            Bar8.Value = Convert.ToInt16(RedValMax);
+            Bar1.Value = Convert.ToInt16(Type1HueMin);
+            Bar2.Value = Convert.ToInt16(Type1HueMax);
+            Bar3.Value = Convert.ToInt16(Type1ValMin);
+            Bar4.Value = Convert.ToInt16(Type1ValMax);
+            Bar5.Value = Convert.ToInt16(Type2HueMin);
+            Bar6.Value = Convert.ToInt16(Type2HueMax);
+            Bar7.Value = Convert.ToInt16(Type2ValMin);
+            Bar8.Value = Convert.ToInt16(Type2ValMax);
 
             label3.Text = "Min: " + Bar1.Value.ToString();
             label4.Text = "Max: " + Bar2.Value.ToString();
@@ -203,38 +192,37 @@ namespace IronMan
 
             PickupObjects = new List<PickupObject>();
 
-            SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text)
-               .Resize(855, 594, Emgu.CV.CvEnum.Inter.Linear, true);
+            SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text).Resize(ImageWidth, ImageHeight, Emgu.CV.CvEnum.Inter.Linear, true);
             SetBlueSliders(sender, e);
             SetRedSliders(sender, e);
         }
 
         private void SetBlueSliders(object sender, EventArgs e)
         {
-            BlueHueMin = Bar1.Value;
-            BlueHueMax = Bar2.Value;
-            BlueValMin = Bar3.Value;
-            BlueValMax = Bar4.Value;
-            label3.Text = "Min: " + BlueHueMin.ToString();
-            label4.Text = "Max: " + BlueHueMax.ToString();
-            label5.Text = "Min: " + BlueValMin.ToString();
-            label6.Text = "Max: " + BlueValMax.ToString();
-            BlueOnlyImg = FilterRectangles(true);
-            BlueRectangleImageBox.Image = BlueOnlyImg.ToBitmap();
+            Type1HueMin = Bar1.Value;
+            Type1HueMax = Bar2.Value;
+            Type1ValMin = Bar3.Value;
+            Type1ValMax = Bar4.Value;
+            label3.Text = "Min: " + Type1HueMin.ToString();
+            label4.Text = "Max: " + Type1HueMax.ToString();
+            label5.Text = "Min: " + Type1ValMin.ToString();
+            label6.Text = "Max: " + Type1ValMax.ToString();
+            Type1Img = FilterRectangles(true);
+            Type1mageBox.Image = Type1Img.ToBitmap();
         }
 
         private void SetRedSliders(object sender, EventArgs e)
         {
-            RedHueMin = Bar5.Value;
-            RedHueMax = Bar6.Value;
-            RedValMin = Bar7.Value;
-            RedValMax = Bar8.Value;
-            label7.Text = "Min: " + RedHueMin.ToString();
-            label8.Text = "Max: " + RedHueMax.ToString();
-            label9.Text = "Min: " + RedValMin.ToString();
-            label10.Text = "Max: " + RedValMax.ToString();
-            RedOnlyImg = FilterRectangles(false);
-            RedRectangleImageBox.Image = RedOnlyImg.ToBitmap();
+            Type2HueMin = Bar5.Value;
+            Type2HueMax = Bar6.Value;
+            Type2ValMin = Bar7.Value;
+            Type2ValMax = Bar8.Value;
+            label7.Text = "Min: " + Type2HueMin.ToString();
+            label8.Text = "Max: " + Type2HueMax.ToString();
+            label9.Text = "Min: " + Type2ValMin.ToString();
+            label10.Text = "Max: " + Type2ValMax.ToString();
+            Type2Img = FilterRectangles(false);
+            Type2ImageBox.Image = Type2Img.ToBitmap();
         }
     }
 }

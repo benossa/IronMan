@@ -8,7 +8,7 @@ namespace IronMan
 {
     public class PickupObject
     {
-        public string Color { get; set; }
+        public string Type { get; set; }
         public float CenterX { get; set; }
         public float CenterY { get; set; }
         public double Size { get; set; }
