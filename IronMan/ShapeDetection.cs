@@ -26,6 +26,8 @@ namespace IronMan
         private Image<Bgr, Byte> SourceImg;
         private Image<Gray, Byte> BlueOnlyImg;
         private Image<Gray, Byte> RedOnlyImg;
+        public List<PickupObject> PickupObjects;
+
         private double BlueHueMin = 80;  //80;
         private double BlueHueMax = 145; //145;
         private double BlueValMin = 150; //150 def
@@ -69,7 +71,7 @@ namespace IronMan
                     using (VectorOfPoint approxContour = new VectorOfPoint())
                     {
                         CvInvoke.ApproxPolyDP(contour, approxContour, CvInvoke.ArcLength(contour, true) * 0.05, true);
-                        if (CvInvoke.ContourArea(approxContour, false) >= sizeTreshold) //u obzir uzima samo oblike cija je povrsina veca od 250
+                        if (CvInvoke.ContourArea(approxContour, true) >= sizeTreshold) //u obzir uzima samo oblike cija je povrsina veca od 250
                         {
                             if (approxContour.Size == 4) //Ako oblik ima 4 ugla onda je kvadrat
                             {
@@ -79,13 +81,6 @@ namespace IronMan
                                 Point[] pts = approxContour.ToArray();
                                 LineSegment2D[] edges = PointCollection.PolyLine(approxContour.ToArray(), true);
 
-                                //tbCoordinates.Text += $"P1:{pts[0].X.ToString()}, {pts[0].Y.ToString()}" + Environment.NewLine;
-                                //tbCoordinates.Text += $"P2:{pts[1].X.ToString()}, {pts[1].Y.ToString()}" + Environment.NewLine;
-                                //tbCoordinates.Text += $"P3:{pts[2].X.ToString()}, {pts[2].Y.ToString()}" + Environment.NewLine;
-                                //tbCoordinates.Text += $"P4:{pts[3].X.ToString()}, {pts[3].Y.ToString()}" + Environment.NewLine;
-                                tbCoordinates.Text += $"Size: {CvInvoke.ContourArea(approxContour, false)}" + Environment.NewLine;
-                                tbCoordinates.Text += $"{i}:{pts.Sum(S => S.X)/pts.Count()}, {pts.Sum(S => S.Y) / pts.Count()}" + Environment.NewLine;
-                                tbCoordinates.Text += "------------------------------" + Environment.NewLine;
                                 for (int j = 0; j < edges.Length; j++)
                                 {
                                     double angle = Math.Abs(edges[(j + 1) % edges.Length].GetExteriorAngleDegree(edges[j]));
@@ -93,7 +88,28 @@ namespace IronMan
                                 }
                                 #endregion
 
-                                if (isRectangle) boxList.Add(CvInvoke.MinAreaRect(approxContour));
+                                if (isRectangle)
+                                {
+                                    RotatedRect tempRect = CvInvoke.MinAreaRect(approxContour);
+                                    boxList.Add(tempRect);
+                                    PickupObject obj = new PickupObject();
+                                    obj.CenterX = tempRect.Center.X;
+                                    obj.CenterY = tempRect.Center.Y;
+                                    obj.Size = CvInvoke.ContourArea(approxContour, true);
+                                    obj.Color = IsBlue ? "Blue" : "Red";
+                                    obj.Angle = tempRect.Angle;
+                                    PickupObjects.Add(obj);
+                                    //tbCoordinates.Text += $"P1:{pts[0].X.ToString()}, {pts[0].Y.ToString()}" + Environment.NewLine;
+                                    //tbCoordinates.Text += $"P2:{pts[1].X.ToString()}, {pts[1].Y.ToString()}" + Environment.NewLine;
+                                    //tbCoordinates.Text += $"P3:{pts[2].X.ToString()}, {pts[2].Y.ToString()}" + Environment.NewLine;
+                                    //tbCoordinates.Text += $"P4:{pts[3].X.ToString()}, {pts[3].Y.ToString()}" + Environment.NewLine;
+                                    tbCoordinates.Text += $"Type: {obj.Color}" + Environment.NewLine;
+                                    tbCoordinates.Text += $"Size: {obj.Size}" + Environment.NewLine;
+                                    tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
+                                    //tbCoordinates.Text += $"{i}:{pts.Sum(S => S.X) / pts.Count()}, {pts.Sum(S => S.Y) / pts.Count()}" + Environment.NewLine;
+                                    tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
+                                    tbCoordinates.Text += "------------------------------" + Environment.NewLine;
+                                }
                             }
                         }
                     }
@@ -111,7 +127,7 @@ namespace IronMan
             //# prikaz objekata
             Image<Bgr, Byte> RectangleImage = SourceImg.CopyBlank();
             foreach (RotatedRect box in boxList)
-                RectangleImage.Draw(box, new Bgr(Color.DarkOrange), 2);
+                RectangleImage.Draw(box, new Bgr(Color.DarkOrange), 4);
 
             if(IsBlue)
                 BlueRectangleImageBox.Image = RectangleImage.ToBitmap();
@@ -129,23 +145,20 @@ namespace IronMan
                 Image<Gray, byte>[] channels = hsv.Split();
 
                 try
-                {
-                    Image<Gray, Byte> imghue = channels[0];            //hsv, so channels[0] is hue.
-                    Image<Gray, Byte> imgval = channels[2];            //hsv, so channels[2] is value.
+                {   //channels[0] is hue.       //channels[2] is value.
                     Image<Gray, byte> Huefilter;
                     Image<Gray, byte> Valfilter;
                     if (IsBlue)
                     {
                         //filter out all but blue ...seems to be 0 to 128 ?
-                        Huefilter = imghue.InRange(new Gray(BlueHueMin), new Gray(BlueHueMax));
-
+                        Huefilter = channels[0].InRange(new Gray(BlueHueMin), new Gray(BlueHueMax));
                         //use the value channel to filter out all but brighter colors
-                        Valfilter = imgval.InRange(new Gray(BlueValMin), new Gray(BlueValMax));
+                        Valfilter = channels[2].InRange(new Gray(BlueValMin), new Gray(BlueValMax));
                     }
                     else
                     {
-                        Huefilter = imghue.InRange(new Gray(RedHueMin), new Gray(RedHueMax));
-                        Valfilter = imgval.InRange(new Gray(RedValMin), new Gray(RedValMax));
+                        Huefilter = channels[0].InRange(new Gray(RedHueMin), new Gray(RedHueMax));
+                        Valfilter = channels[2].InRange(new Gray(RedValMin), new Gray(RedValMax));
                     }
 
                     //now and the two to get the parts of the imaged that are colored and above some brightness.
@@ -187,6 +200,8 @@ namespace IronMan
             label8.Text = "Max: " + Bar6.Value.ToString();
             label9.Text = "Min: " + Bar7.Value.ToString();
             label10.Text = "Max: " + Bar8.Value.ToString();
+
+            PickupObjects = new List<PickupObject>();
 
             SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text)
                .Resize(855, 594, Emgu.CV.CvEnum.Inter.Linear, true);

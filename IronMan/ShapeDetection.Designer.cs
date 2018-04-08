@@ -100,7 +100,7 @@
             this.fileNameTextBox.Name = "fileNameTextBox";
             this.fileNameTextBox.Size = new System.Drawing.Size(186, 20);
             this.fileNameTextBox.TabIndex = 1;
-            this.fileNameTextBox.Text = "Slika1.png";
+            this.fileNameTextBox.Text = "Slika2.png";
             // 
             // button1
             // 
