@@ -43,7 +43,6 @@ namespace IronMan
 
         public void DetectRectangles(bool Type1)
         {
-            Stopwatch watch = Stopwatch.StartNew();
             double sizeTresholdMin = double.Parse(tbSizeMin.Text);
             double sizeTresholdMax = double.Parse(tbSizeMax.Text);
             double cannyThreshold = double.Parse(tbCannyTreshold.Text);
@@ -56,7 +55,7 @@ namespace IronMan
                 CvInvoke.Canny(Type2Img, cannyEdges, cannyThreshold, cannyThresholdLinking);
 
             // Petlja za prepoznavanje kontura objekta
-            watch.Start();
+            
             List<RotatedRect> boxList = new List<RotatedRect>();
 
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
@@ -108,10 +107,6 @@ namespace IronMan
                     }
                 }
             }
-
-            watch.Stop();
-            label2.Text = (String.Format("Rectangles - {0} ms; ", watch.ElapsedMilliseconds));
-            
             originalImageBox.Image = SourceImg.ToBitmap(); 
             originalImageBox.Refresh();
 
@@ -163,12 +158,33 @@ namespace IronMan
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ReadFromImage(object sender, EventArgs e)
         {
             tbCoordinates.Text = "";
+            Stopwatch watch = Stopwatch.StartNew();
+            watch.Start();
+
             SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text).Resize(ImageWidth, ImageHeight, Emgu.CV.CvEnum.Inter.Linear, true);
+            SetBlueSliders(sender, e);
+            SetRedSliders(sender, e);
             DetectRectangles(true);
             DetectRectangles(false);
+            watch.Stop();
+
+            label2.Text = (String.Format("Rectangles - {0} ms; ", watch.ElapsedMilliseconds));
+        }
+
+        private void ReadFromWebcam(object sender, EventArgs e)
+        {
+            tbCoordinates.Text = "";
+            Stopwatch watch = Stopwatch.StartNew();
+            watch.Start();
+            //ovdje ide parsiranje slike sa kamere u SourceImg
+            DetectRectangles(true);
+            DetectRectangles(false);
+            watch.Stop();
+
+            label2.Text = (String.Format("Rectangles - {0} ms; ", watch.ElapsedMilliseconds));
         }
 
         private void ShapeDetection_Load(object sender, EventArgs e)
