@@ -2,6 +2,8 @@
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
+using Emgu.CV.UI;
+using DirectShowLib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Timers;
 
 namespace IronMan
 {
@@ -27,19 +30,33 @@ namespace IronMan
         private Image<Gray, Byte> Type1Img;
         private Image<Gray, Byte> Type2Img;
         public List<PickupObject> PickupObjects;
+        private bool TimerInUse = false;
+        private System.Timers.Timer timer;
 
-        private int ImageWidth = 855;
-        private int ImageHeight = 594;
+        #region Image Settings
+        private int ImageWidth = 800;
+        private int ImageHeight = 600;
 
-        private double Type1HueMin = 80;  //80;
-        private double Type1HueMax = 145; //145;
-        private double Type1ValMin = 150; //150 def
+        private double Type1HueMin = 0;  //80;
+        private double Type1HueMax = 255; //145;
+        private double Type1ValMin = 83; //150 def
         private double Type1ValMax = 255; //255
 
         private double Type2HueMin = 110;
         private double Type2HueMax = 195;
         private double Type2ValMin = 150;
         private double Type2ValMax = 255;
+        #endregion
+
+        #region Camera settings
+        private int CameraBrightness = 0;
+        private int CameraContrast = 0;
+        private int CameraSharpness = 0;
+        #endregion
+        #region Camera Variables
+        private VideoCapture CamCapture = null; //kamera
+        private DsDevice[] SystemCameras; //lista svih kamera koje su dostupne
+        #endregion
 
         public void DetectRectangles(bool Type1)
         {
@@ -81,7 +98,7 @@ namespace IronMan
                                 for (int j = 0; j < edges.Length; j++)
                                 {
                                     double angle = Math.Abs(edges[(j + 1) % edges.Length].GetExteriorAngleDegree(edges[j]));
-                                    if (angle < 80 || angle > 100) { isRectangle = false; break; }
+                                    if (angle < 70 || angle > 110) { isRectangle = false; break; }
                                 }
 
                                 if (isRectangle)
@@ -150,6 +167,11 @@ namespace IronMan
                     Image<Gray, byte> FinalImg = Huefilter.And(Valfilter);
                     return FinalImg;
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    return null;
+                }
                 finally
                 {
                     channels[1].Dispose();
@@ -165,8 +187,8 @@ namespace IronMan
             watch.Start();
 
             SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text).Resize(ImageWidth, ImageHeight, Emgu.CV.CvEnum.Inter.Linear, true);
-            SetBlueSliders(sender, e);
-            SetRedSliders(sender, e);
+            SetType1Sliders(sender, e);
+            SetType2Sliders(sender, e);
             DetectRectangles(true);
             DetectRectangles(false);
             watch.Stop();
@@ -180,6 +202,9 @@ namespace IronMan
             Stopwatch watch = Stopwatch.StartNew();
             watch.Start();
             //ovdje ide parsiranje slike sa kamere u SourceImg
+            SourceImg = CamCapture.QueryFrame().ToImage<Bgr, Byte>();
+            SetType1Sliders(sender, e);
+            SetType2Sliders(sender, e);
             DetectRectangles(true);
             DetectRectangles(false);
             watch.Stop();
@@ -208,13 +233,36 @@ namespace IronMan
             label10.Text = "Max: " + Bar8.Value.ToString();
 
             PickupObjects = new List<PickupObject>();
+            
+            GetCamerasList();
+            SetType1Sliders(sender, e);
+            SetType2Sliders(sender, e);
 
-            SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text).Resize(ImageWidth, ImageHeight, Emgu.CV.CvEnum.Inter.Linear, true);
-            SetBlueSliders(sender, e);
-            SetRedSliders(sender, e);
+            //timer kao automatski okidac za uzimanje uzorka slike
+            timer = new System.Timers.Timer(400);
+            timer.SynchronizingObject = this;
+            timer.Elapsed += HandleTimerElapsed;
         }
 
-        private void SetBlueSliders(object sender, EventArgs e)
+        public void HandleTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            ReadFromWebcam(null,null);
+        }
+
+        private void GetCamerasList()
+        {
+            SystemCameras = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
+            if (SystemCameras == null) return;
+            
+            button1.Enabled = true;
+            CamCapture = new VideoCapture(0);
+
+            cbCameras.DataSource = SystemCameras;
+            cbCameras.DisplayMember = "Name";
+
+        }
+
+        private void SetType1Sliders(object sender, EventArgs e)
         {
             Type1HueMin = Bar1.Value;
             Type1HueMax = Bar2.Value;
@@ -224,12 +272,13 @@ namespace IronMan
             label4.Text = "Max: " + Type1HueMax.ToString();
             label5.Text = "Min: " + Type1ValMin.ToString();
             label6.Text = "Max: " + Type1ValMax.ToString();
+            if (SourceImg == null) return;
             Type1Img = FilterRectangles(true);
             Type1mageBox.Image = Type1Img.ToBitmap();
         }
 
-        private void SetRedSliders(object sender, EventArgs e)
-        {
+        private void SetType2Sliders(object sender, EventArgs e)
+        {   
             Type2HueMin = Bar5.Value;
             Type2HueMax = Bar6.Value;
             Type2ValMin = Bar7.Value;
@@ -238,8 +287,34 @@ namespace IronMan
             label8.Text = "Max: " + Type2HueMax.ToString();
             label9.Text = "Min: " + Type2ValMin.ToString();
             label10.Text = "Max: " + Type2ValMax.ToString();
+
+            if (SourceImg == null) return;
             Type2Img = FilterRectangles(false);
             Type2ImageBox.Image = Type2Img.ToBitmap();
+        }
+
+        private void cbCameras_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            CamCapture = new VideoCapture(cbCameras.SelectedIndex);
+        }
+
+        private void btnTimer_Click(object sender, EventArgs e)
+        {
+            if (TimerInUse)
+            {
+                TimerInUse = false;
+                btnTimer.Text = "Start";
+                timer.Enabled = false;
+                timer.Stop();
+                return;
+            }
+            if(!TimerInUse)
+            {
+                TimerInUse = true;
+                btnTimer.Text = "Stop";
+                timer.Enabled = true;
+                timer.Start();
+            }
         }
     }
 }

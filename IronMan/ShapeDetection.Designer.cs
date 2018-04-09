@@ -68,11 +68,12 @@
             this.tbCannyTresholdLink = new System.Windows.Forms.TextBox();
             this.tbSizeMax = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbCameras = new System.Windows.Forms.ComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.btnTimer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -112,6 +113,7 @@
             // 
             // button1
             // 
+            this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(638, 15);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(79, 27);
@@ -150,7 +152,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(741, 32);
+            this.label2.Location = new System.Drawing.Point(15, 65);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 6;
@@ -185,7 +187,7 @@
             this.Bar2.Name = "Bar2";
             this.Bar2.Size = new System.Drawing.Size(378, 45);
             this.Bar2.TabIndex = 15;
-            this.Bar2.MouseCaptureChanged += new System.EventHandler(this.SetBlueSliders);
+            this.Bar2.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // Bar1
             // 
@@ -194,7 +196,7 @@
             this.Bar1.Name = "Bar1";
             this.Bar1.Size = new System.Drawing.Size(378, 45);
             this.Bar1.TabIndex = 14;
-            this.Bar1.MouseCaptureChanged += new System.EventHandler(this.SetBlueSliders);
+            this.Bar1.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // label4
             // 
@@ -225,7 +227,7 @@
             this.Bar4.Name = "Bar4";
             this.Bar4.Size = new System.Drawing.Size(378, 45);
             this.Bar4.TabIndex = 17;
-            this.Bar4.MouseCaptureChanged += new System.EventHandler(this.SetBlueSliders);
+            this.Bar4.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // label5
             // 
@@ -243,7 +245,7 @@
             this.Bar3.Name = "Bar3";
             this.Bar3.Size = new System.Drawing.Size(378, 45);
             this.Bar3.TabIndex = 16;
-            this.Bar3.MouseCaptureChanged += new System.EventHandler(this.SetBlueSliders);
+            this.Bar3.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // label6
             // 
@@ -296,7 +298,7 @@
             this.Bar6.Name = "Bar6";
             this.Bar6.Size = new System.Drawing.Size(378, 45);
             this.Bar6.TabIndex = 15;
-            this.Bar6.MouseCaptureChanged += new System.EventHandler(this.SetRedSliders);
+            this.Bar6.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // Bar5
             // 
@@ -305,7 +307,7 @@
             this.Bar5.Name = "Bar5";
             this.Bar5.Size = new System.Drawing.Size(378, 45);
             this.Bar5.TabIndex = 14;
-            this.Bar5.MouseCaptureChanged += new System.EventHandler(this.SetRedSliders);
+            this.Bar5.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label7
             // 
@@ -345,7 +347,7 @@
             this.Bar8.Name = "Bar8";
             this.Bar8.Size = new System.Drawing.Size(378, 45);
             this.Bar8.TabIndex = 17;
-            this.Bar8.MouseCaptureChanged += new System.EventHandler(this.SetRedSliders);
+            this.Bar8.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label9
             // 
@@ -363,7 +365,7 @@
             this.Bar7.Name = "Bar7";
             this.Bar7.Size = new System.Drawing.Size(378, 45);
             this.Bar7.TabIndex = 16;
-            this.Bar7.MouseCaptureChanged += new System.EventHandler(this.SetRedSliders);
+            this.Bar7.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label10
             // 
@@ -476,25 +478,28 @@
             this.label16.TabIndex = 26;
             this.label16.Text = "< = >";
             // 
-            // comboBox1
+            // cbCameras
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(439, 17);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(193, 21);
-            this.comboBox1.TabIndex = 27;
+            this.cbCameras.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCameras.FormattingEnabled = true;
+            this.cbCameras.Location = new System.Drawing.Point(439, 17);
+            this.cbCameras.Name = "cbCameras";
+            this.cbCameras.Size = new System.Drawing.Size(193, 21);
+            this.cbCameras.TabIndex = 27;
+            this.cbCameras.SelectionChangeCommitted += new System.EventHandler(this.cbCameras_SelectionChangeCommitted);
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.btnTimer);
             this.groupBox7.Controls.Add(this.button2);
             this.groupBox7.Controls.Add(this.label17);
             this.groupBox7.Controls.Add(this.fileNameTextBox);
-            this.groupBox7.Controls.Add(this.comboBox1);
+            this.groupBox7.Controls.Add(this.cbCameras);
             this.groupBox7.Controls.Add(this.label1);
             this.groupBox7.Controls.Add(this.button1);
             this.groupBox7.Location = new System.Drawing.Point(12, 12);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(723, 50);
+            this.groupBox7.Size = new System.Drawing.Size(810, 50);
             this.groupBox7.TabIndex = 28;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Source";
@@ -526,6 +531,16 @@
             this.label18.Size = new System.Drawing.Size(72, 13);
             this.label18.TabIndex = 29;
             this.label18.Text = "Source image";
+            // 
+            // btnTimer
+            // 
+            this.btnTimer.Location = new System.Drawing.Point(725, 15);
+            this.btnTimer.Name = "btnTimer";
+            this.btnTimer.Size = new System.Drawing.Size(75, 27);
+            this.btnTimer.TabIndex = 30;
+            this.btnTimer.Text = "Start";
+            this.btnTimer.UseVisualStyleBackColor = true;
+            this.btnTimer.Click += new System.EventHandler(this.btnTimer_Click);
             // 
             // ShapeDetection
             // 
@@ -625,10 +640,11 @@
         private System.Windows.Forms.TextBox tbCannyTresholdLink;
         private System.Windows.Forms.TextBox tbSizeMax;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbCameras;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button btnTimer;
     }
 }
