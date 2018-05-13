@@ -16,7 +16,8 @@ namespace IronMan
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ShapeDetection());
+            //Application.Run(new ShapeDetection());
+            Application.Run(new Main());
         }
     }
 }

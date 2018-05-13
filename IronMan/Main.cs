@@ -75,12 +75,12 @@ namespace IronMan
         #region 
         private void Servo1Scroll_ValueChanged(object sender, EventArgs e)
         {
-            lblServo1Value.Text = "Servo 1: " + Servo1Scroll.Value.ToString();
+            lblServo1Value.Text = Servo1Scroll.Value.ToString();
         }
 
         private void Servo2Scroll_ValueChanged(object sender, EventArgs e)
         {
-            lblServo2Value.Text = "Servo 2: " + Servo2Scroll.Value.ToString();
+            lblServo2Value.Text = Servo2Scroll.Value.ToString();
         }
 
         private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)

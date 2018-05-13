@@ -42,10 +42,11 @@ namespace IronMan
         private double Type1ValMin = 83; //150 def
         private double Type1ValMax = 255; //255
 
-        private double Type2HueMin = 110;
-        private double Type2HueMax = 195;
-        private double Type2ValMin = 150;
-        private double Type2ValMax = 255;
+                                          //CRVENA
+        private double Type2HueMin = 161; //161
+        private double Type2HueMax = 243; //243
+        private double Type2ValMin = 35; //35
+        private double Type2ValMax = 255; //255
         #endregion
 
         #region Camera settings

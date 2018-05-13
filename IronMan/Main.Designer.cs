@@ -51,6 +51,8 @@
             this.Servo4Scroll = new System.Windows.Forms.HScrollBar();
             this.lblServo4Value = new System.Windows.Forms.Label();
             this.cbUseRemoteControl = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cbSerialPort
@@ -173,11 +175,11 @@
             // lblServo1Value
             // 
             this.lblServo1Value.AutoSize = true;
-            this.lblServo1Value.Location = new System.Drawing.Point(124, 275);
+            this.lblServo1Value.Location = new System.Drawing.Point(173, 275);
             this.lblServo1Value.Name = "lblServo1Value";
-            this.lblServo1Value.Size = new System.Drawing.Size(68, 13);
+            this.lblServo1Value.Size = new System.Drawing.Size(19, 13);
             this.lblServo1Value.TabIndex = 10;
-            this.lblServo1Value.Text = "Servo 1 :  90";
+            this.lblServo1Value.Text = "90";
             // 
             // Servo1Scroll
             // 
@@ -208,11 +210,11 @@
             // lblServo2Value
             // 
             this.lblServo2Value.AutoSize = true;
-            this.lblServo2Value.Location = new System.Drawing.Point(124, 335);
+            this.lblServo2Value.Location = new System.Drawing.Point(173, 335);
             this.lblServo2Value.Name = "lblServo2Value";
-            this.lblServo2Value.Size = new System.Drawing.Size(68, 13);
+            this.lblServo2Value.Size = new System.Drawing.Size(19, 13);
             this.lblServo2Value.TabIndex = 12;
-            this.lblServo2Value.Text = "Servo 2 :  90";
+            this.lblServo2Value.Text = "90";
             // 
             // Servo3Scroll
             // 
@@ -306,12 +308,32 @@
             this.cbUseRemoteControl.UseVisualStyleBackColor = true;
             this.cbUseRemoteControl.CheckedChanged += new System.EventHandler(this.cbUseRemoteControl_CheckedChanged);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(124, 275);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 13);
+            this.label5.TabIndex = 23;
+            this.label5.Text = "Rotation";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(124, 335);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(19, 13);
+            this.label6.TabIndex = 24;
+            this.label6.Text = "90";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(564, 450);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.cbUseRemoteControl);
             this.Controls.Add(this.Servo6Scroll);
             this.Controls.Add(this.lblServo6Value);
@@ -369,5 +391,7 @@
         private System.Windows.Forms.HScrollBar Servo4Scroll;
         private System.Windows.Forms.Label lblServo4Value;
         private System.Windows.Forms.CheckBox cbUseRemoteControl;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }
