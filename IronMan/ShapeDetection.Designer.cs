@@ -70,10 +70,19 @@
             this.label16 = new System.Windows.Forms.Label();
             this.cbCameras = new System.Windows.Forms.ComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.btnTimer = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.btnTimer = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.RobotPosX = new System.Windows.Forms.TextBox();
+            this.RobotPosY = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.RobotPosWidth = new System.Windows.Forms.TextBox();
+            this.RobotPosHeight = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -92,6 +101,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Bar8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bar7)).BeginInit();
             this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -504,6 +514,16 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Source";
             // 
+            // btnTimer
+            // 
+            this.btnTimer.Location = new System.Drawing.Point(725, 15);
+            this.btnTimer.Name = "btnTimer";
+            this.btnTimer.Size = new System.Drawing.Size(75, 27);
+            this.btnTimer.TabIndex = 30;
+            this.btnTimer.Text = "Start";
+            this.btnTimer.UseVisualStyleBackColor = true;
+            this.btnTimer.Click += new System.EventHandler(this.btnTimer_Click);
+            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(232, 15);
@@ -532,15 +552,98 @@
             this.label18.TabIndex = 29;
             this.label18.Text = "Source image";
             // 
-            // btnTimer
+            // groupBox8
             // 
-            this.btnTimer.Location = new System.Drawing.Point(725, 15);
-            this.btnTimer.Name = "btnTimer";
-            this.btnTimer.Size = new System.Drawing.Size(75, 27);
-            this.btnTimer.TabIndex = 30;
-            this.btnTimer.Text = "Start";
-            this.btnTimer.UseVisualStyleBackColor = true;
-            this.btnTimer.Click += new System.EventHandler(this.btnTimer_Click);
+            this.groupBox8.Controls.Add(this.label21);
+            this.groupBox8.Controls.Add(this.label22);
+            this.groupBox8.Controls.Add(this.RobotPosWidth);
+            this.groupBox8.Controls.Add(this.RobotPosHeight);
+            this.groupBox8.Controls.Add(this.label20);
+            this.groupBox8.Controls.Add(this.label19);
+            this.groupBox8.Controls.Add(this.RobotPosY);
+            this.groupBox8.Controls.Add(this.RobotPosX);
+            this.groupBox8.Location = new System.Drawing.Point(828, 12);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(309, 50);
+            this.groupBox8.TabIndex = 30;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Robot Position";
+            // 
+            // RobotPosX
+            // 
+            this.RobotPosX.Location = new System.Drawing.Point(27, 19);
+            this.RobotPosX.Name = "RobotPosX";
+            this.RobotPosX.Size = new System.Drawing.Size(44, 20);
+            this.RobotPosX.TabIndex = 0;
+            this.RobotPosX.Text = "450";
+            this.RobotPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // RobotPosY
+            // 
+            this.RobotPosY.Location = new System.Drawing.Point(105, 19);
+            this.RobotPosY.Name = "RobotPosY";
+            this.RobotPosY.Size = new System.Drawing.Size(41, 20);
+            this.RobotPosY.TabIndex = 1;
+            this.RobotPosY.Text = "0";
+            this.RobotPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label19.Location = new System.Drawing.Point(6, 20);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(21, 17);
+            this.label19.TabIndex = 31;
+            this.label19.Text = "X:";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label20.Location = new System.Drawing.Point(84, 20);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(21, 17);
+            this.label20.TabIndex = 32;
+            this.label20.Text = "Y:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label21.Location = new System.Drawing.Point(161, 20);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(25, 17);
+            this.label21.TabIndex = 36;
+            this.label21.Text = "W:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label22.Location = new System.Drawing.Point(234, 20);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(22, 17);
+            this.label22.TabIndex = 35;
+            this.label22.Text = "H:";
+            // 
+            // RobotPosWidth
+            // 
+            this.RobotPosWidth.Location = new System.Drawing.Point(186, 19);
+            this.RobotPosWidth.Name = "RobotPosWidth";
+            this.RobotPosWidth.Size = new System.Drawing.Size(41, 20);
+            this.RobotPosWidth.TabIndex = 34;
+            this.RobotPosWidth.Text = "250";
+            this.RobotPosWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // RobotPosHeight
+            // 
+            this.RobotPosHeight.Location = new System.Drawing.Point(256, 19);
+            this.RobotPosHeight.Name = "RobotPosHeight";
+            this.RobotPosHeight.Size = new System.Drawing.Size(44, 20);
+            this.RobotPosHeight.TabIndex = 33;
+            this.RobotPosHeight.Text = "70";
+            this.RobotPosHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ShapeDetection
             // 
@@ -548,6 +651,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1149, 722);
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.label16);
@@ -568,6 +672,7 @@
             this.Controls.Add(this.Type1mageBox);
             this.Controls.Add(this.originalImageBox);
             this.Name = "ShapeDetection";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ShapeDetection";
             this.Load += new System.EventHandler(this.ShapeDetection_Load);
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).EndInit();
@@ -593,6 +698,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Bar7)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -646,5 +753,14 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button btnTimer;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox RobotPosY;
+        private System.Windows.Forms.TextBox RobotPosX;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox RobotPosWidth;
+        private System.Windows.Forms.TextBox RobotPosHeight;
     }
 }

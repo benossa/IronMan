@@ -34,6 +34,8 @@ namespace IronMan
             cbBaudRate.SelectedIndex = 9;
             SerialData = "";
             serial = new SerialPort();
+            ShapeDetection form = new ShapeDetection();
+            form.Show();
             //SetupTimer();
             //Thread TimerThread = new Thread(new ThreadStart(SetupTimer));
             //TimerThread.IsBackground = true;
@@ -110,14 +112,20 @@ namespace IronMan
             if (serial != null)
                 if (serial.IsOpen)
                     serial.Close();
-
-            serial = new SerialPort(cbSerialPort.Text, int.Parse(cbBaudRate.Text),Parity.None,8,StopBits.One);
-            serial.Open();
-            serial.DiscardOutBuffer();
-            serial.DiscardInBuffer();
-            serial.DataReceived += ReadSerialData;
-            SerialData = "";
-            lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
+            try
+            {
+                serial = new SerialPort(cbSerialPort.Text, int.Parse(cbBaudRate.Text),Parity.None,8,StopBits.One);
+                serial.Open();
+                serial.DiscardOutBuffer();
+                serial.DiscardInBuffer();
+                serial.DataReceived += ReadSerialData;
+                SerialData = "";
+                lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void SendCommands(string ServoNumber, string Value)

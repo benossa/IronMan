@@ -30,6 +30,7 @@ namespace IronMan
         private Image<Gray, Byte> Type1Img;
         private Image<Gray, Byte> Type2Img;
         public List<PickupObject> PickupObjects;
+        public PickupObject RobotPosition;
         private bool TimerInUse = false;
         private System.Timers.Timer timer;
 
@@ -125,6 +126,10 @@ namespace IronMan
                     }
                 }
             }
+            //prikazemo oblik gdje je smjestena baza robota
+            SourceImg.Draw(new Rectangle(int.Parse(RobotPosX.Text), int.Parse(RobotPosY.Text), int.Parse(RobotPosWidth.Text), int.Parse(RobotPosHeight.Text)), new Bgr(Color.Yellow), 4);
+            RobotPosition = new PickupObject() { CenterX = 0};
+
             originalImageBox.Image = SourceImg.ToBitmap(); 
             originalImageBox.Refresh();
 
@@ -132,7 +137,7 @@ namespace IronMan
             Image<Bgr, Byte> RectangleImage = SourceImg.CopyBlank();
             foreach (RotatedRect box in boxList)
                 RectangleImage.Draw(box, new Bgr(Color.Red), 4);
-
+            
             if(Type1)
                 Type1mageBox.Image = RectangleImage.ToBitmap();
             else
