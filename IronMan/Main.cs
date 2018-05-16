@@ -134,6 +134,9 @@ namespace IronMan
                 serial.WriteLine($"<{ServoNumber},{Value}>");
         }
 
-        
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

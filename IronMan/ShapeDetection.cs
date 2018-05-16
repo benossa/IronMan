@@ -11,6 +11,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace IronMan
         private Image<Gray, Byte> Type1Img;
         private Image<Gray, Byte> Type2Img;
         public List<PickupObject> PickupObjects;
-        public PickupObject RobotPosition;
+        public PickupObject RobotLocation;
         private bool TimerInUse = false;
         private System.Timers.Timer timer;
 
@@ -38,9 +39,11 @@ namespace IronMan
         private int ImageWidth = 800;
         private int ImageHeight = 600;
 
-        private double Type1HueMin = 0;  //80;
-        private double Type1HueMax = 255; //145;
-        private double Type1ValMin = 83; //150 def
+        private int RobotShapeX = 0, RobotShapeY = 0, RobotShapeWidth = 0, RobotShapeHeight = 0;
+
+        private double Type1HueMin = 75;  //80;
+        private double Type1HueMax = 146; //145;
+        private double Type1ValMin = 153; //150 def
         private double Type1ValMax = 255; //255
 
                                           //CRVENA
@@ -60,8 +63,16 @@ namespace IronMan
         private DsDevice[] SystemCameras; //lista svih kamera koje su dostupne
         #endregion
 
+        #region Serial Port Config
+        private SerialPort serial { get; set; }
+        private string SerialData { get; set; }
+        #endregion
+
         public void DetectRectangles(bool Type1)
         {
+            //Prvo ispisemo podatke o lokaciji robota pa onda oblike
+            //DisplayObjectInfo(RobotLocation, true);
+
             double sizeTresholdMin = double.Parse(tbSizeMin.Text);
             double sizeTresholdMax = double.Parse(tbSizeMax.Text);
             double cannyThreshold = double.Parse(tbCannyTreshold.Text);
@@ -108,18 +119,13 @@ namespace IronMan
                                     RotatedRect tempRect = CvInvoke.MinAreaRect(approxContour);
                                     boxList.Add(tempRect);
                                     PickupObject obj = new PickupObject();
-                                    obj.CenterX = tempRect.Center.X;
-                                    obj.CenterY = tempRect.Center.Y;
+                                    obj.CenterX = Convert.ToInt32(tempRect.Center.X);
+                                    obj.CenterY = Convert.ToInt32(tempRect.Center.Y);
                                     obj.Size = approxContourSize;
                                     obj.Type = Type1 ? "Type 1" : "Type 2";
                                     obj.Angle = tempRect.Angle;
                                     PickupObjects.Add(obj);
-
-                                    tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
-                                    tbCoordinates.Text += $"Size: {obj.Size}" + Environment.NewLine;
-                                    tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
-                                    tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
-                                    tbCoordinates.Text += "------------------------------" + Environment.NewLine;
+                                    DisplayObjectInfo(obj, false);
                                 }
                             }
                         }
@@ -127,8 +133,7 @@ namespace IronMan
                 }
             }
             //prikazemo oblik gdje je smjestena baza robota
-            SourceImg.Draw(new Rectangle(int.Parse(RobotPosX.Text), int.Parse(RobotPosY.Text), int.Parse(RobotPosWidth.Text), int.Parse(RobotPosHeight.Text)), new Bgr(Color.Yellow), 4);
-            RobotPosition = new PickupObject() { CenterX = 0};
+            SourceImg.Draw(new Rectangle(RobotShapeX, RobotShapeY, RobotShapeWidth, RobotShapeHeight), new Bgr(Color.Yellow), 4);
 
             originalImageBox.Image = SourceImg.ToBitmap(); 
             originalImageBox.Refresh();
@@ -195,6 +200,7 @@ namespace IronMan
             SourceImg = new Image<Bgr, byte>(fileNameTextBox.Text).Resize(ImageWidth, ImageHeight, Emgu.CV.CvEnum.Inter.Linear, true);
             SetType1Sliders(sender, e);
             SetType2Sliders(sender, e);
+            DisplayObjectInfo(RobotLocation, true);
             DetectRectangles(true);
             DetectRectangles(false);
             watch.Stop();
@@ -207,14 +213,16 @@ namespace IronMan
             tbCoordinates.Text = "";
             Stopwatch watch = Stopwatch.StartNew();
             watch.Start();
+            PickupObjects = new List<PickupObject>();
             //ovdje ide parsiranje slike sa kamere u SourceImg
             SourceImg = CamCapture.QueryFrame().ToImage<Bgr, Byte>();
             SetType1Sliders(sender, e);
             SetType2Sliders(sender, e);
+            DisplayObjectInfo(RobotLocation, true);
             DetectRectangles(true);
             DetectRectangles(false);
             watch.Stop();
-
+            button3_Click(null, null);
             label2.Text = (String.Format("Rectangles - {0} ms; ", watch.ElapsedMilliseconds));
         }
 
@@ -239,15 +247,22 @@ namespace IronMan
             label10.Text = "Max: " + Bar8.Value.ToString();
 
             PickupObjects = new List<PickupObject>();
-            
+
+            ReadRobotPosition(null, null);
+
             GetCamerasList();
             SetType1Sliders(sender, e);
             SetType2Sliders(sender, e);
 
             //timer kao automatski okidac za uzimanje uzorka slike
-            timer = new System.Timers.Timer(400);
+            timer = new System.Timers.Timer(800);
             timer.SynchronizingObject = this;
             timer.Elapsed += HandleTimerElapsed;
+
+            cbSerialPort.SelectedIndex = 8;
+            cbBaudRate.SelectedIndex = 9;
+            SerialData = "";
+            serial = new SerialPort();
         }
 
         public void HandleTimerElapsed(object sender, ElapsedEventArgs e)
@@ -321,6 +336,110 @@ namespace IronMan
                 timer.Enabled = true;
                 timer.Start();
             }
+        }
+
+        private void btnOpenSerial_Click(object sender, EventArgs e)
+        {
+            OpenSerialPort();
+        }
+
+        private void btnCloseSerial_Click(object sender, EventArgs e)
+        {
+            if (serial.IsOpen)
+                serial.Close();
+            lblPortStatus.Text = serial.IsOpen ? "Open" : "Closed";
+        }
+
+        private void ReadRobotPosition(object sender, EventArgs e)
+        {
+            RobotShapeHeight = int.Parse(RobotPosHeight.Text);
+            RobotShapeWidth = int.Parse(RobotPosWidth.Text);
+            RobotShapeX = int.Parse(RobotPosX.Text);
+            RobotShapeY = int.Parse(RobotPosY.Text);
+
+            if (RobotLocation == null) RobotLocation = new PickupObject();
+            RobotLocation.CenterX = RobotShapeX + RobotShapeWidth / 2;
+            RobotLocation.CenterY = RobotShapeY + RobotShapeHeight / 2;
+            RobotLocation.Type = "Robot";
+        }
+
+        private void DisplayObjectInfo(PickupObject obj, bool IsRobot)
+        {
+            if(IsRobot)
+            {
+                tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
+                tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
+                tbCoordinates.Text += "------------------------------" + Environment.NewLine;
+                tbCoordinates.Text += "------------------------------" + Environment.NewLine;
+            }
+            else
+            {
+                tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
+                tbCoordinates.Text += $"Size: {obj.Size}" + Environment.NewLine;
+                tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
+                tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
+                tbCoordinates.Text += "------------------------------" + Environment.NewLine;
+            }
+        }
+
+        private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            SendCommands("Servo1", Servo1Scroll.Value.ToString());
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (PickupObjects.Count == 0) return;
+            int ServoLoc = ConvertRange(0, ImageWidth, 2, 178, PickupObjects[0].CenterX) - 43;
+            SendCommands("Servo1", ServoLoc.ToString());
+            label28.Text = PickupObjects[0].CenterY + " -> " +ServoLoc.ToString();
+        }
+
+        public static int ConvertRange(
+        int input_start, int input_end, // Izvorni raspon
+        int output_start, int output_end, // Ciljani raspon
+        int value) // vrijednost za pretvoriti
+        {
+            double slope = (double)(output_end - output_start) / (input_end - input_start);
+            return (int)(output_start + (slope * (value - input_start)));
+        }
+
+        public float MapValue(float a0, float a1, float b0, float b1, float a)
+        {
+            return b0 + (b1 - b0) * ((a - a0) / (a1 - a0));
+            //low2 + (value - low1) * (high2 - low2) / (high1 - low1)
+        }
+
+        private void OpenSerialPort()
+        {
+            if (serial != null)
+                if (serial.IsOpen) serial.Close();
+            try
+            {
+                serial = new SerialPort(cbSerialPort.Text, int.Parse(cbBaudRate.Text), Parity.None, 8, StopBits.One);
+                serial.Open();
+                //serial.DiscardOutBuffer();
+                //serial.DiscardInBuffer();
+                //serial.DataReceived += ReadSerialData;
+                //SerialData = "";
+                lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void SendCommands(string ServoNumber, string Value)
+        {
+            if (serial.IsOpen)
+                serial.WriteLine($"<{ServoNumber},{Value}>");
+        }
+
+        private void ShapeDetection_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!serial.IsOpen)
+                serial.Close();
         }
     }
 }

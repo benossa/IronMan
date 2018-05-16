@@ -106,7 +106,7 @@
             this.tbSerialMonitor.Location = new System.Drawing.Point(195, 30);
             this.tbSerialMonitor.Multiline = true;
             this.tbSerialMonitor.Name = "tbSerialMonitor";
-            this.tbSerialMonitor.Size = new System.Drawing.Size(357, 236);
+            this.tbSerialMonitor.Size = new System.Drawing.Size(357, 134);
             this.tbSerialMonitor.TabIndex = 4;
             // 
             // label2

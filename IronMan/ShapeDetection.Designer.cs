@@ -75,14 +75,36 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.RobotPosX = new System.Windows.Forms.TextBox();
-            this.RobotPosY = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.RobotPosWidth = new System.Windows.Forms.TextBox();
             this.RobotPosHeight = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.RobotPosY = new System.Windows.Forms.TextBox();
+            this.RobotPosX = new System.Windows.Forms.TextBox();
+            this.btnCloseSerial = new System.Windows.Forms.Button();
+            this.btnOpenSerial = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.cbBaudRate = new System.Windows.Forms.ComboBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.lblPortStatus = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.cbSerialPort = new System.Windows.Forms.ComboBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.Servo3Scroll = new System.Windows.Forms.HScrollBar();
+            this.lblServo3Value = new System.Windows.Forms.Label();
+            this.Servo2Scroll = new System.Windows.Forms.HScrollBar();
+            this.lblServo2Value = new System.Windows.Forms.Label();
+            this.Servo1Scroll = new System.Windows.Forms.HScrollBar();
+            this.lblServo1Value = new System.Windows.Forms.Label();
+            this.Servo5Scroll = new System.Windows.Forms.HScrollBar();
+            this.lblServo5Value = new System.Windows.Forms.Label();
+            this.Servo4Scroll = new System.Windows.Forms.HScrollBar();
+            this.lblServo4Value = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label28 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -171,7 +193,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(381, 20);
+            this.label3.Location = new System.Drawing.Point(206, 20);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(24, 13);
             this.label3.TabIndex = 9;
@@ -179,39 +201,39 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.Bar2);
             this.groupBox1.Controls.Add(this.Bar1);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(6, 16);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(436, 102);
+            this.groupBox1.Size = new System.Drawing.Size(252, 102);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "HUE Filter";
             // 
             // Bar2
             // 
-            this.Bar2.Location = new System.Drawing.Point(6, 55);
+            this.Bar2.Location = new System.Drawing.Point(1, 55);
             this.Bar2.Maximum = 255;
             this.Bar2.Name = "Bar2";
-            this.Bar2.Size = new System.Drawing.Size(378, 45);
+            this.Bar2.Size = new System.Drawing.Size(214, 45);
             this.Bar2.TabIndex = 15;
             this.Bar2.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // Bar1
             // 
-            this.Bar1.Location = new System.Drawing.Point(6, 16);
+            this.Bar1.Location = new System.Drawing.Point(1, 16);
             this.Bar1.Maximum = 255;
             this.Bar1.Name = "Bar1";
-            this.Bar1.Size = new System.Drawing.Size(378, 45);
+            this.Bar1.Size = new System.Drawing.Size(214, 45);
             this.Bar1.TabIndex = 14;
             this.Bar1.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(382, 59);
+            this.label4.Location = new System.Drawing.Point(206, 58);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(27, 13);
             this.label4.TabIndex = 10;
@@ -219,30 +241,30 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.Bar4);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.Bar3);
-            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Location = new System.Drawing.Point(6, 120);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(436, 106);
+            this.groupBox2.Size = new System.Drawing.Size(252, 106);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "VAL Filter";
             // 
             // Bar4
             // 
-            this.Bar4.Location = new System.Drawing.Point(6, 57);
+            this.Bar4.Location = new System.Drawing.Point(1, 57);
             this.Bar4.Maximum = 255;
             this.Bar4.Name = "Bar4";
-            this.Bar4.Size = new System.Drawing.Size(378, 45);
+            this.Bar4.Size = new System.Drawing.Size(214, 45);
             this.Bar4.TabIndex = 17;
             this.Bar4.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(381, 25);
+            this.label5.Location = new System.Drawing.Point(207, 25);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(24, 13);
             this.label5.TabIndex = 12;
@@ -250,17 +272,17 @@
             // 
             // Bar3
             // 
-            this.Bar3.Location = new System.Drawing.Point(6, 22);
+            this.Bar3.Location = new System.Drawing.Point(1, 22);
             this.Bar3.Maximum = 255;
             this.Bar3.Name = "Bar3";
-            this.Bar3.Size = new System.Drawing.Size(378, 45);
+            this.Bar3.Size = new System.Drawing.Size(214, 45);
             this.Bar3.TabIndex = 16;
             this.Bar3.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(381, 62);
+            this.label6.Location = new System.Drawing.Point(208, 61);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(27, 13);
             this.label6.TabIndex = 11;
@@ -272,7 +294,7 @@
             this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Location = new System.Drawing.Point(12, 445);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(457, 238);
+            this.groupBox3.Size = new System.Drawing.Size(271, 238);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Type 1 Filter";
@@ -281,9 +303,9 @@
             // 
             this.groupBox4.Controls.Add(this.groupBox5);
             this.groupBox4.Controls.Add(this.groupBox6);
-            this.groupBox4.Location = new System.Drawing.Point(487, 444);
+            this.groupBox4.Location = new System.Drawing.Point(294, 445);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(457, 238);
+            this.groupBox4.Size = new System.Drawing.Size(266, 238);
             this.groupBox4.TabIndex = 15;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Type 2 Filter";
@@ -296,7 +318,7 @@
             this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Location = new System.Drawing.Point(6, 16);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(436, 102);
+            this.groupBox5.Size = new System.Drawing.Size(251, 102);
             this.groupBox5.TabIndex = 12;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "HUE Filter";
@@ -306,23 +328,23 @@
             this.Bar6.Location = new System.Drawing.Point(6, 53);
             this.Bar6.Maximum = 255;
             this.Bar6.Name = "Bar6";
-            this.Bar6.Size = new System.Drawing.Size(378, 45);
+            this.Bar6.Size = new System.Drawing.Size(214, 45);
             this.Bar6.TabIndex = 15;
             this.Bar6.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // Bar5
             // 
-            this.Bar5.Location = new System.Drawing.Point(6, 19);
+            this.Bar5.Location = new System.Drawing.Point(6, 16);
             this.Bar5.Maximum = 255;
             this.Bar5.Name = "Bar5";
-            this.Bar5.Size = new System.Drawing.Size(378, 45);
+            this.Bar5.Size = new System.Drawing.Size(214, 45);
             this.Bar5.TabIndex = 14;
             this.Bar5.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(381, 21);
+            this.label7.Location = new System.Drawing.Point(217, 20);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(27, 13);
             this.label7.TabIndex = 10;
@@ -331,7 +353,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(384, 58);
+            this.label8.Location = new System.Drawing.Point(220, 57);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(24, 13);
             this.label8.TabIndex = 9;
@@ -345,7 +367,7 @@
             this.groupBox6.Controls.Add(this.label10);
             this.groupBox6.Location = new System.Drawing.Point(6, 120);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(436, 106);
+            this.groupBox6.Size = new System.Drawing.Size(251, 106);
             this.groupBox6.TabIndex = 13;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "VAL Filter";
@@ -355,14 +377,14 @@
             this.Bar8.Location = new System.Drawing.Point(6, 57);
             this.Bar8.Maximum = 255;
             this.Bar8.Name = "Bar8";
-            this.Bar8.Size = new System.Drawing.Size(378, 45);
+            this.Bar8.Size = new System.Drawing.Size(214, 45);
             this.Bar8.TabIndex = 17;
             this.Bar8.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(381, 25);
+            this.label9.Location = new System.Drawing.Point(217, 24);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(24, 13);
             this.label9.TabIndex = 12;
@@ -373,14 +395,14 @@
             this.Bar7.Location = new System.Drawing.Point(6, 22);
             this.Bar7.Maximum = 255;
             this.Bar7.Name = "Bar7";
-            this.Bar7.Size = new System.Drawing.Size(378, 45);
+            this.Bar7.Size = new System.Drawing.Size(214, 45);
             this.Bar7.TabIndex = 16;
             this.Bar7.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(381, 62);
+            this.label10.Location = new System.Drawing.Point(217, 61);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(27, 13);
             this.label10.TabIndex = 11;
@@ -569,44 +591,6 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Robot Position";
             // 
-            // RobotPosX
-            // 
-            this.RobotPosX.Location = new System.Drawing.Point(27, 19);
-            this.RobotPosX.Name = "RobotPosX";
-            this.RobotPosX.Size = new System.Drawing.Size(44, 20);
-            this.RobotPosX.TabIndex = 0;
-            this.RobotPosX.Text = "450";
-            this.RobotPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // RobotPosY
-            // 
-            this.RobotPosY.Location = new System.Drawing.Point(105, 19);
-            this.RobotPosY.Name = "RobotPosY";
-            this.RobotPosY.Size = new System.Drawing.Size(41, 20);
-            this.RobotPosY.TabIndex = 1;
-            this.RobotPosY.Text = "0";
-            this.RobotPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label19.Location = new System.Drawing.Point(6, 20);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(21, 17);
-            this.label19.TabIndex = 31;
-            this.label19.Text = "X:";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label20.Location = new System.Drawing.Point(84, 20);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(21, 17);
-            this.label20.TabIndex = 32;
-            this.label20.Text = "Y:";
-            // 
             // label21
             // 
             this.label21.AutoSize = true;
@@ -635,6 +619,7 @@
             this.RobotPosWidth.TabIndex = 34;
             this.RobotPosWidth.Text = "250";
             this.RobotPosWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.RobotPosWidth.TextChanged += new System.EventHandler(this.ReadRobotPosition);
             // 
             // RobotPosHeight
             // 
@@ -644,13 +629,314 @@
             this.RobotPosHeight.TabIndex = 33;
             this.RobotPosHeight.Text = "70";
             this.RobotPosHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.RobotPosHeight.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label20.Location = new System.Drawing.Point(84, 20);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(21, 17);
+            this.label20.TabIndex = 32;
+            this.label20.Text = "Y:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label19.Location = new System.Drawing.Point(6, 20);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(21, 17);
+            this.label19.TabIndex = 31;
+            this.label19.Text = "X:";
+            // 
+            // RobotPosY
+            // 
+            this.RobotPosY.Location = new System.Drawing.Point(105, 19);
+            this.RobotPosY.Name = "RobotPosY";
+            this.RobotPosY.Size = new System.Drawing.Size(41, 20);
+            this.RobotPosY.TabIndex = 1;
+            this.RobotPosY.Text = "0";
+            this.RobotPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.RobotPosY.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            // 
+            // RobotPosX
+            // 
+            this.RobotPosX.Location = new System.Drawing.Point(27, 19);
+            this.RobotPosX.Name = "RobotPosX";
+            this.RobotPosX.Size = new System.Drawing.Size(44, 20);
+            this.RobotPosX.TabIndex = 0;
+            this.RobotPosX.Text = "450";
+            this.RobotPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.RobotPosX.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            // 
+            // btnCloseSerial
+            // 
+            this.btnCloseSerial.Location = new System.Drawing.Point(1153, 146);
+            this.btnCloseSerial.Name = "btnCloseSerial";
+            this.btnCloseSerial.Size = new System.Drawing.Size(177, 23);
+            this.btnCloseSerial.TabIndex = 38;
+            this.btnCloseSerial.Text = "Close Serial";
+            this.btnCloseSerial.UseVisualStyleBackColor = true;
+            this.btnCloseSerial.Click += new System.EventHandler(this.btnCloseSerial_Click);
+            // 
+            // btnOpenSerial
+            // 
+            this.btnOpenSerial.Location = new System.Drawing.Point(1153, 117);
+            this.btnOpenSerial.Name = "btnOpenSerial";
+            this.btnOpenSerial.Size = new System.Drawing.Size(177, 23);
+            this.btnOpenSerial.TabIndex = 37;
+            this.btnOpenSerial.Text = "Open Serial";
+            this.btnOpenSerial.UseVisualStyleBackColor = true;
+            this.btnOpenSerial.Click += new System.EventHandler(this.btnOpenSerial_Click);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(1153, 68);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(58, 13);
+            this.label23.TabIndex = 36;
+            this.label23.Text = "Baud Rate";
+            // 
+            // cbBaudRate
+            // 
+            this.cbBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbBaudRate.FormattingEnabled = true;
+            this.cbBaudRate.Items.AddRange(new object[] {
+            "300",
+            "1200",
+            "2400",
+            "4800",
+            "9600",
+            "19200",
+            "38400",
+            "57600",
+            "74880",
+            "115200",
+            "230400",
+            "250000",
+            "500000",
+            "1000000",
+            "2000000"});
+            this.cbBaudRate.Location = new System.Drawing.Point(1153, 84);
+            this.cbBaudRate.Name = "cbBaudRate";
+            this.cbBaudRate.Size = new System.Drawing.Size(177, 21);
+            this.cbBaudRate.TabIndex = 35;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(1221, 20);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(62, 13);
+            this.label24.TabIndex = 34;
+            this.label24.Text = "Port Status:";
+            // 
+            // lblPortStatus
+            // 
+            this.lblPortStatus.AutoSize = true;
+            this.lblPortStatus.Location = new System.Drawing.Point(1286, 20);
+            this.lblPortStatus.Name = "lblPortStatus";
+            this.lblPortStatus.Size = new System.Drawing.Size(39, 13);
+            this.lblPortStatus.TabIndex = 33;
+            this.lblPortStatus.Text = "Closed";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(1153, 20);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(53, 13);
+            this.label25.TabIndex = 32;
+            this.label25.Text = "COM Port";
+            // 
+            // cbSerialPort
+            // 
+            this.cbSerialPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSerialPort.FormattingEnabled = true;
+            this.cbSerialPort.Items.AddRange(new object[] {
+            "COM1",
+            "COM2",
+            "COM3",
+            "COM4",
+            "COM5",
+            "COM6",
+            "COM7",
+            "COM8",
+            "COM9"});
+            this.cbSerialPort.Location = new System.Drawing.Point(1153, 41);
+            this.cbSerialPort.Name = "cbSerialPort";
+            this.cbSerialPort.Size = new System.Drawing.Size(177, 21);
+            this.cbSerialPort.TabIndex = 31;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(1156, 239);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(43, 13);
+            this.label26.TabIndex = 46;
+            this.label26.Text = "Sholder";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(1155, 182);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(47, 13);
+            this.label27.TabIndex = 45;
+            this.label27.Text = "Rotation";
+            // 
+            // Servo3Scroll
+            // 
+            this.Servo3Scroll.Location = new System.Drawing.Point(1153, 310);
+            this.Servo3Scroll.Maximum = 169;
+            this.Servo3Scroll.Minimum = 80;
+            this.Servo3Scroll.Name = "Servo3Scroll";
+            this.Servo3Scroll.Size = new System.Drawing.Size(177, 20);
+            this.Servo3Scroll.SmallChange = 5;
+            this.Servo3Scroll.TabIndex = 44;
+            this.Servo3Scroll.Value = 141;
+            // 
+            // lblServo3Value
+            // 
+            this.lblServo3Value.AutoSize = true;
+            this.lblServo3Value.Location = new System.Drawing.Point(1156, 294);
+            this.lblServo3Value.Name = "lblServo3Value";
+            this.lblServo3Value.Size = new System.Drawing.Size(38, 13);
+            this.lblServo3Value.TabIndex = 43;
+            this.lblServo3Value.Text = "Ellbow";
+            // 
+            // Servo2Scroll
+            // 
+            this.Servo2Scroll.Location = new System.Drawing.Point(1153, 256);
+            this.Servo2Scroll.Maximum = 128;
+            this.Servo2Scroll.Minimum = 1;
+            this.Servo2Scroll.Name = "Servo2Scroll";
+            this.Servo2Scroll.Size = new System.Drawing.Size(177, 20);
+            this.Servo2Scroll.SmallChange = 5;
+            this.Servo2Scroll.TabIndex = 42;
+            this.Servo2Scroll.Value = 5;
+            // 
+            // lblServo2Value
+            // 
+            this.lblServo2Value.AutoSize = true;
+            this.lblServo2Value.Location = new System.Drawing.Point(1229, 240);
+            this.lblServo2Value.Name = "lblServo2Value";
+            this.lblServo2Value.Size = new System.Drawing.Size(19, 13);
+            this.lblServo2Value.TabIndex = 41;
+            this.lblServo2Value.Text = "90";
+            // 
+            // Servo1Scroll
+            // 
+            this.Servo1Scroll.Location = new System.Drawing.Point(1153, 198);
+            this.Servo1Scroll.Maximum = 178;
+            this.Servo1Scroll.Minimum = 3;
+            this.Servo1Scroll.Name = "Servo1Scroll";
+            this.Servo1Scroll.Size = new System.Drawing.Size(177, 20);
+            this.Servo1Scroll.SmallChange = 5;
+            this.Servo1Scroll.TabIndex = 40;
+            this.Servo1Scroll.Value = 92;
+            this.Servo1Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo1Scroll_MouseCaptureChanged);
+            // 
+            // lblServo1Value
+            // 
+            this.lblServo1Value.AutoSize = true;
+            this.lblServo1Value.Location = new System.Drawing.Point(1230, 182);
+            this.lblServo1Value.Name = "lblServo1Value";
+            this.lblServo1Value.Size = new System.Drawing.Size(19, 13);
+            this.lblServo1Value.TabIndex = 39;
+            this.lblServo1Value.Text = "92";
+            // 
+            // Servo5Scroll
+            // 
+            this.Servo5Scroll.Location = new System.Drawing.Point(1153, 417);
+            this.Servo5Scroll.Maximum = 120;
+            this.Servo5Scroll.Minimum = 50;
+            this.Servo5Scroll.Name = "Servo5Scroll";
+            this.Servo5Scroll.Size = new System.Drawing.Size(177, 20);
+            this.Servo5Scroll.SmallChange = 5;
+            this.Servo5Scroll.TabIndex = 50;
+            this.Servo5Scroll.Value = 90;
+            // 
+            // lblServo5Value
+            // 
+            this.lblServo5Value.AutoSize = true;
+            this.lblServo5Value.Location = new System.Drawing.Point(1155, 401);
+            this.lblServo5Value.Name = "lblServo5Value";
+            this.lblServo5Value.Size = new System.Drawing.Size(41, 13);
+            this.lblServo5Value.TabIndex = 49;
+            this.lblServo5Value.Text = "Gripper";
+            // 
+            // Servo4Scroll
+            // 
+            this.Servo4Scroll.Location = new System.Drawing.Point(1153, 364);
+            this.Servo4Scroll.Maximum = 180;
+            this.Servo4Scroll.Minimum = 1;
+            this.Servo4Scroll.Name = "Servo4Scroll";
+            this.Servo4Scroll.Size = new System.Drawing.Size(177, 20);
+            this.Servo4Scroll.SmallChange = 5;
+            this.Servo4Scroll.TabIndex = 48;
+            this.Servo4Scroll.Value = 6;
+            // 
+            // lblServo4Value
+            // 
+            this.lblServo4Value.AutoSize = true;
+            this.lblServo4Value.Location = new System.Drawing.Point(1156, 348);
+            this.lblServo4Value.Name = "lblServo4Value";
+            this.lblServo4Value.Size = new System.Drawing.Size(31, 13);
+            this.lblServo4Value.TabIndex = 47;
+            this.lblServo4Value.Text = "Wrist";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(1153, 449);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(177, 43);
+            this.button3.TabIndex = 51;
+            this.button3.Text = "Autopilot";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(1153, 509);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(41, 13);
+            this.label28.TabIndex = 52;
+            this.label28.Text = "label28";
             // 
             // ShapeDetection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1149, 722);
+            this.ClientSize = new System.Drawing.Size(1342, 722);
+            this.Controls.Add(this.label28);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.Servo5Scroll);
+            this.Controls.Add(this.lblServo5Value);
+            this.Controls.Add(this.Servo4Scroll);
+            this.Controls.Add(this.lblServo4Value);
+            this.Controls.Add(this.label26);
+            this.Controls.Add(this.label27);
+            this.Controls.Add(this.Servo3Scroll);
+            this.Controls.Add(this.lblServo3Value);
+            this.Controls.Add(this.Servo2Scroll);
+            this.Controls.Add(this.lblServo2Value);
+            this.Controls.Add(this.Servo1Scroll);
+            this.Controls.Add(this.lblServo1Value);
+            this.Controls.Add(this.btnCloseSerial);
+            this.Controls.Add(this.btnOpenSerial);
+            this.Controls.Add(this.label23);
+            this.Controls.Add(this.cbBaudRate);
+            this.Controls.Add(this.label24);
+            this.Controls.Add(this.lblPortStatus);
+            this.Controls.Add(this.label25);
+            this.Controls.Add(this.cbSerialPort);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.groupBox7);
@@ -674,6 +960,7 @@
             this.Name = "ShapeDetection";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ShapeDetection";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShapeDetection_FormClosing);
             this.Load += new System.EventHandler(this.ShapeDetection_Load);
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).EndInit();
@@ -762,5 +1049,27 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.TextBox RobotPosWidth;
         private System.Windows.Forms.TextBox RobotPosHeight;
+        private System.Windows.Forms.Button btnCloseSerial;
+        private System.Windows.Forms.Button btnOpenSerial;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.ComboBox cbBaudRate;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label lblPortStatus;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.ComboBox cbSerialPort;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.HScrollBar Servo3Scroll;
+        private System.Windows.Forms.Label lblServo3Value;
+        private System.Windows.Forms.HScrollBar Servo2Scroll;
+        private System.Windows.Forms.Label lblServo2Value;
+        private System.Windows.Forms.HScrollBar Servo1Scroll;
+        private System.Windows.Forms.Label lblServo1Value;
+        private System.Windows.Forms.HScrollBar Servo5Scroll;
+        private System.Windows.Forms.Label lblServo5Value;
+        private System.Windows.Forms.HScrollBar Servo4Scroll;
+        private System.Windows.Forms.Label lblServo4Value;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label28;
     }
 }

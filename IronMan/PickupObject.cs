@@ -9,8 +9,8 @@ namespace IronMan
     public class PickupObject
     {
         public string Type { get; set; }
-        public float CenterX { get; set; }
-        public float CenterY { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
         public double Size { get; set; }
         public float Angle { get; set; }
     }
