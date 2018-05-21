@@ -37,14 +37,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.Bar2 = new System.Windows.Forms.TrackBar();
             this.Bar1 = new System.Windows.Forms.TrackBar();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.Bar4 = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.Bar3 = new System.Windows.Forms.TrackBar();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -105,6 +105,9 @@
             this.lblServo4Value = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -212,6 +215,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "HUE Filter";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(206, 58);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(27, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Max";
+            // 
             // Bar2
             // 
             this.Bar2.Location = new System.Drawing.Point(1, 55);
@@ -230,15 +242,6 @@
             this.Bar1.TabIndex = 14;
             this.Bar1.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(206, 58);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(27, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Max";
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label6);
@@ -251,6 +254,15 @@
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "VAL Filter";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(208, 61);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(27, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Max";
             // 
             // Bar4
             // 
@@ -278,15 +290,6 @@
             this.Bar3.Size = new System.Drawing.Size(214, 45);
             this.Bar3.TabIndex = 16;
             this.Bar3.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(208, 61);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(27, 13);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Max";
             // 
             // groupBox3
             // 
@@ -774,7 +777,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(1156, 239);
+            this.label26.Location = new System.Drawing.Point(1151, 241);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(43, 13);
             this.label26.TabIndex = 46;
@@ -783,7 +786,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(1155, 182);
+            this.label27.Location = new System.Drawing.Point(1152, 183);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(47, 13);
             this.label27.TabIndex = 45;
@@ -792,33 +795,35 @@
             // Servo3Scroll
             // 
             this.Servo3Scroll.Location = new System.Drawing.Point(1153, 310);
-            this.Servo3Scroll.Maximum = 169;
-            this.Servo3Scroll.Minimum = 80;
+            this.Servo3Scroll.Maximum = 200;
+            this.Servo3Scroll.Minimum = 1;
             this.Servo3Scroll.Name = "Servo3Scroll";
             this.Servo3Scroll.Size = new System.Drawing.Size(177, 20);
             this.Servo3Scroll.SmallChange = 5;
             this.Servo3Scroll.TabIndex = 44;
             this.Servo3Scroll.Value = 141;
+            this.Servo3Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo3Scroll_MouseCaptureChanged);
             // 
             // lblServo3Value
             // 
             this.lblServo3Value.AutoSize = true;
-            this.lblServo3Value.Location = new System.Drawing.Point(1156, 294);
+            this.lblServo3Value.Location = new System.Drawing.Point(1229, 297);
             this.lblServo3Value.Name = "lblServo3Value";
-            this.lblServo3Value.Size = new System.Drawing.Size(38, 13);
+            this.lblServo3Value.Size = new System.Drawing.Size(19, 13);
             this.lblServo3Value.TabIndex = 43;
-            this.lblServo3Value.Text = "Ellbow";
+            this.lblServo3Value.Text = "90";
             // 
             // Servo2Scroll
             // 
             this.Servo2Scroll.Location = new System.Drawing.Point(1153, 256);
-            this.Servo2Scroll.Maximum = 128;
+            this.Servo2Scroll.Maximum = 200;
             this.Servo2Scroll.Minimum = 1;
             this.Servo2Scroll.Name = "Servo2Scroll";
             this.Servo2Scroll.Size = new System.Drawing.Size(177, 20);
             this.Servo2Scroll.SmallChange = 5;
             this.Servo2Scroll.TabIndex = 42;
             this.Servo2Scroll.Value = 5;
+            this.Servo2Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo2Scroll_MouseCaptureChanged);
             // 
             // lblServo2Value
             // 
@@ -860,15 +865,16 @@
             this.Servo5Scroll.SmallChange = 5;
             this.Servo5Scroll.TabIndex = 50;
             this.Servo5Scroll.Value = 90;
+            this.Servo5Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo5Scroll_MouseCaptureChanged);
             // 
             // lblServo5Value
             // 
             this.lblServo5Value.AutoSize = true;
-            this.lblServo5Value.Location = new System.Drawing.Point(1155, 401);
+            this.lblServo5Value.Location = new System.Drawing.Point(1229, 404);
             this.lblServo5Value.Name = "lblServo5Value";
-            this.lblServo5Value.Size = new System.Drawing.Size(41, 13);
+            this.lblServo5Value.Size = new System.Drawing.Size(19, 13);
             this.lblServo5Value.TabIndex = 49;
-            this.lblServo5Value.Text = "Gripper";
+            this.lblServo5Value.Text = "90";
             // 
             // Servo4Scroll
             // 
@@ -880,15 +886,16 @@
             this.Servo4Scroll.SmallChange = 5;
             this.Servo4Scroll.TabIndex = 48;
             this.Servo4Scroll.Value = 6;
+            this.Servo4Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo4Scroll_MouseCaptureChanged);
             // 
             // lblServo4Value
             // 
             this.lblServo4Value.AutoSize = true;
-            this.lblServo4Value.Location = new System.Drawing.Point(1156, 348);
+            this.lblServo4Value.Location = new System.Drawing.Point(1229, 351);
             this.lblServo4Value.Name = "lblServo4Value";
-            this.lblServo4Value.Size = new System.Drawing.Size(31, 13);
+            this.lblServo4Value.Size = new System.Drawing.Size(19, 13);
             this.lblServo4Value.TabIndex = 47;
-            this.lblServo4Value.Text = "Wrist";
+            this.lblServo4Value.Text = "90";
             // 
             // button3
             // 
@@ -909,12 +916,42 @@
             this.label28.TabIndex = 52;
             this.label28.Text = "label28";
             // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(1153, 295);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(38, 13);
+            this.label29.TabIndex = 53;
+            this.label29.Text = "Ellbow";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(1152, 349);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(31, 13);
+            this.label30.TabIndex = 54;
+            this.label30.Text = "Wrist";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(1153, 402);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(41, 13);
+            this.label31.TabIndex = 55;
+            this.label31.Text = "Gripper";
+            // 
             // ShapeDetection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1342, 722);
+            this.Controls.Add(this.label31);
+            this.Controls.Add(this.label30);
+            this.Controls.Add(this.label29);
             this.Controls.Add(this.label28);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.Servo5Scroll);
@@ -1071,5 +1108,8 @@
         private System.Windows.Forms.Label lblServo4Value;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label31;
     }
 }

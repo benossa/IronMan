@@ -382,10 +382,7 @@ namespace IronMan
             }
         }
 
-        private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
-        {
-            SendCommands("Servo1", Servo1Scroll.Value.ToString());
-        }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -408,6 +405,37 @@ namespace IronMan
         {
             return b0 + (b1 - b0) * ((a - a0) / (a1 - a0));
             //low2 + (value - low1) * (high2 - low2) / (high1 - low1)
+        }
+
+        private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            SendCommands("Servo1", Servo1Scroll.Value.ToString());
+            lblServo1Value.Text = Servo1Scroll.Value.ToString();
+        }
+
+        private void Servo2Scroll_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            SendCommands("Servo2", Servo2Scroll.Value.ToString());
+            lblServo2Value.Text = Servo2Scroll.Value.ToString();
+        }
+
+        private void Servo3Scroll_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            SendCommands("Servo3", Servo3Scroll.Value.ToString());
+            lblServo3Value.Text = Servo3Scroll.Value.ToString();
+        }
+
+        private void Servo4Scroll_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            SendCommands("Servo4", Servo4Scroll.Value.ToString());
+            lblServo4Value.Text = Servo4Scroll.Value.ToString();
+        }
+
+        private void Servo5Scroll_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            SendCommands("Servo5", Servo5Scroll.Value.ToString());
+            lblServo5Value.Text = Servo5Scroll.Value.ToString();
+
         }
 
         private void OpenSerialPort()
