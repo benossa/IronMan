@@ -77,12 +77,12 @@
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.RobotPosWidth = new System.Windows.Forms.TextBox();
-            this.RobotPosHeight = new System.Windows.Forms.TextBox();
+            this.tbRobotPosWidth = new System.Windows.Forms.TextBox();
+            this.tbRobotPosHeight = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.RobotPosY = new System.Windows.Forms.TextBox();
-            this.RobotPosX = new System.Windows.Forms.TextBox();
+            this.tbRobotPosY = new System.Windows.Forms.TextBox();
+            this.tbRobotPosX = new System.Windows.Forms.TextBox();
             this.btnCloseSerial = new System.Windows.Forms.Button();
             this.btnOpenSerial = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
@@ -108,6 +108,10 @@
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.btnOpenRobotConfig = new System.Windows.Forms.Button();
+            this.cbSaveValues = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -231,7 +235,7 @@
             this.Bar2.Name = "Bar2";
             this.Bar2.Size = new System.Drawing.Size(214, 45);
             this.Bar2.TabIndex = 15;
-            this.Bar2.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
+            this.Bar2.ValueChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // Bar1
             // 
@@ -240,7 +244,7 @@
             this.Bar1.Name = "Bar1";
             this.Bar1.Size = new System.Drawing.Size(214, 45);
             this.Bar1.TabIndex = 14;
-            this.Bar1.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
+            this.Bar1.ValueChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // groupBox2
             // 
@@ -271,7 +275,7 @@
             this.Bar4.Name = "Bar4";
             this.Bar4.Size = new System.Drawing.Size(214, 45);
             this.Bar4.TabIndex = 17;
-            this.Bar4.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
+            this.Bar4.ValueChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // label5
             // 
@@ -289,7 +293,7 @@
             this.Bar3.Name = "Bar3";
             this.Bar3.Size = new System.Drawing.Size(214, 45);
             this.Bar3.TabIndex = 16;
-            this.Bar3.MouseCaptureChanged += new System.EventHandler(this.SetType1Sliders);
+            this.Bar3.ValueChanged += new System.EventHandler(this.SetType1Sliders);
             // 
             // groupBox3
             // 
@@ -333,7 +337,7 @@
             this.Bar6.Name = "Bar6";
             this.Bar6.Size = new System.Drawing.Size(214, 45);
             this.Bar6.TabIndex = 15;
-            this.Bar6.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
+            this.Bar6.ValueChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // Bar5
             // 
@@ -342,7 +346,7 @@
             this.Bar5.Name = "Bar5";
             this.Bar5.Size = new System.Drawing.Size(214, 45);
             this.Bar5.TabIndex = 14;
-            this.Bar5.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
+            this.Bar5.ValueChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label7
             // 
@@ -382,7 +386,7 @@
             this.Bar8.Name = "Bar8";
             this.Bar8.Size = new System.Drawing.Size(214, 45);
             this.Bar8.TabIndex = 17;
-            this.Bar8.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
+            this.Bar8.ValueChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label9
             // 
@@ -400,7 +404,7 @@
             this.Bar7.Name = "Bar7";
             this.Bar7.Size = new System.Drawing.Size(214, 45);
             this.Bar7.TabIndex = 16;
-            this.Bar7.MouseCaptureChanged += new System.EventHandler(this.SetType2Sliders);
+            this.Bar7.ValueChanged += new System.EventHandler(this.SetType2Sliders);
             // 
             // label10
             // 
@@ -443,7 +447,7 @@
             this.tbSizeMin.Name = "tbSizeMin";
             this.tbSizeMin.Size = new System.Drawing.Size(55, 20);
             this.tbSizeMin.TabIndex = 19;
-            this.tbSizeMin.Text = "4000";
+            this.tbSizeMin.Text = "2000";
             this.tbSizeMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label13
@@ -500,7 +504,7 @@
             this.tbSizeMax.Name = "tbSizeMax";
             this.tbSizeMax.Size = new System.Drawing.Size(55, 20);
             this.tbSizeMax.TabIndex = 25;
-            this.tbSizeMax.Text = "12000";
+            this.tbSizeMax.Text = "6000";
             this.tbSizeMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label16
@@ -581,12 +585,12 @@
             // 
             this.groupBox8.Controls.Add(this.label21);
             this.groupBox8.Controls.Add(this.label22);
-            this.groupBox8.Controls.Add(this.RobotPosWidth);
-            this.groupBox8.Controls.Add(this.RobotPosHeight);
+            this.groupBox8.Controls.Add(this.tbRobotPosWidth);
+            this.groupBox8.Controls.Add(this.tbRobotPosHeight);
             this.groupBox8.Controls.Add(this.label20);
             this.groupBox8.Controls.Add(this.label19);
-            this.groupBox8.Controls.Add(this.RobotPosY);
-            this.groupBox8.Controls.Add(this.RobotPosX);
+            this.groupBox8.Controls.Add(this.tbRobotPosY);
+            this.groupBox8.Controls.Add(this.tbRobotPosX);
             this.groupBox8.Location = new System.Drawing.Point(828, 12);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(309, 50);
@@ -614,25 +618,25 @@
             this.label22.TabIndex = 35;
             this.label22.Text = "H:";
             // 
-            // RobotPosWidth
+            // tbRobotPosWidth
             // 
-            this.RobotPosWidth.Location = new System.Drawing.Point(186, 19);
-            this.RobotPosWidth.Name = "RobotPosWidth";
-            this.RobotPosWidth.Size = new System.Drawing.Size(41, 20);
-            this.RobotPosWidth.TabIndex = 34;
-            this.RobotPosWidth.Text = "250";
-            this.RobotPosWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.RobotPosWidth.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            this.tbRobotPosWidth.Location = new System.Drawing.Point(186, 19);
+            this.tbRobotPosWidth.Name = "tbRobotPosWidth";
+            this.tbRobotPosWidth.Size = new System.Drawing.Size(41, 20);
+            this.tbRobotPosWidth.TabIndex = 34;
+            this.tbRobotPosWidth.Text = "310";
+            this.tbRobotPosWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbRobotPosWidth.TextChanged += new System.EventHandler(this.ReadRobotPosition);
             // 
-            // RobotPosHeight
+            // tbRobotPosHeight
             // 
-            this.RobotPosHeight.Location = new System.Drawing.Point(256, 19);
-            this.RobotPosHeight.Name = "RobotPosHeight";
-            this.RobotPosHeight.Size = new System.Drawing.Size(44, 20);
-            this.RobotPosHeight.TabIndex = 33;
-            this.RobotPosHeight.Text = "70";
-            this.RobotPosHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.RobotPosHeight.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            this.tbRobotPosHeight.Location = new System.Drawing.Point(256, 19);
+            this.tbRobotPosHeight.Name = "tbRobotPosHeight";
+            this.tbRobotPosHeight.Size = new System.Drawing.Size(44, 20);
+            this.tbRobotPosHeight.TabIndex = 33;
+            this.tbRobotPosHeight.Text = "25";
+            this.tbRobotPosHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbRobotPosHeight.TextChanged += new System.EventHandler(this.ReadRobotPosition);
             // 
             // label20
             // 
@@ -654,25 +658,25 @@
             this.label19.TabIndex = 31;
             this.label19.Text = "X:";
             // 
-            // RobotPosY
+            // tbRobotPosY
             // 
-            this.RobotPosY.Location = new System.Drawing.Point(105, 19);
-            this.RobotPosY.Name = "RobotPosY";
-            this.RobotPosY.Size = new System.Drawing.Size(41, 20);
-            this.RobotPosY.TabIndex = 1;
-            this.RobotPosY.Text = "0";
-            this.RobotPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.RobotPosY.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            this.tbRobotPosY.Location = new System.Drawing.Point(105, 19);
+            this.tbRobotPosY.Name = "tbRobotPosY";
+            this.tbRobotPosY.Size = new System.Drawing.Size(41, 20);
+            this.tbRobotPosY.TabIndex = 1;
+            this.tbRobotPosY.Text = "0";
+            this.tbRobotPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbRobotPosY.TextChanged += new System.EventHandler(this.ReadRobotPosition);
             // 
-            // RobotPosX
+            // tbRobotPosX
             // 
-            this.RobotPosX.Location = new System.Drawing.Point(27, 19);
-            this.RobotPosX.Name = "RobotPosX";
-            this.RobotPosX.Size = new System.Drawing.Size(44, 20);
-            this.RobotPosX.TabIndex = 0;
-            this.RobotPosX.Text = "450";
-            this.RobotPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.RobotPosX.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            this.tbRobotPosX.Location = new System.Drawing.Point(27, 19);
+            this.tbRobotPosX.Name = "tbRobotPosX";
+            this.tbRobotPosX.Size = new System.Drawing.Size(44, 20);
+            this.tbRobotPosX.TabIndex = 0;
+            this.tbRobotPosX.Text = "630";
+            this.tbRobotPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbRobotPosX.TextChanged += new System.EventHandler(this.ReadRobotPosition);
             // 
             // btnCloseSerial
             // 
@@ -799,9 +803,9 @@
             this.Servo3Scroll.Minimum = 1;
             this.Servo3Scroll.Name = "Servo3Scroll";
             this.Servo3Scroll.Size = new System.Drawing.Size(177, 20);
-            this.Servo3Scroll.SmallChange = 5;
+            this.Servo3Scroll.SmallChange = 2;
             this.Servo3Scroll.TabIndex = 44;
-            this.Servo3Scroll.Value = 141;
+            this.Servo3Scroll.Value = 37;
             this.Servo3Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo3Scroll_MouseCaptureChanged);
             // 
             // lblServo3Value
@@ -811,7 +815,7 @@
             this.lblServo3Value.Name = "lblServo3Value";
             this.lblServo3Value.Size = new System.Drawing.Size(19, 13);
             this.lblServo3Value.TabIndex = 43;
-            this.lblServo3Value.Text = "90";
+            this.lblServo3Value.Text = "37";
             // 
             // Servo2Scroll
             // 
@@ -820,9 +824,9 @@
             this.Servo2Scroll.Minimum = 1;
             this.Servo2Scroll.Name = "Servo2Scroll";
             this.Servo2Scroll.Size = new System.Drawing.Size(177, 20);
-            this.Servo2Scroll.SmallChange = 5;
+            this.Servo2Scroll.SmallChange = 2;
             this.Servo2Scroll.TabIndex = 42;
-            this.Servo2Scroll.Value = 5;
+            this.Servo2Scroll.Value = 37;
             this.Servo2Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo2Scroll_MouseCaptureChanged);
             // 
             // lblServo2Value
@@ -832,7 +836,7 @@
             this.lblServo2Value.Name = "lblServo2Value";
             this.lblServo2Value.Size = new System.Drawing.Size(19, 13);
             this.lblServo2Value.TabIndex = 41;
-            this.lblServo2Value.Text = "90";
+            this.lblServo2Value.Text = "37";
             // 
             // Servo1Scroll
             // 
@@ -841,7 +845,7 @@
             this.Servo1Scroll.Minimum = 3;
             this.Servo1Scroll.Name = "Servo1Scroll";
             this.Servo1Scroll.Size = new System.Drawing.Size(177, 20);
-            this.Servo1Scroll.SmallChange = 5;
+            this.Servo1Scroll.SmallChange = 2;
             this.Servo1Scroll.TabIndex = 40;
             this.Servo1Scroll.Value = 92;
             this.Servo1Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo1Scroll_MouseCaptureChanged);
@@ -858,13 +862,12 @@
             // Servo5Scroll
             // 
             this.Servo5Scroll.Location = new System.Drawing.Point(1153, 417);
-            this.Servo5Scroll.Maximum = 120;
-            this.Servo5Scroll.Minimum = 50;
+            this.Servo5Scroll.Maximum = 64;
             this.Servo5Scroll.Name = "Servo5Scroll";
             this.Servo5Scroll.Size = new System.Drawing.Size(177, 20);
-            this.Servo5Scroll.SmallChange = 5;
+            this.Servo5Scroll.SmallChange = 2;
             this.Servo5Scroll.TabIndex = 50;
-            this.Servo5Scroll.Value = 90;
+            this.Servo5Scroll.Value = 64;
             this.Servo5Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo5Scroll_MouseCaptureChanged);
             // 
             // lblServo5Value
@@ -874,7 +877,7 @@
             this.lblServo5Value.Name = "lblServo5Value";
             this.lblServo5Value.Size = new System.Drawing.Size(19, 13);
             this.lblServo5Value.TabIndex = 49;
-            this.lblServo5Value.Text = "90";
+            this.lblServo5Value.Text = "64";
             // 
             // Servo4Scroll
             // 
@@ -883,7 +886,7 @@
             this.Servo4Scroll.Minimum = 1;
             this.Servo4Scroll.Name = "Servo4Scroll";
             this.Servo4Scroll.Size = new System.Drawing.Size(177, 20);
-            this.Servo4Scroll.SmallChange = 5;
+            this.Servo4Scroll.SmallChange = 2;
             this.Servo4Scroll.TabIndex = 48;
             this.Servo4Scroll.Value = 6;
             this.Servo4Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo4Scroll_MouseCaptureChanged);
@@ -899,7 +902,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(1153, 449);
+            this.button3.Location = new System.Drawing.Point(1154, 520);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(177, 43);
             this.button3.TabIndex = 51;
@@ -910,7 +913,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(1153, 509);
+            this.label28.Location = new System.Drawing.Point(1170, 481);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(41, 13);
             this.label28.TabIndex = 52;
@@ -943,12 +946,56 @@
             this.label31.TabIndex = 55;
             this.label31.Text = "Gripper";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(1153, 667);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(177, 43);
+            this.button4.TabIndex = 56;
+            this.button4.Text = "Reset";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(1153, 618);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(177, 43);
+            this.button5.TabIndex = 57;
+            this.button5.Text = "Load Config";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // btnOpenRobotConfig
+            // 
+            this.btnOpenRobotConfig.Location = new System.Drawing.Point(1153, 569);
+            this.btnOpenRobotConfig.Name = "btnOpenRobotConfig";
+            this.btnOpenRobotConfig.Size = new System.Drawing.Size(177, 43);
+            this.btnOpenRobotConfig.TabIndex = 58;
+            this.btnOpenRobotConfig.Text = "Robot Config";
+            this.btnOpenRobotConfig.UseVisualStyleBackColor = true;
+            this.btnOpenRobotConfig.Click += new System.EventHandler(this.btnOpenRobotConfig_Click);
+            // 
+            // cbSaveValues
+            // 
+            this.cbSaveValues.AutoSize = true;
+            this.cbSaveValues.Location = new System.Drawing.Point(1171, 447);
+            this.cbSaveValues.Name = "cbSaveValues";
+            this.cbSaveValues.Size = new System.Drawing.Size(124, 17);
+            this.cbSaveValues.TabIndex = 59;
+            this.cbSaveValues.Text = "Use Previous Values";
+            this.cbSaveValues.UseVisualStyleBackColor = true;
+            // 
             // ShapeDetection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1342, 722);
+            this.Controls.Add(this.cbSaveValues);
+            this.Controls.Add(this.btnOpenRobotConfig);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.label31);
             this.Controls.Add(this.label30);
             this.Controls.Add(this.label29);
@@ -1080,12 +1127,12 @@
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.TextBox RobotPosY;
-        private System.Windows.Forms.TextBox RobotPosX;
+        private System.Windows.Forms.TextBox tbRobotPosY;
+        private System.Windows.Forms.TextBox tbRobotPosX;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox RobotPosWidth;
-        private System.Windows.Forms.TextBox RobotPosHeight;
+        private System.Windows.Forms.TextBox tbRobotPosWidth;
+        private System.Windows.Forms.TextBox tbRobotPosHeight;
         private System.Windows.Forms.Button btnCloseSerial;
         private System.Windows.Forms.Button btnOpenSerial;
         private System.Windows.Forms.Label label23;
@@ -1111,5 +1158,9 @@
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnOpenRobotConfig;
+        private System.Windows.Forms.CheckBox cbSaveValues;
     }
 }

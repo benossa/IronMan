@@ -17,6 +17,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
+using System.Threading;
+using System.Xml.Serialization;
+using System.Xml;
+using IronMan.Forms;
 
 namespace IronMan
 {
@@ -25,8 +29,9 @@ namespace IronMan
         public ShapeDetection()
         {
             InitializeComponent();
+            IMC = new IronManConfig();
         }
-
+        private IronManConfig IMC { get; set; }
         private Image<Bgr, Byte> SourceImg;
         private Image<Gray, Byte> Type1Img;
         private Image<Gray, Byte> Type2Img;
@@ -36,21 +41,9 @@ namespace IronMan
         private System.Timers.Timer timer;
 
         #region Image Settings
-        private int ImageWidth = 800;
-        private int ImageHeight = 600;
+        private int ImageWidth = 1280;
+        private int ImageHeight = 720;
 
-        private int RobotShapeX = 0, RobotShapeY = 0, RobotShapeWidth = 0, RobotShapeHeight = 0;
-
-        private double Type1HueMin = 75;  //80;
-        private double Type1HueMax = 146; //145;
-        private double Type1ValMin = 153; //150 def
-        private double Type1ValMax = 255; //255
-
-                                          //CRVENA
-        private double Type2HueMin = 161; //161
-        private double Type2HueMax = 243; //243
-        private double Type2ValMin = 35; //35
-        private double Type2ValMax = 255; //255
         #endregion
 
         #region Camera settings
@@ -79,13 +72,13 @@ namespace IronMan
             double cannyThresholdLinking = double.Parse(tbCannyTresholdLink.Text);
 
             UMat cannyEdges = new UMat();
-            if(Type1)
+            if (Type1)
                 CvInvoke.Canny(Type1Img, cannyEdges, cannyThreshold, cannyThresholdLinking);
             else
                 CvInvoke.Canny(Type2Img, cannyEdges, cannyThreshold, cannyThresholdLinking);
 
             // Petlja za prepoznavanje kontura objekta
-            
+
             List<RotatedRect> boxList = new List<RotatedRect>();
 
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
@@ -100,7 +93,7 @@ namespace IronMan
                         double approxContourSize = CvInvoke.ContourArea(approxContour, true);
 
                         //u obzir se uzimaju samo oblici cija je povrsina veca od odredjene
-                        if (approxContourSize >= sizeTresholdMin && approxContourSize <= sizeTresholdMax) 
+                        if (approxContourSize >= sizeTresholdMin && approxContourSize <= sizeTresholdMax)
                         {
                             if (approxContour.Size == 4) //Ako oblik ima 4 ugla onda je kvadrat
                             {
@@ -133,17 +126,18 @@ namespace IronMan
                 }
             }
             //prikazemo oblik gdje je smjestena baza robota
-            SourceImg.Draw(new Rectangle(RobotShapeX, RobotShapeY, RobotShapeWidth, RobotShapeHeight), new Bgr(Color.Yellow), 4);
+            SourceImg.Draw(new Rectangle(IMC.RobotShapeX, IMC.RobotShapeY, IMC.RobotShapeWidth, IMC.RobotShapeHeight), new Bgr(Color.Yellow), 4);
+            DrawWorkingArea();
 
-            originalImageBox.Image = SourceImg.ToBitmap(); 
+            originalImageBox.Image = SourceImg.ToBitmap();
             originalImageBox.Refresh();
 
             //prikaz objekata
             Image<Bgr, Byte> RectangleImage = SourceImg.CopyBlank();
             foreach (RotatedRect box in boxList)
                 RectangleImage.Draw(box, new Bgr(Color.Red), 4);
-            
-            if(Type1)
+
+            if (Type1)
                 Type1mageBox.Image = RectangleImage.ToBitmap();
             else
                 Type2ImageBox.Image = RectangleImage.ToBitmap();
@@ -164,14 +158,14 @@ namespace IronMan
                     if (Type1)
                     {
                         //filtriramo zeljenu boju
-                        Huefilter = channels[0].InRange(new Gray(Type1HueMin), new Gray(Type1HueMax));
+                        Huefilter = channels[0].InRange(new Gray(IMC.Type1HueMin), new Gray(IMC.Type1HueMax));
                         //filtriramo ostale boje
-                        Valfilter = channels[2].InRange(new Gray(Type1ValMin), new Gray(Type1ValMax));
+                        Valfilter = channels[2].InRange(new Gray(IMC.Type1ValMin), new Gray(IMC.Type1ValMax));
                     }
                     else
                     {
-                        Huefilter = channels[0].InRange(new Gray(Type2HueMin), new Gray(Type2HueMax));
-                        Valfilter = channels[2].InRange(new Gray(Type2ValMin), new Gray(Type2ValMax));
+                        Huefilter = channels[0].InRange(new Gray(IMC.Type2HueMin), new Gray(IMC.Type2HueMax));
+                        Valfilter = channels[2].InRange(new Gray(IMC.Type2ValMin), new Gray(IMC.Type2ValMax));
                     }
 
                     // 3. vratimo spojenu sliku
@@ -189,6 +183,13 @@ namespace IronMan
                     channels[2].Dispose();
                 }
             }
+        }
+
+        private void DrawWorkingArea()
+        {
+
+            SourceImg.DrawPolyline(new Point[] { IMC.WAMinStart, IMC.WAMinMiddle, IMC.WAMinEnd }, true, new Bgr(Color.Yellow), 4);
+
         }
 
         private void ReadFromImage(object sender, EventArgs e)
@@ -228,14 +229,65 @@ namespace IronMan
 
         private void ShapeDetection_Load(object sender, EventArgs e)
         {
-            Bar1.Value = Convert.ToInt16(Type1HueMin);
-            Bar2.Value = Convert.ToInt16(Type1HueMax);
-            Bar3.Value = Convert.ToInt16(Type1ValMin);
-            Bar4.Value = Convert.ToInt16(Type1ValMax);
-            Bar5.Value = Convert.ToInt16(Type2HueMin);
-            Bar6.Value = Convert.ToInt16(Type2HueMax);
-            Bar7.Value = Convert.ToInt16(Type2ValMin);
-            Bar8.Value = Convert.ToInt16(Type2ValMax);
+            IMC = ReadFromXML();
+            
+            Servo1Scroll.Maximum = IMC.Servo1Max;
+            Servo1Scroll.Minimum = IMC.Servo1Min;
+            Servo2Scroll.Maximum = IMC.Servo2Max;
+            Servo2Scroll.Minimum = IMC.Servo2Min;
+            Servo3Scroll.Maximum = IMC.Servo3Max;
+            Servo3Scroll.Minimum = IMC.Servo3Min;
+            Servo4Scroll.Maximum = IMC.Servo4Max;
+            Servo4Scroll.Minimum = IMC.Servo4Min;
+            Servo5Scroll.Maximum = IMC.Servo5Max;
+            Servo5Scroll.Minimum = IMC.Servo5Min;
+
+            cbSaveValues.Checked = IMC.UsePreviousValues;
+            if(cbSaveValues.Checked)
+            {
+                Servo1Scroll.Value = IMC.Servo1Val;
+                Servo2Scroll.Value = IMC.Servo2Val;
+                Servo3Scroll.Value = IMC.Servo3Val;
+                Servo4Scroll.Value = IMC.Servo4Val;
+                Servo5Scroll.Value = IMC.Servo5Val;
+                lblServo1Value.Text = IMC.Servo1Val.ToString();
+                lblServo2Value.Text = IMC.Servo2Val.ToString();
+                lblServo3Value.Text = IMC.Servo3Val.ToString();
+                lblServo4Value.Text = IMC.Servo4Val.ToString();
+                lblServo5Value.Text = IMC.Servo5Val.ToString();
+            }
+            else
+            {
+                Servo1Scroll.Value = IMC.Servo1Def;
+                Servo2Scroll.Value = IMC.Servo2Def;
+                Servo3Scroll.Value = IMC.Servo3Def;
+                Servo4Scroll.Value = IMC.Servo4Def;
+                Servo5Scroll.Value = IMC.Servo5Def;
+                lblServo1Value.Text = IMC.Servo1Def.ToString();
+                lblServo2Value.Text = IMC.Servo2Def.ToString();
+                lblServo3Value.Text = IMC.Servo3Def.ToString();
+                lblServo4Value.Text = IMC.Servo4Def.ToString();
+                lblServo5Value.Text = IMC.Servo5Def.ToString();
+            }
+            //IZ DO SADA NE RAZJASNJENIH RAZLOGA NULIRA SVE VRIJEDNOSTI Type1hue i Type1Val ako Bar-u dodjelujem vrijednost direktno
+            // npr Bar1.Value = IMC.Type1HueMin; tada ce Type1HueMax i svi ostali postati = 0;
+
+            int Type1HueMin = IMC.Type1HueMin;
+            int Type1HueMax = IMC.Type1HueMax;
+            int Type1ValMin = IMC.Type1ValMin;
+            int Type1ValMax = IMC.Type1ValMax;
+            int Type2HueMin = IMC.Type2HueMin;
+            int Type2HueMax = IMC.Type2HueMax;
+            int Type2ValMin = IMC.Type2ValMin;
+            int Type2ValMax = IMC.Type2ValMax;
+            Bar1.Value = Type1HueMin;
+            Bar2.Value = Type1HueMax;
+            Bar3.Value = Type1ValMin;
+            Bar4.Value = Type1ValMax;
+            Bar5.Value = Type2HueMin;
+            Bar6.Value = Type2HueMax;
+            Bar7.Value = Type2ValMin;
+            Bar8.Value = Type2ValMax;
 
             label3.Text = "Min: " + Bar1.Value.ToString();
             label4.Text = "Max: " + Bar2.Value.ToString();
@@ -267,14 +319,14 @@ namespace IronMan
 
         public void HandleTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            ReadFromWebcam(null,null);
+            ReadFromWebcam(null, null);
         }
 
         private void GetCamerasList()
         {
             SystemCameras = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
             if (SystemCameras == null) return;
-            
+
             button1.Enabled = true;
             CamCapture = new VideoCapture(0);
 
@@ -285,29 +337,29 @@ namespace IronMan
 
         private void SetType1Sliders(object sender, EventArgs e)
         {
-            Type1HueMin = Bar1.Value;
-            Type1HueMax = Bar2.Value;
-            Type1ValMin = Bar3.Value;
-            Type1ValMax = Bar4.Value;
-            label3.Text = "Min: " + Type1HueMin.ToString();
-            label4.Text = "Max: " + Type1HueMax.ToString();
-            label5.Text = "Min: " + Type1ValMin.ToString();
-            label6.Text = "Max: " + Type1ValMax.ToString();
+            IMC.Type1HueMin = Bar1.Value;
+            IMC.Type1HueMax = Bar2.Value;
+            IMC.Type1ValMin = Bar3.Value;
+            IMC.Type1ValMax = Bar4.Value;
+            label3.Text = "Min: " + IMC.Type1HueMin.ToString();
+            label4.Text = "Max: " + IMC.Type1HueMax.ToString();
+            label5.Text = "Min: " + IMC.Type1ValMin.ToString();
+            label6.Text = "Max: " + IMC.Type1ValMax.ToString();
             if (SourceImg == null) return;
             Type1Img = FilterRectangles(true);
             Type1mageBox.Image = Type1Img.ToBitmap();
         }
 
         private void SetType2Sliders(object sender, EventArgs e)
-        {   
-            Type2HueMin = Bar5.Value;
-            Type2HueMax = Bar6.Value;
-            Type2ValMin = Bar7.Value;
-            Type2ValMax = Bar8.Value;
-            label7.Text = "Min: " + Type2HueMin.ToString();
-            label8.Text = "Max: " + Type2HueMax.ToString();
-            label9.Text = "Min: " + Type2ValMin.ToString();
-            label10.Text = "Max: " + Type2ValMax.ToString();
+        {
+            IMC.Type2HueMin = Bar5.Value;
+            IMC.Type2HueMax = Bar6.Value;
+            IMC.Type2ValMin = Bar7.Value;
+            IMC.Type2ValMax = Bar8.Value;
+            label7.Text = "Min: " + IMC.Type2HueMin.ToString();
+            label8.Text = "Max: " + IMC.Type2HueMax.ToString();
+            label9.Text = "Min: " + IMC.Type2ValMin.ToString();
+            label10.Text = "Max: " + IMC.Type2ValMax.ToString();
 
             if (SourceImg == null) return;
             Type2Img = FilterRectangles(false);
@@ -329,7 +381,7 @@ namespace IronMan
                 timer.Stop();
                 return;
             }
-            if(!TimerInUse)
+            if (!TimerInUse)
             {
                 TimerInUse = true;
                 btnTimer.Text = "Stop";
@@ -352,20 +404,20 @@ namespace IronMan
 
         private void ReadRobotPosition(object sender, EventArgs e)
         {
-            RobotShapeHeight = int.Parse(RobotPosHeight.Text);
-            RobotShapeWidth = int.Parse(RobotPosWidth.Text);
-            RobotShapeX = int.Parse(RobotPosX.Text);
-            RobotShapeY = int.Parse(RobotPosY.Text);
+            IMC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
+            IMC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
+            IMC.RobotShapeX = int.Parse(tbRobotPosX.Text);
+            IMC.RobotShapeY = int.Parse(tbRobotPosY.Text);
 
             if (RobotLocation == null) RobotLocation = new PickupObject();
-            RobotLocation.CenterX = RobotShapeX + RobotShapeWidth / 2;
-            RobotLocation.CenterY = RobotShapeY + RobotShapeHeight / 2;
+            RobotLocation.CenterX = IMC.RobotShapeX + IMC.RobotShapeWidth / 2;
+            RobotLocation.CenterY = IMC.RobotShapeY + IMC.RobotShapeHeight / 2;
             RobotLocation.Type = "Robot";
         }
 
         private void DisplayObjectInfo(PickupObject obj, bool IsRobot)
         {
-            if(IsRobot)
+            if (IsRobot)
             {
                 tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
                 tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
@@ -387,9 +439,28 @@ namespace IronMan
         private void button3_Click(object sender, EventArgs e)
         {
             if (PickupObjects.Count == 0) return;
-            int ServoLoc = ConvertRange(0, ImageWidth, 2, 178, PickupObjects[0].CenterX) - 43;
-            SendCommands("Servo1", ServoLoc.ToString());
-            label28.Text = PickupObjects[0].CenterY + " -> " +ServoLoc.ToString();
+
+            int ServoPos = ConvertRange(0, ImageWidth, 30, 150, PickupObjects[0].CenterX) + 20;
+            SendCommands("Servo1", ServoPos.ToString());
+            label28.Text = PickupObjects[0].CenterY + " -> " + ServoPos.ToString();
+            return;
+
+            if (PickupObjects[0].CenterX > RobotLocation.CenterX)
+            {
+                int Razlika = PickupObjects[0].CenterX - RobotLocation.CenterX;
+                ServoPos = ConvertRange(0, ImageWidth / 2, 30, 90, Razlika);
+                SendCommands("Servo1", ServoPos.ToString());
+                label28.Text = PickupObjects[0].CenterY + " -> " + ServoPos.ToString();
+            }
+            else
+            {
+                int Razlika = RobotLocation.CenterX - PickupObjects[0].CenterX;
+                ServoPos = ConvertRange(0, ImageWidth / 2, 90, 150, Razlika);
+                SendCommands("Servo1", ServoPos.ToString());
+                label28.Text = PickupObjects[0].CenterY + " -> " + ServoPos.ToString();
+            }
+
+
         }
 
         public static int ConvertRange(
@@ -438,6 +509,36 @@ namespace IronMan
 
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SendCommands("Servo1", IMC.Servo1Def.ToString());
+            SendCommands("Servo2", IMC.Servo2Def.ToString());
+            SendCommands("Servo3", IMC.Servo3Def.ToString());
+            SendCommands("Servo4", IMC.Servo4Def.ToString());
+            SendCommands("Servo5", IMC.Servo5Def.ToString());
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ShapeDetection_Load(sender, e);
+            //SendCommands("Servo1", "28"); Thread.Sleep(2000);
+            //SendCommands("Servo3", "120"); Thread.Sleep(2000);
+            //SendCommands("Servo2", "101"); Thread.Sleep(2000);
+            //SendCommands("Servo5", "29"); Thread.Sleep(2000);
+
+            //SendCommands("Servo2", "86"); Thread.Sleep(2000);
+            //SendCommands("Servo1", "90"); Thread.Sleep(2000);
+            //SendCommands("Servo2", "122"); Thread.Sleep(2000);
+            //SendCommands("Servo3", "80"); Thread.Sleep(2000);
+            //SendCommands("Servo5", "55"); Thread.Sleep(2000);
+            ////reset
+            //SendCommands("Servo1", "92"); Thread.Sleep(100);
+            //SendCommands("Servo2", "5"); Thread.Sleep(100);
+            //SendCommands("Servo3", "70"); Thread.Sleep(100);
+            //SendCommands("Servo4", "6"); Thread.Sleep(100);
+            //SendCommands("Servo5", "50"); Thread.Sleep(100);
+        }
+
         private void OpenSerialPort()
         {
             if (serial != null)
@@ -468,6 +569,116 @@ namespace IronMan
         {
             if (!serial.IsOpen)
                 serial.Close();
+            SaveAppConfig();
+        }
+
+        private void SaveAppConfig()
+        {
+            IMC.Type1HueMin = Bar1.Value;
+            IMC.Type1HueMax = Bar2.Value;
+            IMC.Type1ValMin = Bar3.Value;
+            IMC.Type1ValMax = Bar4.Value;
+
+            IMC.Type2HueMin = Bar5.Value;
+            IMC.Type2HueMax = Bar6.Value;
+            IMC.Type2ValMin = Bar7.Value;
+            IMC.Type2ValMax = Bar8.Value;
+
+            
+
+            IMC.SizeTresholxMax = int.Parse(tbSizeMax.Text);
+            IMC.SizeTresholdMin = int.Parse(tbSizeMin.Text);
+            IMC.CannyTreshold = int.Parse(tbCannyTreshold.Text);
+            IMC.CannyTresholdLinking = int.Parse(tbCannyTresholdLink.Text);
+
+            IMC.RobotShapeX = int.Parse(tbRobotPosX.Text);
+            IMC.RobotShapeY = int.Parse(tbRobotPosY.Text);
+            IMC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
+            IMC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
+
+            IMC.ComPortIndex = cbSerialPort.SelectedIndex;
+            IMC.BaudRateIndex = cbBaudRate.SelectedIndex;
+
+            IMC.Servo1Min = Servo1Scroll.Minimum;
+            IMC.Servo2Min = Servo2Scroll.Minimum;
+            IMC.Servo3Min = Servo3Scroll.Minimum;
+            IMC.Servo4Min = Servo4Scroll.Minimum;
+            IMC.Servo5Min = Servo5Scroll.Minimum;
+
+            IMC.Servo1Max = Servo1Scroll.Maximum;
+            IMC.Servo2Max = Servo2Scroll.Maximum;
+            IMC.Servo3Max = Servo3Scroll.Maximum;
+            IMC.Servo4Max = Servo4Scroll.Maximum;
+            IMC.Servo5Max = Servo5Scroll.Maximum;
+
+            IMC.Servo1Val = Servo1Scroll.Value;
+            IMC.Servo2Val = Servo2Scroll.Value;
+            IMC.Servo3Val = Servo3Scroll.Value;
+            IMC.Servo4Val = Servo4Scroll.Value;
+            IMC.Servo5Val = Servo5Scroll.Value;
+            IMC.UsePreviousValues = cbSaveValues.Checked;
+
+            SaveToXML<IronManConfig>(IMC);
+        }
+
+        public void SaveToXML<T>(T serializableObject)
+        {
+            if (serializableObject == null) return;
+
+            try
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                XmlSerializer serializer = new XmlSerializer(serializableObject.GetType());
+                //XmlSerializer serializer = XmlSerializer.FromTypes(new[] { typeof(IronManConfig) })[0];
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    serializer.Serialize(stream, serializableObject);
+                    stream.Position = 0;
+                    xmlDocument.Load(stream);
+                    xmlDocument.Save("IronManConfig.xml");
+                    stream.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        public IronManConfig ReadFromXML()
+        {
+            IronManConfig objectOut = new IronManConfig();
+
+            try
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load("IronManConfig.xml");
+                string xmlString = xmlDocument.OuterXml;
+
+                using (StringReader read = new StringReader(xmlString))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(IronManConfig));
+                    using (XmlReader reader = new XmlTextReader(read))
+                    {
+                        objectOut = (IronManConfig)serializer.Deserialize(reader);
+                        reader.Close();
+                    }
+
+                    read.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            return objectOut;
+        }
+
+        private void btnOpenRobotConfig_Click(object sender, EventArgs e)
+        {
+            FrmRobotConfig frm = new FrmRobotConfig(IMC);
+            frm.ShowDialog();
         }
     }
 }
