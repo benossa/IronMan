@@ -13,5 +13,6 @@ namespace IronMan
         public int CenterY { get; set; }
         public double Size { get; set; }
         public float Angle { get; set; }
+        public bool InRange { get; set; }
     }
 }

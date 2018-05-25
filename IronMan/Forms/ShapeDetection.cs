@@ -187,9 +187,10 @@ namespace IronMan
 
         private void DrawWorkingArea()
         {
-
-            SourceImg.DrawPolyline(new Point[] { IMC.WAMinStart, IMC.WAMinMiddle, IMC.WAMinEnd }, true, new Bgr(Color.Yellow), 4);
-
+            SourceImg.DrawPolyline(new Point[] { IMC.WAMinStart, IMC.WAMinMiddle, IMC.WAMinEnd }, false, new Bgr(Color.Yellow), 4);
+            SourceImg.DrawPolyline(new Point[] { IMC.WAMaxStart, IMC.WAMaxMiddle, IMC.WAMaxEnd }, false, new Bgr(Color.Yellow), 4);
+            SourceImg.DrawPolyline(new Point[] { IMC.WAMinStart, IMC.WAMaxStart }, false, new Bgr(Color.Yellow), 4);
+            SourceImg.DrawPolyline(new Point[] { IMC.WAMinEnd, IMC.WAMaxEnd }, false, new Bgr(Color.Yellow), 4);
         }
 
         private void ReadFromImage(object sender, EventArgs e)
@@ -300,6 +301,11 @@ namespace IronMan
 
             PickupObjects = new List<PickupObject>();
 
+            tbRobotPosX.Text = IMC.RobotShapeX.ToString();
+            tbRobotPosY.Text = IMC.RobotShapeY.ToString();
+            tbRobotPosWidth.Text = IMC.RobotShapeWidth.ToString();
+            tbRobotPosHeight.Text = IMC.RobotShapeHeight.ToString();
+
             ReadRobotPosition(null, null);
 
             GetCamerasList();
@@ -402,7 +408,7 @@ namespace IronMan
             lblPortStatus.Text = serial.IsOpen ? "Open" : "Closed";
         }
 
-        private void ReadRobotPosition(object sender, EventArgs e)
+        private void ReadRobotPosition(object sender, KeyEventArgs e)
         {
             IMC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
             IMC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
@@ -426,10 +432,15 @@ namespace IronMan
             }
             else
             {
+                obj.InRange = false;
+
+                if (obj.CenterX > IMC.WAMinStart.X && obj.CenterX < IMC.WAMaxStart.X)
+                    obj.InRange = true;
                 tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
                 tbCoordinates.Text += $"Size: {obj.Size}" + Environment.NewLine;
                 tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
                 tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
+                tbCoordinates.Text += $"In Range: {obj.InRange}" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
             }
         }

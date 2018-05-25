@@ -626,7 +626,7 @@
             this.tbRobotPosWidth.TabIndex = 34;
             this.tbRobotPosWidth.Text = "310";
             this.tbRobotPosWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbRobotPosWidth.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            this.tbRobotPosWidth.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadRobotPosition);
             // 
             // tbRobotPosHeight
             // 
@@ -636,7 +636,7 @@
             this.tbRobotPosHeight.TabIndex = 33;
             this.tbRobotPosHeight.Text = "25";
             this.tbRobotPosHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbRobotPosHeight.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            this.tbRobotPosHeight.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadRobotPosition);
             // 
             // label20
             // 
@@ -666,7 +666,7 @@
             this.tbRobotPosY.TabIndex = 1;
             this.tbRobotPosY.Text = "0";
             this.tbRobotPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbRobotPosY.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            this.tbRobotPosY.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadRobotPosition);
             // 
             // tbRobotPosX
             // 
@@ -676,7 +676,7 @@
             this.tbRobotPosX.TabIndex = 0;
             this.tbRobotPosX.Text = "630";
             this.tbRobotPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbRobotPosX.TextChanged += new System.EventHandler(this.ReadRobotPosition);
+            this.tbRobotPosX.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadRobotPosition);
             // 
             // btnCloseSerial
             // 
