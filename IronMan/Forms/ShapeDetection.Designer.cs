@@ -112,6 +112,21 @@
             this.button5 = new System.Windows.Forms.Button();
             this.btnOpenRobotConfig = new System.Windows.Forms.Button();
             this.cbSaveValues = new System.Windows.Forms.CheckBox();
+            this.tbServoValues = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.tbMatrixY = new System.Windows.Forms.TextBox();
+            this.tbMatrixX = new System.Windows.Forms.TextBox();
+            this.GBProgramming = new System.Windows.Forms.GroupBox();
+            this.tbStartY = new System.Windows.Forms.TextBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.tbStartX = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.tbEndY = new System.Windows.Forms.TextBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.tbEndX = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -131,6 +146,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Bar7)).BeginInit();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.GBProgramming.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -952,7 +968,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(177, 43);
             this.button4.TabIndex = 56;
-            this.button4.Text = "Reset";
+            this.button4.Text = "Reset Robot";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -962,7 +978,7 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(177, 43);
             this.button5.TabIndex = 57;
-            this.button5.Text = "Load Config";
+            this.button5.Text = "Load Config from file";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -972,7 +988,7 @@
             this.btnOpenRobotConfig.Name = "btnOpenRobotConfig";
             this.btnOpenRobotConfig.Size = new System.Drawing.Size(177, 43);
             this.btnOpenRobotConfig.TabIndex = 58;
-            this.btnOpenRobotConfig.Text = "Robot Config";
+            this.btnOpenRobotConfig.Text = "Setup Robot Config";
             this.btnOpenRobotConfig.UseVisualStyleBackColor = true;
             this.btnOpenRobotConfig.Click += new System.EventHandler(this.btnOpenRobotConfig_Click);
             // 
@@ -986,12 +1002,168 @@
             this.cbSaveValues.Text = "Use Previous Values";
             this.cbSaveValues.UseVisualStyleBackColor = true;
             // 
+            // tbServoValues
+            // 
+            this.tbServoValues.Location = new System.Drawing.Point(757, 449);
+            this.tbServoValues.Multiline = true;
+            this.tbServoValues.Name = "tbServoValues";
+            this.tbServoValues.Size = new System.Drawing.Size(187, 265);
+            this.tbServoValues.TabIndex = 60;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(4, 185);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(177, 43);
+            this.button6.TabIndex = 61;
+            this.button6.Text = "Save Servo Values";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label32.Location = new System.Drawing.Point(103, 24);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(21, 17);
+            this.label32.TabIndex = 40;
+            this.label32.Text = "Y:";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label33.Location = new System.Drawing.Point(25, 24);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(21, 17);
+            this.label33.TabIndex = 39;
+            this.label33.Text = "X:";
+            // 
+            // tbMatrixY
+            // 
+            this.tbMatrixY.Location = new System.Drawing.Point(124, 23);
+            this.tbMatrixY.Name = "tbMatrixY";
+            this.tbMatrixY.Size = new System.Drawing.Size(41, 20);
+            this.tbMatrixY.TabIndex = 38;
+            this.tbMatrixY.Text = "0";
+            this.tbMatrixY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbMatrixX
+            // 
+            this.tbMatrixX.Location = new System.Drawing.Point(46, 23);
+            this.tbMatrixX.Name = "tbMatrixX";
+            this.tbMatrixX.Size = new System.Drawing.Size(44, 20);
+            this.tbMatrixX.TabIndex = 37;
+            this.tbMatrixX.Text = "0";
+            this.tbMatrixX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // GBProgramming
+            // 
+            this.GBProgramming.Controls.Add(this.tbEndY);
+            this.GBProgramming.Controls.Add(this.label36);
+            this.GBProgramming.Controls.Add(this.tbEndX);
+            this.GBProgramming.Controls.Add(this.label37);
+            this.GBProgramming.Controls.Add(this.tbStartY);
+            this.GBProgramming.Controls.Add(this.label34);
+            this.GBProgramming.Controls.Add(this.tbStartX);
+            this.GBProgramming.Controls.Add(this.label35);
+            this.GBProgramming.Controls.Add(this.tbMatrixY);
+            this.GBProgramming.Controls.Add(this.button6);
+            this.GBProgramming.Controls.Add(this.label32);
+            this.GBProgramming.Controls.Add(this.tbMatrixX);
+            this.GBProgramming.Controls.Add(this.label33);
+            this.GBProgramming.Location = new System.Drawing.Point(566, 444);
+            this.GBProgramming.Name = "GBProgramming";
+            this.GBProgramming.Size = new System.Drawing.Size(185, 239);
+            this.GBProgramming.TabIndex = 62;
+            this.GBProgramming.TabStop = false;
+            this.GBProgramming.Text = "Programming";
+            // 
+            // tbStartY
+            // 
+            this.tbStartY.Location = new System.Drawing.Point(132, 62);
+            this.tbStartY.Name = "tbStartY";
+            this.tbStartY.Size = new System.Drawing.Size(41, 20);
+            this.tbStartY.TabIndex = 63;
+            this.tbStartY.Text = "0";
+            this.tbStartY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label34.Location = new System.Drawing.Point(111, 63);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(21, 17);
+            this.label34.TabIndex = 65;
+            this.label34.Text = "Y:";
+            // 
+            // tbStartX
+            // 
+            this.tbStartX.Location = new System.Drawing.Point(61, 62);
+            this.tbStartX.Name = "tbStartX";
+            this.tbStartX.Size = new System.Drawing.Size(44, 20);
+            this.tbStartX.TabIndex = 62;
+            this.tbStartX.Text = "0";
+            this.tbStartX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label35.Location = new System.Drawing.Point(12, 63);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(55, 17);
+            this.label35.TabIndex = 64;
+            this.label35.Text = "Start X:";
+            // 
+            // tbEndY
+            // 
+            this.tbEndY.Location = new System.Drawing.Point(132, 90);
+            this.tbEndY.Name = "tbEndY";
+            this.tbEndY.Size = new System.Drawing.Size(41, 20);
+            this.tbEndY.TabIndex = 67;
+            this.tbEndY.Text = "0";
+            this.tbEndY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label36.Location = new System.Drawing.Point(111, 91);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(21, 17);
+            this.label36.TabIndex = 69;
+            this.label36.Text = "Y:";
+            // 
+            // tbEndX
+            // 
+            this.tbEndX.Location = new System.Drawing.Point(61, 91);
+            this.tbEndX.Name = "tbEndX";
+            this.tbEndX.Size = new System.Drawing.Size(44, 20);
+            this.tbEndX.TabIndex = 66;
+            this.tbEndX.Text = "0";
+            this.tbEndX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label37.Location = new System.Drawing.Point(13, 92);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(50, 17);
+            this.label37.TabIndex = 68;
+            this.label37.Text = "End X:";
+            // 
             // ShapeDetection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1342, 722);
+            this.Controls.Add(this.GBProgramming);
+            this.Controls.Add(this.tbServoValues);
             this.Controls.Add(this.cbSaveValues);
             this.Controls.Add(this.btnOpenRobotConfig);
             this.Controls.Add(this.button5);
@@ -1071,6 +1243,8 @@
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            this.GBProgramming.ResumeLayout(false);
+            this.GBProgramming.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1162,5 +1336,20 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button btnOpenRobotConfig;
         private System.Windows.Forms.CheckBox cbSaveValues;
+        private System.Windows.Forms.TextBox tbServoValues;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.TextBox tbMatrixY;
+        private System.Windows.Forms.TextBox tbMatrixX;
+        private System.Windows.Forms.GroupBox GBProgramming;
+        private System.Windows.Forms.TextBox tbEndY;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.TextBox tbEndX;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox tbStartY;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TextBox tbStartX;
+        private System.Windows.Forms.Label label35;
     }
 }

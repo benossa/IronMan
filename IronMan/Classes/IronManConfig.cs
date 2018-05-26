@@ -44,9 +44,13 @@ namespace IronMan
                
         public int ComPortIndex { get; set; }
         public int BaudRateIndex { get; set; }
+        public int CameraSpeedms { get; set; }
+
+        public int MatrixSizeX { get; set; }
+        public int MatrixSizeY { get; set; }
 
         public bool UsePreviousValues { get; set; }
-
+        public bool UseProgramming { get; set; }
         public int Servo1Def { get; set; }
         public int Servo2Def { get; set; }
         public int Servo3Def { get; set; }

@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\IronManConfig.cs" />
-    <Compile Include="Classes\Point.cs" />
+    <Compile Include="Classes\PickupPoint.cs" />
     <Compile Include="Forms\FrmRobotConfig.cs">
       <SubType>Form</SubType>
     </Compile>

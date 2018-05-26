@@ -21,6 +21,8 @@ using System.Threading;
 using System.Xml.Serialization;
 using System.Xml;
 using IronMan.Forms;
+using System.Drawing.Drawing2D;
+using IronMan.Classes;
 
 namespace IronMan
 {
@@ -29,16 +31,30 @@ namespace IronMan
         public ShapeDetection()
         {
             InitializeComponent();
-            IMC = new IronManConfig();
+            IMC = ReadFromXML<IronManConfig>("Config.xml");
+            PickupMatrix = new List<List<PickupPoint>>();
+
+            for (int i = 0; i < IMC.MatrixSizeX; i++)
+            {
+                PickupMatrix.Add(new List<PickupPoint>());
+                for (int j = 0; j < IMC.MatrixSizeY; j++)
+                {
+                    PickupMatrix[i].Add(new PickupPoint(0,0,0,false,i,j,0,0,0,0));
+                }
+            }
+            PickupObjects = new List<PickupObject>();
+            serial = new SerialPort();
         }
         private IronManConfig IMC { get; set; }
-        private Image<Bgr, Byte> SourceImg;
-        private Image<Gray, Byte> Type1Img;
-        private Image<Gray, Byte> Type2Img;
-        public List<PickupObject> PickupObjects;
-        public PickupObject RobotLocation;
-        private bool TimerInUse = false;
-        private System.Timers.Timer timer;
+        private Image<Bgr, Byte> SourceImg { get; set; }
+        private Image<Gray, Byte> Type1Img { get; set; }
+        private Image<Gray, Byte> Type2Img { get; set; }
+        private List<PickupObject> PickupObjects { get; set; }
+        private PickupObject RobotLocation { get; set; }
+        private List<List<PickupPoint>> PickupMatrix { get; set; }
+        private Point[] WorkingAreaPoints { get; set; }
+        private bool TimerInUse { get; set; }
+        private System.Timers.Timer timer { get; set; }
 
         #region Image Settings
         private int ImageWidth = 1280;
@@ -187,10 +203,30 @@ namespace IronMan
 
         private void DrawWorkingArea()
         {
-            SourceImg.DrawPolyline(new Point[] { IMC.WAMinStart, IMC.WAMinMiddle, IMC.WAMinEnd }, false, new Bgr(Color.Yellow), 4);
-            SourceImg.DrawPolyline(new Point[] { IMC.WAMaxStart, IMC.WAMaxMiddle, IMC.WAMaxEnd }, false, new Bgr(Color.Yellow), 4);
-            SourceImg.DrawPolyline(new Point[] { IMC.WAMinStart, IMC.WAMaxStart }, false, new Bgr(Color.Yellow), 4);
-            SourceImg.DrawPolyline(new Point[] { IMC.WAMinEnd, IMC.WAMaxEnd }, false, new Bgr(Color.Yellow), 4);
+            WorkingAreaPoints = new Point[] {
+             IMC.WAMinStart,
+             IMC.WAMinMiddle,
+             IMC.WAMinEnd,
+             IMC.WAMaxEnd,
+             IMC.WAMaxMiddle,
+             IMC.WAMaxStart
+            };
+            SourceImg.DrawPolyline(WorkingAreaPoints, true, new Bgr(Color.Yellow), 4);
+        }
+
+        private bool IsObjectInRange(Point point)
+        {
+            if (WorkingAreaPoints == null) return false;
+            bool isInside = false;
+            for (int i = 0, j = WorkingAreaPoints.Length - 1; i < WorkingAreaPoints.Length; j = i++)
+            {
+                if (((WorkingAreaPoints[i].Y > point.Y) != (WorkingAreaPoints[j].Y > point.Y)) &&
+                (point.X < (WorkingAreaPoints[j].X - WorkingAreaPoints[i].X) * (point.Y - WorkingAreaPoints[i].Y) / (WorkingAreaPoints[j].Y - WorkingAreaPoints[i].Y) + WorkingAreaPoints[i].X))
+                {
+                    isInside = !isInside;
+                }
+            }
+            return isInside;
         }
 
         private void ReadFromImage(object sender, EventArgs e)
@@ -230,8 +266,7 @@ namespace IronMan
 
         private void ShapeDetection_Load(object sender, EventArgs e)
         {
-            IMC = ReadFromXML();
-            
+            PickupMatrix = ReadFromXML<List<List<PickupPoint>>>("ListOfPickupPoints.xml");
             Servo1Scroll.Maximum = IMC.Servo1Max;
             Servo1Scroll.Minimum = IMC.Servo1Min;
             Servo2Scroll.Maximum = IMC.Servo2Max;
@@ -299,7 +334,6 @@ namespace IronMan
             label9.Text = "Min: " + Bar7.Value.ToString();
             label10.Text = "Max: " + Bar8.Value.ToString();
 
-            PickupObjects = new List<PickupObject>();
 
             tbRobotPosX.Text = IMC.RobotShapeX.ToString();
             tbRobotPosY.Text = IMC.RobotShapeY.ToString();
@@ -313,14 +347,15 @@ namespace IronMan
             SetType2Sliders(sender, e);
 
             //timer kao automatski okidac za uzimanje uzorka slike
-            timer = new System.Timers.Timer(800);
+            timer = new System.Timers.Timer(IMC.CameraSpeedms);
             timer.SynchronizingObject = this;
             timer.Elapsed += HandleTimerElapsed;
-
-            cbSerialPort.SelectedIndex = 8;
-            cbBaudRate.SelectedIndex = 9;
+            TimerInUse = false;
+            cbSerialPort.SelectedIndex = IMC.ComPortIndex;
+            cbBaudRate.SelectedIndex = IMC.BaudRateIndex;
             SerialData = "";
-            serial = new SerialPort();
+            GBProgramming.Visible = IMC.UseProgramming;
+            tbServoValues.Visible = IMC.UseProgramming;
         }
 
         public void HandleTimerElapsed(object sender, ElapsedEventArgs e)
@@ -432,10 +467,7 @@ namespace IronMan
             }
             else
             {
-                obj.InRange = false;
-
-                if (obj.CenterX > IMC.WAMinStart.X && obj.CenterX < IMC.WAMaxStart.X)
-                    obj.InRange = true;
+                obj.InRange = IsObjectInRange(new Point(obj.CenterX,obj.CenterY));
                 tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
                 tbCoordinates.Text += $"Size: {obj.Size}" + Environment.NewLine;
                 tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
@@ -445,33 +477,22 @@ namespace IronMan
             }
         }
 
-
-
         private void button3_Click(object sender, EventArgs e)
         {
-            if (PickupObjects.Count == 0) return;
-
-            int ServoPos = ConvertRange(0, ImageWidth, 30, 150, PickupObjects[0].CenterX) + 20;
-            SendCommands("Servo1", ServoPos.ToString());
-            label28.Text = PickupObjects[0].CenterY + " -> " + ServoPos.ToString();
-            return;
-
-            if (PickupObjects[0].CenterX > RobotLocation.CenterX)
+            if (!PickupObjects.Any()) return;
+            PickupObject PO = PickupObjects[0];
+            foreach (var Rows in PickupMatrix)
             {
-                int Razlika = PickupObjects[0].CenterX - RobotLocation.CenterX;
-                ServoPos = ConvertRange(0, ImageWidth / 2, 30, 90, Razlika);
-                SendCommands("Servo1", ServoPos.ToString());
-                label28.Text = PickupObjects[0].CenterY + " -> " + ServoPos.ToString();
+                PickupPoint PP = Rows.Where(X => PO.CenterX >= X.StartX && PO.CenterX <= X.EndX && PO.CenterY >= X.StartY && PO.CenterY <= X.EndY).FirstOrDefault();
+                if (PP != null)
+                {
+                    PP.HasObject = true;
+                    PP.ObjectType = PO.Type;
+                    tbServoValues.Text += $"X: {PP.X}  Y: {PP.Y}  Type: {PP.ObjectType}" + Environment.NewLine;
+                    tbServoValues.Text += $"StartX: {PP.StartX}   EndX: {PP.EndX}" + Environment.NewLine;
+                    tbServoValues.Text += $"S1: {PP.Servo1Val}  S2: {PP.Servo2Val}  S3: {PP.Servo3Val}" + Environment.NewLine;
+                }
             }
-            else
-            {
-                int Razlika = RobotLocation.CenterX - PickupObjects[0].CenterX;
-                ServoPos = ConvertRange(0, ImageWidth / 2, 90, 150, Razlika);
-                SendCommands("Servo1", ServoPos.ToString());
-                label28.Text = PickupObjects[0].CenterY + " -> " + ServoPos.ToString();
-            }
-
-
         }
 
         public static int ConvertRange(
@@ -581,6 +602,7 @@ namespace IronMan
             if (!serial.IsOpen)
                 serial.Close();
             SaveAppConfig();
+
         }
 
         private void SaveAppConfig()
@@ -629,10 +651,11 @@ namespace IronMan
             IMC.Servo5Val = Servo5Scroll.Value;
             IMC.UsePreviousValues = cbSaveValues.Checked;
 
-            SaveToXML<IronManConfig>(IMC);
+            SaveToXML<IronManConfig>(IMC, "Config.xml");
+            SaveToXML<List<List<PickupPoint>>>(PickupMatrix, "ListOfPickupPoints.xml");
         }
 
-        public void SaveToXML<T>(T serializableObject)
+        public void SaveToXML<T>(T serializableObject, string _FileName)
         {
             if (serializableObject == null) return;
 
@@ -646,7 +669,7 @@ namespace IronMan
                     serializer.Serialize(stream, serializableObject);
                     stream.Position = 0;
                     xmlDocument.Load(stream);
-                    xmlDocument.Save("IronManConfig.xml");
+                    xmlDocument.Save(_FileName);
                     stream.Close();
                 }
             }
@@ -656,22 +679,25 @@ namespace IronMan
             }
         }
 
-        public IronManConfig ReadFromXML()
+        public T ReadFromXML<T>(string _FileName)
         {
-            IronManConfig objectOut = new IronManConfig();
+            if (string.IsNullOrEmpty(_FileName)) { return default(T); }
+
+            T objectOut = default(T);
 
             try
             {
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load("IronManConfig.xml");
+                xmlDocument.Load(_FileName);
                 string xmlString = xmlDocument.OuterXml;
 
                 using (StringReader read = new StringReader(xmlString))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(IronManConfig));
+
+                    XmlSerializer serializer = new XmlSerializer(typeof(T));
                     using (XmlReader reader = new XmlTextReader(read))
                     {
-                        objectOut = (IronManConfig)serializer.Deserialize(reader);
+                        objectOut = (T)serializer.Deserialize(reader);
                         reader.Close();
                     }
 
@@ -690,6 +716,21 @@ namespace IronMan
         {
             FrmRobotConfig frm = new FrmRobotConfig(IMC);
             frm.ShowDialog();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            int X = int.Parse(tbMatrixX.Text);
+            int Y = int.Parse(tbMatrixY.Text);
+
+            int StartX = int.Parse(tbStartX.Text);
+            int StartY = int.Parse(tbStartY.Text);
+
+            int EndX = int.Parse(tbEndX.Text);
+            int EndY = int.Parse(tbEndY.Text);
+            PickupMatrix[X][Y] = new PickupPoint(
+                Servo1Scroll.Value, Servo2Scroll.Value, Servo3Scroll.Value, true,
+                   X,Y, StartX, StartY, EndX, EndY);
         }
     }
 }
