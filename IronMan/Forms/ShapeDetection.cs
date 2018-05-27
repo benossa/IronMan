@@ -23,6 +23,7 @@ using System.Xml;
 using IronMan.Forms;
 using System.Drawing.Drawing2D;
 using IronMan.Classes;
+using System.Drawing.Imaging;
 
 namespace IronMan
 {
@@ -141,12 +142,8 @@ namespace IronMan
                     }
                 }
             }
-            //prikazemo oblik gdje je smjestena baza robota
-            SourceImg.Draw(new Rectangle(IMC.RobotShapeX, IMC.RobotShapeY, IMC.RobotShapeWidth, IMC.RobotShapeHeight), new Bgr(Color.Yellow), 4);
+            //prikazemo oblik gdje je smjestena baza robota i radno podrucje
             DrawWorkingArea();
-
-            originalImageBox.Image = SourceImg.ToBitmap();
-            originalImageBox.Refresh();
 
             //prikaz objekata
             Image<Bgr, Byte> RectangleImage = SourceImg.CopyBlank();
@@ -203,6 +200,8 @@ namespace IronMan
 
         private void DrawWorkingArea()
         {
+            Image<Bgr, byte> NewSourceImg = new Image<Bgr, byte>(SourceImg.Bitmap);
+            NewSourceImg.Draw(new Rectangle(IMC.RobotShapeX, IMC.RobotShapeY, IMC.RobotShapeWidth, IMC.RobotShapeHeight), new Bgr(Color.Yellow), 4);
             WorkingAreaPoints = new Point[] {
              IMC.WAMinStart,
              IMC.WAMinMiddle,
@@ -211,7 +210,17 @@ namespace IronMan
              IMC.WAMaxMiddle,
              IMC.WAMaxStart
             };
-            SourceImg.DrawPolyline(WorkingAreaPoints, true, new Bgr(Color.Yellow), 4);
+            NewSourceImg.DrawPolyline(WorkingAreaPoints, true, new Bgr(Color.Yellow), 4);
+
+            foreach (var PP in PickupMatrix)
+            {
+                foreach (PickupPoint PO in PP.Where(X=>X.IsValid))
+                {
+                    NewSourceImg.Draw(new Rectangle(PO.StartX,PO.StartY, PO.EndX - PO.StartX, PO.EndY - PO.StartY), new Bgr(Color.Blue), 2);
+                }
+            }
+            originalImageBox.Image = NewSourceImg.ToBitmap();
+            originalImageBox.Refresh();
         }
 
         private bool IsObjectInRange(Point point)
@@ -260,7 +269,7 @@ namespace IronMan
             DetectRectangles(true);
             DetectRectangles(false);
             watch.Stop();
-            button3_Click(null, null);
+            //button3_Click(null, null);
             label2.Text = (String.Format("Rectangles - {0} ms; ", watch.ElapsedMilliseconds));
         }
 
@@ -339,6 +348,10 @@ namespace IronMan
             tbRobotPosY.Text = IMC.RobotShapeY.ToString();
             tbRobotPosWidth.Text = IMC.RobotShapeWidth.ToString();
             tbRobotPosHeight.Text = IMC.RobotShapeHeight.ToString();
+            tbSizeMax.Text = IMC.SizeTresholxMax.ToString();
+            tbSizeMin.Text = IMC.SizeTresholdMin.ToString();
+            tbCannyTreshold.Text = IMC.CannyTreshold.ToString();
+            tbCannyTresholdLink.Text = IMC.CannyTresholdLinking.ToString();
 
             ReadRobotPosition(null, null);
 
@@ -480,19 +493,31 @@ namespace IronMan
         private void button3_Click(object sender, EventArgs e)
         {
             if (!PickupObjects.Any()) return;
-            PickupObject PO = PickupObjects[0];
-            foreach (var Rows in PickupMatrix)
+            tbServoValues.Clear();
+
+            foreach (PickupObject PO in PickupObjects)
             {
-                PickupPoint PP = Rows.Where(X => PO.CenterX >= X.StartX && PO.CenterX <= X.EndX && PO.CenterY >= X.StartY && PO.CenterY <= X.EndY).FirstOrDefault();
-                if (PP != null)
+                foreach (var Rows in PickupMatrix)
                 {
-                    PP.HasObject = true;
-                    PP.ObjectType = PO.Type;
-                    tbServoValues.Text += $"X: {PP.X}  Y: {PP.Y}  Type: {PP.ObjectType}" + Environment.NewLine;
-                    tbServoValues.Text += $"StartX: {PP.StartX}   EndX: {PP.EndX}" + Environment.NewLine;
-                    tbServoValues.Text += $"S1: {PP.Servo1Val}  S2: {PP.Servo2Val}  S3: {PP.Servo3Val}" + Environment.NewLine;
+                    PickupPoint PP = Rows.Where(X => PO.CenterX >= X.StartX && PO.CenterX <= X.EndX && PO.CenterY >= X.StartY && PO.CenterY <= X.EndY).FirstOrDefault();
+                    if (PP != null && PO.InRange)
+                    {
+                        if (PP.Servo1Val == 0 || PP.Servo2Val == 0 || PP.Servo3Val == 0)
+                            continue;
+                        PP.HasObject = true;
+                        PP.ObjectType = PO.Type;
+                        tbServoValues.Text += $"X: {PP.X}  Y: {PP.Y}  Type: {PP.ObjectType}" + Environment.NewLine;
+                        tbServoValues.Text += $"StartX: {PP.StartX}   EndX: {PP.EndX}" + Environment.NewLine;
+                        tbServoValues.Text += $"S1: {PP.Servo1Val}  S2: {PP.Servo2Val}  S3: {PP.Servo3Val}" + Environment.NewLine;
+                        SendCommands("Servo1", PP.Servo1Val.ToString()); Thread.Sleep(300);
+                        SendCommands("Servo2", PP.Servo2Val.ToString()); Thread.Sleep(300);
+                        SendCommands("Servo3", PP.Servo3Val.ToString()); Thread.Sleep(300);
+                        SendCommands("Servo5", "53"); Thread.Sleep(300);
+                        GoToDropoffPos(PP.ObjectType);
+                    }
                 }
             }
+            GoToResetPos();
         }
 
         public static int ConvertRange(
@@ -543,11 +568,44 @@ namespace IronMan
 
         private void button4_Click(object sender, EventArgs e)
         {
-            SendCommands("Servo1", IMC.Servo1Def.ToString());
-            SendCommands("Servo2", IMC.Servo2Def.ToString());
-            SendCommands("Servo3", IMC.Servo3Def.ToString());
-            SendCommands("Servo4", IMC.Servo4Def.ToString());
-            SendCommands("Servo5", IMC.Servo5Def.ToString());
+            GoToResetPos();
+        }
+
+        private void GoToResetPos()
+        {
+            SendCommands("Servo3", IMC.Servo3Def.ToString()); Thread.Sleep(200);
+            SendCommands("Servo2", IMC.Servo2Def.ToString()); Thread.Sleep(200);
+            SendCommands("Servo1", IMC.Servo1Def.ToString()); Thread.Sleep(200);
+            SendCommands("Servo4", IMC.Servo4Def.ToString()); Thread.Sleep(200);
+            SendCommands("Servo5", IMC.Servo5Def.ToString()); Thread.Sleep(200);
+
+            Servo1Scroll.Value = IMC.Servo1Def;
+            Servo2Scroll.Value = IMC.Servo2Def;
+            Servo3Scroll.Value = IMC.Servo3Def;
+            Servo4Scroll.Value = IMC.Servo4Def;
+            Servo5Scroll.Value = IMC.Servo5Def;
+        }
+
+        private void GoToDropoffPos(string Type)
+        {
+            if(Type == "Type 1")
+            {
+                SendCommands("Servo2", "60"); Thread.Sleep(200);
+                SendCommands("Servo3", "67"); Thread.Sleep(200);
+                SendCommands("Servo1", "170"); Thread.Sleep(200);
+                SendCommands("Servo5", "87"); Thread.Sleep(200);
+
+                Servo1Scroll.Value = IMC.Servo1Def;
+                Servo2Scroll.Value = IMC.Servo2Def;
+                Servo3Scroll.Value = IMC.Servo3Def;
+                Servo4Scroll.Value = IMC.Servo4Def;
+                Servo5Scroll.Value = IMC.Servo5Def;
+            }
+            else
+            {
+
+            }
+
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -722,15 +780,55 @@ namespace IronMan
         {
             int X = int.Parse(tbMatrixX.Text);
             int Y = int.Parse(tbMatrixY.Text);
+            PickupPoint PO = PickupMatrix[X][Y];
+            if(!cbIgnoreXY.Checked)
+            {
+                PO.StartX = int.Parse(tbStartX.Text);
+                PO.StartY = int.Parse(tbStartY.Text);
+                PO.EndX = int.Parse(tbEndX.Text);
+                PO.EndY = int.Parse(tbEndY.Text);
+            }
+            if(string.IsNullOrWhiteSpace(tbS1Val.Text) || string.IsNullOrWhiteSpace(tbS2Val.Text) || string.IsNullOrWhiteSpace(tbS3Val.Text))
+            {
+                PO.Servo1Val = Servo1Scroll.Value;
+                PO.Servo2Val = Servo2Scroll.Value;
+                PO.Servo3Val = Servo3Scroll.Value;
+            }
+            else
+            {
+                PO.Servo1Val = int.Parse(tbS1Val.Text);
+                PO.Servo2Val = int.Parse(tbS2Val.Text);
+                PO.Servo3Val = int.Parse(tbS3Val.Text);
+            }
 
-            int StartX = int.Parse(tbStartX.Text);
-            int StartY = int.Parse(tbStartY.Text);
+            PO.IsValid = true;
+        }
 
-            int EndX = int.Parse(tbEndX.Text);
-            int EndY = int.Parse(tbEndY.Text);
-            PickupMatrix[X][Y] = new PickupPoint(
-                Servo1Scroll.Value, Servo2Scroll.Value, Servo3Scroll.Value, true,
-                   X,Y, StartX, StartY, EndX, EndY);
+        private void originalImageBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (originalImageBox.Image == null) return;
+            originalImageBox.Image.Save("SourceImg.jpeg", ImageFormat.Jpeg);
+            MessageBox.Show("Image Saved");
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        { }
+
+        private void btnSearchMatrix_Click(object sender, EventArgs e)
+        {
+            PickupPoint PP = PickupMatrix[int.Parse(tbMatrixX.Text)][int.Parse(tbMatrixY.Text)];
+            tbS1Val.Text = PP.Servo1Val.ToString();
+            tbS2Val.Text = PP.Servo2Val.ToString();
+            tbS3Val.Text = PP.Servo3Val.ToString();
+            tbEndX.Text = PP.EndX.ToString();
+            tbEndY.Text = PP.EndY.ToString();
+            tbStartX.Text = PP.StartX.ToString();
+            tbStartY.Text = PP.StartY.ToString();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
