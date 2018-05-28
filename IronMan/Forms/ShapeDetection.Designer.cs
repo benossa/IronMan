@@ -70,6 +70,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.cbCameras = new System.Windows.Forms.ComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.button8 = new System.Windows.Forms.Button();
             this.btnTimer = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
@@ -119,25 +120,24 @@
             this.tbMatrixY = new System.Windows.Forms.TextBox();
             this.tbMatrixX = new System.Windows.Forms.TextBox();
             this.GBProgramming = new System.Windows.Forms.GroupBox();
-            this.tbEndY = new System.Windows.Forms.TextBox();
-            this.label36 = new System.Windows.Forms.Label();
-            this.tbEndX = new System.Windows.Forms.TextBox();
-            this.label37 = new System.Windows.Forms.Label();
-            this.tbStartY = new System.Windows.Forms.TextBox();
-            this.label34 = new System.Windows.Forms.Label();
-            this.tbStartX = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.cbIgnoreXY = new System.Windows.Forms.CheckBox();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.label38 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
-            this.btnSearchMatrix = new System.Windows.Forms.Button();
-            this.tbS1Val = new System.Windows.Forms.TextBox();
-            this.tbS2Val = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.cbIgnoreXY = new System.Windows.Forms.CheckBox();
+            this.tbStartX = new System.Windows.Forms.TextBox();
+            this.tbEndY = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.tbStartY = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.tbEndX = new System.Windows.Forms.TextBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.tbS3Val = new System.Windows.Forms.TextBox();
-            this.button8 = new System.Windows.Forms.Button();
+            this.btnSearchMatrix = new System.Windows.Forms.Button();
+            this.tbS2Val = new System.Windows.Forms.TextBox();
+            this.tbS1Val = new System.Windows.Forms.TextBox();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -158,8 +158,8 @@
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.GBProgramming.SuspendLayout();
-            this.groupBox9.SuspendLayout();
             this.groupBox10.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -574,6 +574,16 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Source";
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(234, 15);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(108, 27);
+            this.button8.TabIndex = 31;
+            this.button8.Text = "Camera Settings";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
             // btnTimer
             // 
             this.btnTimer.Location = new System.Drawing.Point(725, 15);
@@ -834,7 +844,6 @@
             this.Servo3Scroll.Minimum = 1;
             this.Servo3Scroll.Name = "Servo3Scroll";
             this.Servo3Scroll.Size = new System.Drawing.Size(177, 20);
-            this.Servo3Scroll.SmallChange = 2;
             this.Servo3Scroll.TabIndex = 44;
             this.Servo3Scroll.Value = 37;
             this.Servo3Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo3Scroll_MouseCaptureChanged);
@@ -855,7 +864,6 @@
             this.Servo2Scroll.Minimum = 1;
             this.Servo2Scroll.Name = "Servo2Scroll";
             this.Servo2Scroll.Size = new System.Drawing.Size(177, 20);
-            this.Servo2Scroll.SmallChange = 2;
             this.Servo2Scroll.TabIndex = 42;
             this.Servo2Scroll.Value = 37;
             this.Servo2Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo2Scroll_MouseCaptureChanged);
@@ -876,7 +884,6 @@
             this.Servo1Scroll.Minimum = 3;
             this.Servo1Scroll.Name = "Servo1Scroll";
             this.Servo1Scroll.Size = new System.Drawing.Size(177, 20);
-            this.Servo1Scroll.SmallChange = 2;
             this.Servo1Scroll.TabIndex = 40;
             this.Servo1Scroll.Value = 92;
             this.Servo1Scroll.MouseCaptureChanged += new System.EventHandler(this.Servo1Scroll_MouseCaptureChanged);
@@ -1010,6 +1017,8 @@
             // cbSaveValues
             // 
             this.cbSaveValues.AutoSize = true;
+            this.cbSaveValues.Checked = true;
+            this.cbSaveValues.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSaveValues.Location = new System.Drawing.Point(1170, 447);
             this.cbSaveValues.Name = "cbSaveValues";
             this.cbSaveValues.Size = new System.Drawing.Size(124, 17);
@@ -1085,111 +1094,6 @@
             this.GBProgramming.TabStop = false;
             this.GBProgramming.Text = "Programming";
             // 
-            // tbEndY
-            // 
-            this.tbEndY.Location = new System.Drawing.Point(112, 59);
-            this.tbEndY.Name = "tbEndY";
-            this.tbEndY.Size = new System.Drawing.Size(41, 20);
-            this.tbEndY.TabIndex = 67;
-            this.tbEndY.Text = "0";
-            this.tbEndY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label36.Location = new System.Drawing.Point(91, 60);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(21, 17);
-            this.label36.TabIndex = 69;
-            this.label36.Text = "Y:";
-            // 
-            // tbEndX
-            // 
-            this.tbEndX.Location = new System.Drawing.Point(112, 33);
-            this.tbEndX.Name = "tbEndX";
-            this.tbEndX.Size = new System.Drawing.Size(41, 20);
-            this.tbEndX.TabIndex = 66;
-            this.tbEndX.Text = "0";
-            this.tbEndX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label37.Location = new System.Drawing.Point(92, 34);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(21, 17);
-            this.label37.TabIndex = 68;
-            this.label37.Text = "X:";
-            // 
-            // tbStartY
-            // 
-            this.tbStartY.Location = new System.Drawing.Point(36, 56);
-            this.tbStartY.Name = "tbStartY";
-            this.tbStartY.Size = new System.Drawing.Size(44, 20);
-            this.tbStartY.TabIndex = 63;
-            this.tbStartY.Text = "0";
-            this.tbStartY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label34.Location = new System.Drawing.Point(16, 57);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(21, 17);
-            this.label34.TabIndex = 65;
-            this.label34.Text = "Y:";
-            // 
-            // tbStartX
-            // 
-            this.tbStartX.Location = new System.Drawing.Point(36, 33);
-            this.tbStartX.Name = "tbStartX";
-            this.tbStartX.Size = new System.Drawing.Size(44, 20);
-            this.tbStartX.TabIndex = 62;
-            this.tbStartX.Text = "0";
-            this.tbStartX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label35.Location = new System.Drawing.Point(17, 34);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(21, 17);
-            this.label35.TabIndex = 64;
-            this.label35.Text = "X:";
-            // 
-            // cbIgnoreXY
-            // 
-            this.cbIgnoreXY.AutoSize = true;
-            this.cbIgnoreXY.Checked = true;
-            this.cbIgnoreXY.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbIgnoreXY.Location = new System.Drawing.Point(39, 79);
-            this.cbIgnoreXY.Name = "cbIgnoreXY";
-            this.cbIgnoreXY.Size = new System.Drawing.Size(110, 17);
-            this.cbIgnoreXY.TabIndex = 63;
-            this.cbIgnoreXY.Text = "Ignore X,Y values";
-            this.cbIgnoreXY.UseVisualStyleBackColor = true;
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.tbS3Val);
-            this.groupBox9.Controls.Add(this.btnSearchMatrix);
-            this.groupBox9.Controls.Add(this.tbMatrixX);
-            this.groupBox9.Controls.Add(this.tbS2Val);
-            this.groupBox9.Controls.Add(this.label33);
-            this.groupBox9.Controls.Add(this.tbS1Val);
-            this.groupBox9.Controls.Add(this.label32);
-            this.groupBox9.Controls.Add(this.tbMatrixY);
-            this.groupBox9.Location = new System.Drawing.Point(6, 17);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(173, 88);
-            this.groupBox9.TabIndex = 70;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Matrix Index";
-            // 
             // groupBox10
             // 
             this.groupBox10.Controls.Add(this.label39);
@@ -1210,16 +1114,6 @@
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Pixel range";
             // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label38.Location = new System.Drawing.Point(39, 14);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(38, 17);
-            this.label38.TabIndex = 70;
-            this.label38.Text = "Start";
-            // 
             // label39
             // 
             this.label39.AutoSize = true;
@@ -1230,15 +1124,128 @@
             this.label39.TabIndex = 71;
             this.label39.Text = "End";
             // 
-            // button7
+            // label38
             // 
-            this.button7.Location = new System.Drawing.Point(1155, 470);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(177, 43);
-            this.button7.TabIndex = 63;
-            this.button7.Text = "Test";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label38.Location = new System.Drawing.Point(39, 14);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(38, 17);
+            this.label38.TabIndex = 70;
+            this.label38.Text = "Start";
+            // 
+            // cbIgnoreXY
+            // 
+            this.cbIgnoreXY.AutoSize = true;
+            this.cbIgnoreXY.Checked = true;
+            this.cbIgnoreXY.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbIgnoreXY.Location = new System.Drawing.Point(39, 79);
+            this.cbIgnoreXY.Name = "cbIgnoreXY";
+            this.cbIgnoreXY.Size = new System.Drawing.Size(110, 17);
+            this.cbIgnoreXY.TabIndex = 63;
+            this.cbIgnoreXY.Text = "Ignore X,Y values";
+            this.cbIgnoreXY.UseVisualStyleBackColor = true;
+            // 
+            // tbStartX
+            // 
+            this.tbStartX.Location = new System.Drawing.Point(36, 33);
+            this.tbStartX.Name = "tbStartX";
+            this.tbStartX.Size = new System.Drawing.Size(44, 20);
+            this.tbStartX.TabIndex = 62;
+            this.tbStartX.Text = "0";
+            this.tbStartX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbEndY
+            // 
+            this.tbEndY.Location = new System.Drawing.Point(112, 59);
+            this.tbEndY.Name = "tbEndY";
+            this.tbEndY.Size = new System.Drawing.Size(41, 20);
+            this.tbEndY.TabIndex = 67;
+            this.tbEndY.Text = "0";
+            this.tbEndY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label35.Location = new System.Drawing.Point(17, 34);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(21, 17);
+            this.label35.TabIndex = 64;
+            this.label35.Text = "X:";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label36.Location = new System.Drawing.Point(91, 60);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(21, 17);
+            this.label36.TabIndex = 69;
+            this.label36.Text = "Y:";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label34.Location = new System.Drawing.Point(16, 57);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(21, 17);
+            this.label34.TabIndex = 65;
+            this.label34.Text = "Y:";
+            // 
+            // tbStartY
+            // 
+            this.tbStartY.Location = new System.Drawing.Point(36, 56);
+            this.tbStartY.Name = "tbStartY";
+            this.tbStartY.Size = new System.Drawing.Size(44, 20);
+            this.tbStartY.TabIndex = 63;
+            this.tbStartY.Text = "0";
+            this.tbStartY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label37.Location = new System.Drawing.Point(92, 34);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(21, 17);
+            this.label37.TabIndex = 68;
+            this.label37.Text = "X:";
+            // 
+            // tbEndX
+            // 
+            this.tbEndX.Location = new System.Drawing.Point(112, 33);
+            this.tbEndX.Name = "tbEndX";
+            this.tbEndX.Size = new System.Drawing.Size(41, 20);
+            this.tbEndX.TabIndex = 66;
+            this.tbEndX.Text = "0";
+            this.tbEndX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.tbS3Val);
+            this.groupBox9.Controls.Add(this.btnSearchMatrix);
+            this.groupBox9.Controls.Add(this.tbMatrixX);
+            this.groupBox9.Controls.Add(this.tbS2Val);
+            this.groupBox9.Controls.Add(this.label33);
+            this.groupBox9.Controls.Add(this.tbS1Val);
+            this.groupBox9.Controls.Add(this.label32);
+            this.groupBox9.Controls.Add(this.tbMatrixY);
+            this.groupBox9.Location = new System.Drawing.Point(6, 17);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(173, 88);
+            this.groupBox9.TabIndex = 70;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Matrix Index";
+            // 
+            // tbS3Val
+            // 
+            this.tbS3Val.Location = new System.Drawing.Point(118, 59);
+            this.tbS3Val.Name = "tbS3Val";
+            this.tbS3Val.Size = new System.Drawing.Size(37, 20);
+            this.tbS3Val.TabIndex = 74;
+            this.tbS3Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnSearchMatrix
             // 
@@ -1250,14 +1257,6 @@
             this.btnSearchMatrix.UseVisualStyleBackColor = true;
             this.btnSearchMatrix.Click += new System.EventHandler(this.btnSearchMatrix_Click);
             // 
-            // tbS1Val
-            // 
-            this.tbS1Val.Location = new System.Drawing.Point(32, 59);
-            this.tbS1Val.Name = "tbS1Val";
-            this.tbS1Val.Size = new System.Drawing.Size(37, 20);
-            this.tbS1Val.TabIndex = 72;
-            this.tbS1Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // tbS2Val
             // 
             this.tbS2Val.Location = new System.Drawing.Point(75, 59);
@@ -1266,23 +1265,23 @@
             this.tbS2Val.TabIndex = 73;
             this.tbS2Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // tbS3Val
+            // tbS1Val
             // 
-            this.tbS3Val.Location = new System.Drawing.Point(118, 59);
-            this.tbS3Val.Name = "tbS3Val";
-            this.tbS3Val.Size = new System.Drawing.Size(37, 20);
-            this.tbS3Val.TabIndex = 74;
-            this.tbS3Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbS1Val.Location = new System.Drawing.Point(32, 59);
+            this.tbS1Val.Name = "tbS1Val";
+            this.tbS1Val.Size = new System.Drawing.Size(37, 20);
+            this.tbS1Val.TabIndex = 72;
+            this.tbS1Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // button8
+            // button7
             // 
-            this.button8.Location = new System.Drawing.Point(234, 15);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(108, 27);
-            this.button8.TabIndex = 31;
-            this.button8.Text = "Camera Settings";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.button7.Location = new System.Drawing.Point(1155, 470);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(177, 43);
+            this.button7.TabIndex = 63;
+            this.button7.Text = "Test";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // ShapeDetection
             // 
@@ -1373,10 +1372,10 @@
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.GBProgramming.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

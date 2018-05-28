@@ -486,7 +486,9 @@ namespace IronMan
                 tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
                 tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
                 tbCoordinates.Text += $"In Range: {obj.InRange}" + Environment.NewLine;
+                tbCoordinates.Text += $"Servo Value: {MeasureAngle(obj)}" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
+                
             }
         }
 
@@ -499,6 +501,8 @@ namespace IronMan
             {
                 foreach (var Rows in PickupMatrix)
                 {
+                    SendCommands("Servo1", MeasureAngle(PO)); Thread.Sleep(300);
+                    continue;
                     PickupPoint PP = Rows.Where(X => PO.CenterX >= X.StartX && PO.CenterX <= X.EndX && PO.CenterY >= X.StartY && PO.CenterY <= X.EndY).FirstOrDefault();
                     if (PP != null && PO.InRange)
                     {
@@ -509,30 +513,29 @@ namespace IronMan
                         tbServoValues.Text += $"X: {PP.X}  Y: {PP.Y}  Type: {PP.ObjectType}" + Environment.NewLine;
                         tbServoValues.Text += $"StartX: {PP.StartX}   EndX: {PP.EndX}" + Environment.NewLine;
                         tbServoValues.Text += $"S1: {PP.Servo1Val}  S2: {PP.Servo2Val}  S3: {PP.Servo3Val}" + Environment.NewLine;
-                        SendCommands("Servo1", PP.Servo1Val.ToString()); Thread.Sleep(300);
-                        SendCommands("Servo2", PP.Servo2Val.ToString()); Thread.Sleep(300);
+                        SendCommands("Servo5", "87"); Thread.Sleep(300);
+                        SendCommands("Servo1", MeasureAngle(PO)); Thread.Sleep(300);
                         SendCommands("Servo3", PP.Servo3Val.ToString()); Thread.Sleep(300);
-                        SendCommands("Servo5", "53"); Thread.Sleep(300);
+                        SendCommands("Servo2", PP.Servo2Val.ToString()); Thread.Sleep(300);
+                        SendCommands("Servo5", "42"); Thread.Sleep(300);
                         GoToDropoffPos(PP.ObjectType);
                     }
                 }
             }
-            GoToResetPos();
+            //GoToResetPos();
         }
 
-        public static int ConvertRange(
-        int input_start, int input_end, // Izvorni raspon
-        int output_start, int output_end, // Ciljani raspon
-        int value) // vrijednost za pretvoriti
+        private string MeasureAngle(PickupObject PO)
         {
-            double slope = (double)(output_end - output_start) / (input_end - input_start);
-            return (int)(output_start + (slope * (value - input_start)));
-        }
-
-        public float MapValue(float a0, float a1, float b0, float b1, float a)
-        {
-            return b0 + (b1 - b0) * ((a - a0) / (a1 - a0));
-            //low2 + (value - low1) * (high2 - low2) / (high1 - low1)
+            //X1 je robot X2 je objekat
+            //Korijen iz (x2-x1)^2 + (Y2-Y1)^2
+            double SideC = (PO.CenterX > RobotLocation.CenterX) ? PO.CenterX - RobotLocation.CenterX : RobotLocation.CenterX - PO.CenterX;
+            double SideB = Math.Sqrt(Math.Pow(PO.CenterX - RobotLocation.CenterX,2) + Math.Pow(PO.CenterY - RobotLocation.CenterY,2));
+            double SideA = Math.Sqrt(Math.Pow(SideB, 2) - Math.Pow(SideC, 2));
+            double Angle = Math.Acos(SideA / SideB);
+            Angle = Angle * 180 / 3.14;
+            Angle = PO.CenterX > RobotLocation.CenterX ? IMC.Servo1Def + Angle : IMC.Servo1Def - Angle;
+            return Math.Round(Angle).ToString();
         }
 
         private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
@@ -573,11 +576,11 @@ namespace IronMan
 
         private void GoToResetPos()
         {
-            SendCommands("Servo3", IMC.Servo3Def.ToString()); Thread.Sleep(200);
-            SendCommands("Servo2", IMC.Servo2Def.ToString()); Thread.Sleep(200);
-            SendCommands("Servo1", IMC.Servo1Def.ToString()); Thread.Sleep(200);
-            SendCommands("Servo4", IMC.Servo4Def.ToString()); Thread.Sleep(200);
-            SendCommands("Servo5", IMC.Servo5Def.ToString()); Thread.Sleep(200);
+            SendCommands("Servo3", IMC.Servo3Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo2", IMC.Servo2Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo1", IMC.Servo1Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo4", IMC.Servo4Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo5", IMC.Servo5Def.ToString()); Thread.Sleep(500);
 
             Servo1Scroll.Value = IMC.Servo1Def;
             Servo2Scroll.Value = IMC.Servo2Def;
@@ -590,10 +593,10 @@ namespace IronMan
         {
             if(Type == "Type 1")
             {
-                SendCommands("Servo2", "60"); Thread.Sleep(200);
-                SendCommands("Servo3", "67"); Thread.Sleep(200);
-                SendCommands("Servo1", "170"); Thread.Sleep(200);
-                SendCommands("Servo5", "87"); Thread.Sleep(200);
+                SendCommands("Servo2", "60"); Thread.Sleep(500);
+                SendCommands("Servo3", "67"); Thread.Sleep(500);
+                SendCommands("Servo1", "170"); Thread.Sleep(500);
+                SendCommands("Servo5", "87"); Thread.Sleep(500);
 
                 Servo1Scroll.Value = IMC.Servo1Def;
                 Servo2Scroll.Value = IMC.Servo2Def;
