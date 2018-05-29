@@ -1,4 +1,4 @@
-﻿namespace IronMan.Forms
+﻿namespace IRIS.Forms
 {
     partial class FrmRobotConfig
     {

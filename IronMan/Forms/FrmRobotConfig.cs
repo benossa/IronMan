@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace IronMan.Forms
+namespace IRIS.Forms
 {
     public partial class FrmRobotConfig : Form
     {
-        public IronManConfig IMC { get; set; }
-        public FrmRobotConfig(IronManConfig _IMC)
+        public IRISConfig IMC { get; set; }
+        public FrmRobotConfig(IRISConfig _IMC)
         {
             InitializeComponent();
             IMC = _IMC;

@@ -1,4 +1,4 @@
-﻿namespace IronMan
+﻿namespace IRIS
 {
     partial class Main
     {

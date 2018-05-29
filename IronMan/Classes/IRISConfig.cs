@@ -1,4 +1,4 @@
-﻿//using IronMan.Classes;
+﻿//using IRIS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IronMan
+namespace IRIS
 {
-    public class IronManConfig
+    public class IRISConfig
     {
         public int Type1HueMin { get; set; }
         public int Type1HueMax { get; set; }
@@ -18,6 +18,11 @@ namespace IronMan
         public int Type2HueMax { get; set; }
         public int Type2ValMin { get; set; }
         public int Type2ValMax { get; set; }
+
+        public double PixelsPerCM { get; set; }
+        public double BaseLengthMM { get; set; }
+        public double BaseHeightMM { get; set; }
+        public double ArmLengthMM { get; set; }
 
         public int CameraBrightness { get; set; }
         public int CameraContrast { get; set; }
@@ -74,5 +79,11 @@ namespace IronMan
         public int Servo3Val { get; set; }
         public int Servo4Val { get; set; }
         public int Servo5Val { get; set; }
+
+        public int Servo1Zero { get; set; }
+        public int Servo2Zero { get; set; }
+        public int Servo3Zero { get; set; }
+        public int Servo4Zero { get; set; }
+        public int Servo5Zero { get; set; }
     }
 }

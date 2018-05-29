@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IronMan.Classes
+namespace IRIS.Classes
 {
     public class PickupPoint
     {
@@ -24,6 +24,16 @@ namespace IronMan.Classes
         public PickupPoint()
         {
 
+        }
+        public PickupPoint(int Servo1)
+        {
+            Servo1Val = Servo1;
+        }
+        public PickupPoint(int Servo1, int Servo2, int Servo3)
+        {
+            Servo1Val = Servo1;
+            Servo2Val = Servo2;
+            Servo3Val = Servo3;
         }
         public PickupPoint(int Servo1, int Servo2, int Servo3, bool _IsValid, int _X, int _Y, int _StartX, int _StartY, int _EndX, int _EndY)
         {

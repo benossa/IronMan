@@ -2,43 +2,38 @@
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
-using Emgu.CV.UI;
 using DirectShowLib;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
 using System.Threading;
 using System.Xml.Serialization;
 using System.Xml;
-using IronMan.Forms;
-using System.Drawing.Drawing2D;
-using IronMan.Classes;
+using IRIS.Forms;
+using IRIS.Classes;
 using System.Drawing.Imaging;
 
-namespace IronMan
+namespace IRIS
 {
     public partial class ShapeDetection : Form
     {
         public ShapeDetection()
         {
             InitializeComponent();
-            IMC = ReadFromXML<IronManConfig>("Config.xml");
+            IRC = ReadFromXML<IRISConfig>("Config.xml");
             PickupMatrix = new List<List<PickupPoint>>();
 
-            for (int i = 0; i < IMC.MatrixSizeX; i++)
+            for (int i = 0; i < IRC.MatrixSizeX; i++)
             {
                 PickupMatrix.Add(new List<PickupPoint>());
-                for (int j = 0; j < IMC.MatrixSizeY; j++)
+                for (int j = 0; j < IRC.MatrixSizeY; j++)
                 {
                     PickupMatrix[i].Add(new PickupPoint(0,0,0,false,i,j,0,0,0,0));
                 }
@@ -46,7 +41,7 @@ namespace IronMan
             PickupObjects = new List<PickupObject>();
             serial = new SerialPort();
         }
-        private IronManConfig IMC { get; set; }
+        private IRISConfig IRC { get; set; }
         private Image<Bgr, Byte> SourceImg { get; set; }
         private Image<Gray, Byte> Type1Img { get; set; }
         private Image<Gray, Byte> Type2Img { get; set; }
@@ -171,14 +166,14 @@ namespace IronMan
                     if (Type1)
                     {
                         //filtriramo zeljenu boju
-                        Huefilter = channels[0].InRange(new Gray(IMC.Type1HueMin), new Gray(IMC.Type1HueMax));
+                        Huefilter = channels[0].InRange(new Gray(IRC.Type1HueMin), new Gray(IRC.Type1HueMax));
                         //filtriramo ostale boje
-                        Valfilter = channels[2].InRange(new Gray(IMC.Type1ValMin), new Gray(IMC.Type1ValMax));
+                        Valfilter = channels[2].InRange(new Gray(IRC.Type1ValMin), new Gray(IRC.Type1ValMax));
                     }
                     else
                     {
-                        Huefilter = channels[0].InRange(new Gray(IMC.Type2HueMin), new Gray(IMC.Type2HueMax));
-                        Valfilter = channels[2].InRange(new Gray(IMC.Type2ValMin), new Gray(IMC.Type2ValMax));
+                        Huefilter = channels[0].InRange(new Gray(IRC.Type2HueMin), new Gray(IRC.Type2HueMax));
+                        Valfilter = channels[2].InRange(new Gray(IRC.Type2ValMin), new Gray(IRC.Type2ValMax));
                     }
 
                     // 3. vratimo spojenu sliku
@@ -201,14 +196,14 @@ namespace IronMan
         private void DrawWorkingArea()
         {
             Image<Bgr, byte> NewSourceImg = new Image<Bgr, byte>(SourceImg.Bitmap);
-            NewSourceImg.Draw(new Rectangle(IMC.RobotShapeX, IMC.RobotShapeY, IMC.RobotShapeWidth, IMC.RobotShapeHeight), new Bgr(Color.Yellow), 4);
+            NewSourceImg.Draw(new Rectangle(IRC.RobotShapeX, IRC.RobotShapeY, IRC.RobotShapeWidth, IRC.RobotShapeHeight), new Bgr(Color.Yellow), 4);
             WorkingAreaPoints = new Point[] {
-             IMC.WAMinStart,
-             IMC.WAMinMiddle,
-             IMC.WAMinEnd,
-             IMC.WAMaxEnd,
-             IMC.WAMaxMiddle,
-             IMC.WAMaxStart
+             IRC.WAMinStart,
+             IRC.WAMinMiddle,
+             IRC.WAMinEnd,
+             IRC.WAMaxEnd,
+             IRC.WAMaxMiddle,
+             IRC.WAMaxStart
             };
             NewSourceImg.DrawPolyline(WorkingAreaPoints, true, new Bgr(Color.Yellow), 4);
 
@@ -276,55 +271,55 @@ namespace IronMan
         private void ShapeDetection_Load(object sender, EventArgs e)
         {
             PickupMatrix = ReadFromXML<List<List<PickupPoint>>>("ListOfPickupPoints.xml");
-            Servo1Scroll.Maximum = IMC.Servo1Max;
-            Servo1Scroll.Minimum = IMC.Servo1Min;
-            Servo2Scroll.Maximum = IMC.Servo2Max;
-            Servo2Scroll.Minimum = IMC.Servo2Min;
-            Servo3Scroll.Maximum = IMC.Servo3Max;
-            Servo3Scroll.Minimum = IMC.Servo3Min;
-            Servo4Scroll.Maximum = IMC.Servo4Max;
-            Servo4Scroll.Minimum = IMC.Servo4Min;
-            Servo5Scroll.Maximum = IMC.Servo5Max;
-            Servo5Scroll.Minimum = IMC.Servo5Min;
+            Servo1Scroll.Maximum = IRC.Servo1Max;
+            Servo1Scroll.Minimum = IRC.Servo1Min;
+            Servo2Scroll.Maximum = IRC.Servo2Max;
+            Servo2Scroll.Minimum = IRC.Servo2Min;
+            Servo3Scroll.Maximum = IRC.Servo3Max;
+            Servo3Scroll.Minimum = IRC.Servo3Min;
+            Servo4Scroll.Maximum = IRC.Servo4Max;
+            Servo4Scroll.Minimum = IRC.Servo4Min;
+            Servo5Scroll.Maximum = IRC.Servo5Max;
+            Servo5Scroll.Minimum = IRC.Servo5Min;
 
-            cbSaveValues.Checked = IMC.UsePreviousValues;
+            cbSaveValues.Checked = IRC.UsePreviousValues;
             if(cbSaveValues.Checked)
             {
-                Servo1Scroll.Value = IMC.Servo1Val;
-                Servo2Scroll.Value = IMC.Servo2Val;
-                Servo3Scroll.Value = IMC.Servo3Val;
-                Servo4Scroll.Value = IMC.Servo4Val;
-                Servo5Scroll.Value = IMC.Servo5Val;
-                lblServo1Value.Text = IMC.Servo1Val.ToString();
-                lblServo2Value.Text = IMC.Servo2Val.ToString();
-                lblServo3Value.Text = IMC.Servo3Val.ToString();
-                lblServo4Value.Text = IMC.Servo4Val.ToString();
-                lblServo5Value.Text = IMC.Servo5Val.ToString();
+                Servo1Scroll.Value = IRC.Servo1Val;
+                Servo2Scroll.Value = IRC.Servo2Val;
+                Servo3Scroll.Value = IRC.Servo3Val;
+                Servo4Scroll.Value = IRC.Servo4Val;
+                Servo5Scroll.Value = IRC.Servo5Val;
+                lblServo1Value.Text = IRC.Servo1Val.ToString();
+                lblServo2Value.Text = IRC.Servo2Val.ToString();
+                lblServo3Value.Text = IRC.Servo3Val.ToString();
+                lblServo4Value.Text = IRC.Servo4Val.ToString();
+                lblServo5Value.Text = IRC.Servo5Val.ToString();
             }
             else
             {
-                Servo1Scroll.Value = IMC.Servo1Def;
-                Servo2Scroll.Value = IMC.Servo2Def;
-                Servo3Scroll.Value = IMC.Servo3Def;
-                Servo4Scroll.Value = IMC.Servo4Def;
-                Servo5Scroll.Value = IMC.Servo5Def;
-                lblServo1Value.Text = IMC.Servo1Def.ToString();
-                lblServo2Value.Text = IMC.Servo2Def.ToString();
-                lblServo3Value.Text = IMC.Servo3Def.ToString();
-                lblServo4Value.Text = IMC.Servo4Def.ToString();
-                lblServo5Value.Text = IMC.Servo5Def.ToString();
+                Servo1Scroll.Value = IRC.Servo1Def;
+                Servo2Scroll.Value = IRC.Servo2Def;
+                Servo3Scroll.Value = IRC.Servo3Def;
+                Servo4Scroll.Value = IRC.Servo4Def;
+                Servo5Scroll.Value = IRC.Servo5Def;
+                lblServo1Value.Text = IRC.Servo1Def.ToString();
+                lblServo2Value.Text = IRC.Servo2Def.ToString();
+                lblServo3Value.Text = IRC.Servo3Def.ToString();
+                lblServo4Value.Text = IRC.Servo4Def.ToString();
+                lblServo5Value.Text = IRC.Servo5Def.ToString();
             }
             //IZ DO SADA NE RAZJASNJENIH RAZLOGA NULIRA SVE VRIJEDNOSTI Type1hue i Type1Val ako Bar-u dodjelujem vrijednost direktno
             // npr Bar1.Value = IMC.Type1HueMin; tada ce Type1HueMax i svi ostali postati = 0;
 
-            int Type1HueMin = IMC.Type1HueMin;
-            int Type1HueMax = IMC.Type1HueMax;
-            int Type1ValMin = IMC.Type1ValMin;
-            int Type1ValMax = IMC.Type1ValMax;
-            int Type2HueMin = IMC.Type2HueMin;
-            int Type2HueMax = IMC.Type2HueMax;
-            int Type2ValMin = IMC.Type2ValMin;
-            int Type2ValMax = IMC.Type2ValMax;
+            int Type1HueMin = IRC.Type1HueMin;
+            int Type1HueMax = IRC.Type1HueMax;
+            int Type1ValMin = IRC.Type1ValMin;
+            int Type1ValMax = IRC.Type1ValMax;
+            int Type2HueMin = IRC.Type2HueMin;
+            int Type2HueMax = IRC.Type2HueMax;
+            int Type2ValMin = IRC.Type2ValMin;
+            int Type2ValMax = IRC.Type2ValMax;
             Bar1.Value = Type1HueMin;
             Bar2.Value = Type1HueMax;
             Bar3.Value = Type1ValMin;
@@ -344,14 +339,14 @@ namespace IronMan
             label10.Text = "Max: " + Bar8.Value.ToString();
 
 
-            tbRobotPosX.Text = IMC.RobotShapeX.ToString();
-            tbRobotPosY.Text = IMC.RobotShapeY.ToString();
-            tbRobotPosWidth.Text = IMC.RobotShapeWidth.ToString();
-            tbRobotPosHeight.Text = IMC.RobotShapeHeight.ToString();
-            tbSizeMax.Text = IMC.SizeTresholxMax.ToString();
-            tbSizeMin.Text = IMC.SizeTresholdMin.ToString();
-            tbCannyTreshold.Text = IMC.CannyTreshold.ToString();
-            tbCannyTresholdLink.Text = IMC.CannyTresholdLinking.ToString();
+            tbRobotPosX.Text = IRC.RobotShapeX.ToString();
+            tbRobotPosY.Text = IRC.RobotShapeY.ToString();
+            tbRobotPosWidth.Text = IRC.RobotShapeWidth.ToString();
+            tbRobotPosHeight.Text = IRC.RobotShapeHeight.ToString();
+            tbSizeMax.Text = IRC.SizeTresholxMax.ToString();
+            tbSizeMin.Text = IRC.SizeTresholdMin.ToString();
+            tbCannyTreshold.Text = IRC.CannyTreshold.ToString();
+            tbCannyTresholdLink.Text = IRC.CannyTresholdLinking.ToString();
 
             ReadRobotPosition(null, null);
 
@@ -360,15 +355,15 @@ namespace IronMan
             SetType2Sliders(sender, e);
 
             //timer kao automatski okidac za uzimanje uzorka slike
-            timer = new System.Timers.Timer(IMC.CameraSpeedms);
+            timer = new System.Timers.Timer(IRC.CameraSpeedms);
             timer.SynchronizingObject = this;
             timer.Elapsed += HandleTimerElapsed;
             TimerInUse = false;
-            cbSerialPort.SelectedIndex = IMC.ComPortIndex;
-            cbBaudRate.SelectedIndex = IMC.BaudRateIndex;
+            cbSerialPort.SelectedIndex = IRC.ComPortIndex;
+            cbBaudRate.SelectedIndex = IRC.BaudRateIndex;
             SerialData = "";
-            GBProgramming.Visible = IMC.UseProgramming;
-            tbServoValues.Visible = IMC.UseProgramming;
+            GBProgramming.Visible = IRC.UseProgramming;
+            tbServoValues.Visible = IRC.UseProgramming;
         }
 
         public void HandleTimerElapsed(object sender, ElapsedEventArgs e)
@@ -391,14 +386,14 @@ namespace IronMan
 
         private void SetType1Sliders(object sender, EventArgs e)
         {
-            IMC.Type1HueMin = Bar1.Value;
-            IMC.Type1HueMax = Bar2.Value;
-            IMC.Type1ValMin = Bar3.Value;
-            IMC.Type1ValMax = Bar4.Value;
-            label3.Text = "Min: " + IMC.Type1HueMin.ToString();
-            label4.Text = "Max: " + IMC.Type1HueMax.ToString();
-            label5.Text = "Min: " + IMC.Type1ValMin.ToString();
-            label6.Text = "Max: " + IMC.Type1ValMax.ToString();
+            IRC.Type1HueMin = Bar1.Value;
+            IRC.Type1HueMax = Bar2.Value;
+            IRC.Type1ValMin = Bar3.Value;
+            IRC.Type1ValMax = Bar4.Value;
+            label3.Text = "Min: " + IRC.Type1HueMin.ToString();
+            label4.Text = "Max: " + IRC.Type1HueMax.ToString();
+            label5.Text = "Min: " + IRC.Type1ValMin.ToString();
+            label6.Text = "Max: " + IRC.Type1ValMax.ToString();
             if (SourceImg == null) return;
             Type1Img = FilterRectangles(true);
             Type1mageBox.Image = Type1Img.ToBitmap();
@@ -406,14 +401,14 @@ namespace IronMan
 
         private void SetType2Sliders(object sender, EventArgs e)
         {
-            IMC.Type2HueMin = Bar5.Value;
-            IMC.Type2HueMax = Bar6.Value;
-            IMC.Type2ValMin = Bar7.Value;
-            IMC.Type2ValMax = Bar8.Value;
-            label7.Text = "Min: " + IMC.Type2HueMin.ToString();
-            label8.Text = "Max: " + IMC.Type2HueMax.ToString();
-            label9.Text = "Min: " + IMC.Type2ValMin.ToString();
-            label10.Text = "Max: " + IMC.Type2ValMax.ToString();
+            IRC.Type2HueMin = Bar5.Value;
+            IRC.Type2HueMax = Bar6.Value;
+            IRC.Type2ValMin = Bar7.Value;
+            IRC.Type2ValMax = Bar8.Value;
+            label7.Text = "Min: " + IRC.Type2HueMin.ToString();
+            label8.Text = "Max: " + IRC.Type2HueMax.ToString();
+            label9.Text = "Min: " + IRC.Type2ValMin.ToString();
+            label10.Text = "Max: " + IRC.Type2ValMax.ToString();
 
             if (SourceImg == null) return;
             Type2Img = FilterRectangles(false);
@@ -458,14 +453,14 @@ namespace IronMan
 
         private void ReadRobotPosition(object sender, KeyEventArgs e)
         {
-            IMC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
-            IMC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
-            IMC.RobotShapeX = int.Parse(tbRobotPosX.Text);
-            IMC.RobotShapeY = int.Parse(tbRobotPosY.Text);
+            IRC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
+            IRC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
+            IRC.RobotShapeX = int.Parse(tbRobotPosX.Text);
+            IRC.RobotShapeY = int.Parse(tbRobotPosY.Text);
 
             if (RobotLocation == null) RobotLocation = new PickupObject();
-            RobotLocation.CenterX = IMC.RobotShapeX + IMC.RobotShapeWidth / 2;
-            RobotLocation.CenterY = IMC.RobotShapeY + IMC.RobotShapeHeight / 2;
+            RobotLocation.CenterX = IRC.RobotShapeX + IRC.RobotShapeWidth / 2;
+            RobotLocation.CenterY = IRC.RobotShapeY + IRC.RobotShapeHeight / 2;
             RobotLocation.Type = "Robot";
         }
 
@@ -481,12 +476,13 @@ namespace IronMan
             else
             {
                 obj.InRange = IsObjectInRange(new Point(obj.CenterX,obj.CenterY));
-                tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
+                //tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
                 tbCoordinates.Text += $"Size: {obj.Size}" + Environment.NewLine;
-                tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
+                //tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
                 tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
                 tbCoordinates.Text += $"In Range: {obj.InRange}" + Environment.NewLine;
-                tbCoordinates.Text += $"Servo Value: {MeasureAngle(obj)}" + Environment.NewLine;
+                //tbCoordinates.Text += $"Servo1 Value: {MeasureAngle(obj)}" + Environment.NewLine;
+                //tbCoordinates.Text += $"Distance (mm): {(obj)}" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
                 
             }
@@ -499,43 +495,72 @@ namespace IronMan
 
             foreach (PickupObject PO in PickupObjects)
             {
-                foreach (var Rows in PickupMatrix)
-                {
-                    SendCommands("Servo1", MeasureAngle(PO)); Thread.Sleep(300);
-                    continue;
-                    PickupPoint PP = Rows.Where(X => PO.CenterX >= X.StartX && PO.CenterX <= X.EndX && PO.CenterY >= X.StartY && PO.CenterY <= X.EndY).FirstOrDefault();
-                    if (PP != null && PO.InRange)
-                    {
-                        if (PP.Servo1Val == 0 || PP.Servo2Val == 0 || PP.Servo3Val == 0)
-                            continue;
-                        PP.HasObject = true;
-                        PP.ObjectType = PO.Type;
-                        tbServoValues.Text += $"X: {PP.X}  Y: {PP.Y}  Type: {PP.ObjectType}" + Environment.NewLine;
-                        tbServoValues.Text += $"StartX: {PP.StartX}   EndX: {PP.EndX}" + Environment.NewLine;
-                        tbServoValues.Text += $"S1: {PP.Servo1Val}  S2: {PP.Servo2Val}  S3: {PP.Servo3Val}" + Environment.NewLine;
-                        SendCommands("Servo5", "87"); Thread.Sleep(300);
-                        SendCommands("Servo1", MeasureAngle(PO)); Thread.Sleep(300);
-                        SendCommands("Servo3", PP.Servo3Val.ToString()); Thread.Sleep(300);
-                        SendCommands("Servo2", PP.Servo2Val.ToString()); Thread.Sleep(300);
-                        SendCommands("Servo5", "42"); Thread.Sleep(300);
-                        GoToDropoffPos(PP.ObjectType);
-                    }
-                }
+                //foreach (var Rows in PickupMatrix)
+                //{
+                    PickupPoint P = new PickupPoint(MeasureAngle(PO));
+                    SendCommands("Servo5", "87"); Thread.Sleep(300);
+                    SendCommands("Servo1", P.Servo1Val.ToString()); Thread.Sleep(300);
+                    MeasureDistance(PO, P);
+                    SendCommands("Servo3", P.Servo3Val.ToString()); Thread.Sleep(300);
+                    SendCommands("Servo2", P.Servo2Val.ToString()); Thread.Sleep(300);
+                    SendCommands("Servo5", "42"); Thread.Sleep(300);
+
+                    //PickupPoint PP = Rows.Where(X => PO.CenterX >= X.StartX && PO.CenterX <= X.EndX && PO.CenterY >= X.StartY && PO.CenterY <= X.EndY).FirstOrDefault();
+                    //if (PP != null && PO.InRange)
+                    //{
+                    //    if (PP.Servo1Val == 0 || PP.Servo2Val == 0 || PP.Servo3Val == 0)
+                    //        continue;
+                    //    PP.HasObject = true;
+                    //    PP.ObjectType = PO.Type;
+                    //    tbServoValues.Text += $"X: {PP.X}  Y: {PP.Y}  Type: {PP.ObjectType}" + Environment.NewLine;
+                    //    tbServoValues.Text += $"StartX: {PP.StartX}   EndX: {PP.EndX}" + Environment.NewLine;
+                    //    tbServoValues.Text += $"S1: {PP.Servo1Val}  S2: {PP.Servo2Val}  S3: {PP.Servo3Val}" + Environment.NewLine;
+                    //    SendCommands("Servo5", "87"); Thread.Sleep(300);
+                    //    SendCommands("Servo1", MeasureAngle(PO).ToString()); Thread.Sleep(300);
+                    //    SendCommands("Servo3", PP.Servo3Val.ToString()); Thread.Sleep(300);
+                    //    SendCommands("Servo2", PP.Servo2Val.ToString()); Thread.Sleep(300);
+                    //    SendCommands("Servo5", "42"); Thread.Sleep(300);
+                    //    GoToDropoffPos(PP.ObjectType);
+                    //}
+                //}
             }
             //GoToResetPos();
         }
 
-        private string MeasureAngle(PickupObject PO)
+        private int MeasureAngle(PickupObject PO)
         {
             //X1 je robot X2 je objekat
             //Korijen iz (x2-x1)^2 + (Y2-Y1)^2
             double SideC = (PO.CenterX > RobotLocation.CenterX) ? PO.CenterX - RobotLocation.CenterX : RobotLocation.CenterX - PO.CenterX;
             double SideB = Math.Sqrt(Math.Pow(PO.CenterX - RobotLocation.CenterX,2) + Math.Pow(PO.CenterY - RobotLocation.CenterY,2));
             double SideA = Math.Sqrt(Math.Pow(SideB, 2) - Math.Pow(SideC, 2));
-            double Angle = Math.Acos(SideA / SideB);
-            Angle = Angle * 180 / 3.14;
-            Angle = PO.CenterX > RobotLocation.CenterX ? IMC.Servo1Def + Angle : IMC.Servo1Def - Angle;
-            return Math.Round(Angle).ToString();
+            double Angle = Math.Acos(SideA / SideB) * 180 / 3.14;
+            Angle = PO.CenterX > RobotLocation.CenterX ? IRC.Servo1Def + Angle : IRC.Servo1Def - Angle;
+            return (int)Math.Round(Angle);
+        }
+
+        private void MeasureDistance(PickupObject PO, PickupPoint PP)
+        {
+            double PPCM = IRC.PixelsPerCM;//Default 15.2144186; //Pixels per CM
+            double SideB = Math.Sqrt(Math.Pow(PO.CenterX - RobotLocation.CenterX, 2) + Math.Pow(PO.CenterY - RobotLocation.CenterY, 2));
+            SideB = (SideB / PPCM) * 10; // pretvorimo pixele u cm pa u mm
+            double SideA = IRC.BaseHeightMM;
+            double SideC = Math.Sqrt(Math.Pow(SideA, 2) + Math.Pow(SideB, 2));
+            //---------------------------------------------------------------------------------------------------
+            double AngleA = (Math.Pow(IRC.BaseLengthMM, 2) + Math.Pow(SideC, 2) - Math.Pow(IRC.ArmLengthMM, 2)) / (2 * IRC.BaseLengthMM * SideC);
+            AngleA = Math.Acos(AngleA) * 180 / 3.14;
+
+            double AngleC = (Math.Pow(SideC, 2) + Math.Pow(IRC.ArmLengthMM, 2) - Math.Pow(IRC.BaseLengthMM, 2)) / (2 * SideC * IRC.ArmLengthMM);
+            AngleC = Math.Acos(AngleC) * 180 / 3.14;
+
+            double AngleB = 180 - AngleC - AngleA;
+            //---------------------------------------------------------------------------------------------------
+            PP.Servo2Val = (int)Math.Round(AngleA) + IRC.Servo2Zero;
+            PP.Servo3Val = IRC.Servo3Zero - (int)Math.Round(AngleB);
+            tbServoValues.Text += $"Servo2: {PP.Servo2Val}, Servo3: { PP.Servo3Val}" + Environment.NewLine;
+            //tbServoValues.Text += $"Angle A: {Math.Round(AngleA, 3)}, Angle B: {Math.Round(AngleB, 3)}, Angle C: {Math.Round(AngleC, 3)}" + Environment.NewLine;
+            //tbServoValues.Text += $"Side A: {IRC.ArmLengthMM}, Side B: {IRC.BaseLengthMM}, Side C: {Math.Round(SideC, 3)}" + Environment.NewLine;
+            //return SideC.ToString();
         }
 
         private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
@@ -576,17 +601,17 @@ namespace IronMan
 
         private void GoToResetPos()
         {
-            SendCommands("Servo3", IMC.Servo3Def.ToString()); Thread.Sleep(500);
-            SendCommands("Servo2", IMC.Servo2Def.ToString()); Thread.Sleep(500);
-            SendCommands("Servo1", IMC.Servo1Def.ToString()); Thread.Sleep(500);
-            SendCommands("Servo4", IMC.Servo4Def.ToString()); Thread.Sleep(500);
-            SendCommands("Servo5", IMC.Servo5Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo3", IRC.Servo3Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo2", IRC.Servo2Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo1", IRC.Servo1Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo4", IRC.Servo4Def.ToString()); Thread.Sleep(500);
+            SendCommands("Servo5", IRC.Servo5Def.ToString()); Thread.Sleep(500);
 
-            Servo1Scroll.Value = IMC.Servo1Def;
-            Servo2Scroll.Value = IMC.Servo2Def;
-            Servo3Scroll.Value = IMC.Servo3Def;
-            Servo4Scroll.Value = IMC.Servo4Def;
-            Servo5Scroll.Value = IMC.Servo5Def;
+            Servo1Scroll.Value = IRC.Servo1Def;
+            Servo2Scroll.Value = IRC.Servo2Def;
+            Servo3Scroll.Value = IRC.Servo3Def;
+            Servo4Scroll.Value = IRC.Servo4Def;
+            Servo5Scroll.Value = IRC.Servo5Def;
         }
 
         private void GoToDropoffPos(string Type)
@@ -598,11 +623,11 @@ namespace IronMan
                 SendCommands("Servo1", "170"); Thread.Sleep(500);
                 SendCommands("Servo5", "87"); Thread.Sleep(500);
 
-                Servo1Scroll.Value = IMC.Servo1Def;
-                Servo2Scroll.Value = IMC.Servo2Def;
-                Servo3Scroll.Value = IMC.Servo3Def;
-                Servo4Scroll.Value = IMC.Servo4Def;
-                Servo5Scroll.Value = IMC.Servo5Def;
+                Servo1Scroll.Value = IRC.Servo1Def;
+                Servo2Scroll.Value = IRC.Servo2Def;
+                Servo3Scroll.Value = IRC.Servo3Def;
+                Servo4Scroll.Value = IRC.Servo4Def;
+                Servo5Scroll.Value = IRC.Servo5Def;
             }
             else
             {
@@ -654,7 +679,7 @@ namespace IronMan
 
         private void SendCommands(string ServoNumber, string Value)
         {
-            if (serial.IsOpen)
+            if (!serial.IsOpen) return;
                 serial.WriteLine($"<{ServoNumber},{Value}>");
         }
 
@@ -668,51 +693,51 @@ namespace IronMan
 
         private void SaveAppConfig()
         {
-            IMC.Type1HueMin = Bar1.Value;
-            IMC.Type1HueMax = Bar2.Value;
-            IMC.Type1ValMin = Bar3.Value;
-            IMC.Type1ValMax = Bar4.Value;
+            IRC.Type1HueMin = Bar1.Value;
+            IRC.Type1HueMax = Bar2.Value;
+            IRC.Type1ValMin = Bar3.Value;
+            IRC.Type1ValMax = Bar4.Value;
 
-            IMC.Type2HueMin = Bar5.Value;
-            IMC.Type2HueMax = Bar6.Value;
-            IMC.Type2ValMin = Bar7.Value;
-            IMC.Type2ValMax = Bar8.Value;
+            IRC.Type2HueMin = Bar5.Value;
+            IRC.Type2HueMax = Bar6.Value;
+            IRC.Type2ValMin = Bar7.Value;
+            IRC.Type2ValMax = Bar8.Value;
 
             
 
-            IMC.SizeTresholxMax = int.Parse(tbSizeMax.Text);
-            IMC.SizeTresholdMin = int.Parse(tbSizeMin.Text);
-            IMC.CannyTreshold = int.Parse(tbCannyTreshold.Text);
-            IMC.CannyTresholdLinking = int.Parse(tbCannyTresholdLink.Text);
+            IRC.SizeTresholxMax = int.Parse(tbSizeMax.Text);
+            IRC.SizeTresholdMin = int.Parse(tbSizeMin.Text);
+            IRC.CannyTreshold = int.Parse(tbCannyTreshold.Text);
+            IRC.CannyTresholdLinking = int.Parse(tbCannyTresholdLink.Text);
 
-            IMC.RobotShapeX = int.Parse(tbRobotPosX.Text);
-            IMC.RobotShapeY = int.Parse(tbRobotPosY.Text);
-            IMC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
-            IMC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
+            IRC.RobotShapeX = int.Parse(tbRobotPosX.Text);
+            IRC.RobotShapeY = int.Parse(tbRobotPosY.Text);
+            IRC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
+            IRC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
 
-            IMC.ComPortIndex = cbSerialPort.SelectedIndex;
-            IMC.BaudRateIndex = cbBaudRate.SelectedIndex;
+            IRC.ComPortIndex = cbSerialPort.SelectedIndex;
+            IRC.BaudRateIndex = cbBaudRate.SelectedIndex;
 
-            IMC.Servo1Min = Servo1Scroll.Minimum;
-            IMC.Servo2Min = Servo2Scroll.Minimum;
-            IMC.Servo3Min = Servo3Scroll.Minimum;
-            IMC.Servo4Min = Servo4Scroll.Minimum;
-            IMC.Servo5Min = Servo5Scroll.Minimum;
+            IRC.Servo1Min = Servo1Scroll.Minimum;
+            IRC.Servo2Min = Servo2Scroll.Minimum;
+            IRC.Servo3Min = Servo3Scroll.Minimum;
+            IRC.Servo4Min = Servo4Scroll.Minimum;
+            IRC.Servo5Min = Servo5Scroll.Minimum;
 
-            IMC.Servo1Max = Servo1Scroll.Maximum;
-            IMC.Servo2Max = Servo2Scroll.Maximum;
-            IMC.Servo3Max = Servo3Scroll.Maximum;
-            IMC.Servo4Max = Servo4Scroll.Maximum;
-            IMC.Servo5Max = Servo5Scroll.Maximum;
+            IRC.Servo1Max = Servo1Scroll.Maximum;
+            IRC.Servo2Max = Servo2Scroll.Maximum;
+            IRC.Servo3Max = Servo3Scroll.Maximum;
+            IRC.Servo4Max = Servo4Scroll.Maximum;
+            IRC.Servo5Max = Servo5Scroll.Maximum;
 
-            IMC.Servo1Val = Servo1Scroll.Value;
-            IMC.Servo2Val = Servo2Scroll.Value;
-            IMC.Servo3Val = Servo3Scroll.Value;
-            IMC.Servo4Val = Servo4Scroll.Value;
-            IMC.Servo5Val = Servo5Scroll.Value;
-            IMC.UsePreviousValues = cbSaveValues.Checked;
+            IRC.Servo1Val = Servo1Scroll.Value;
+            IRC.Servo2Val = Servo2Scroll.Value;
+            IRC.Servo3Val = Servo3Scroll.Value;
+            IRC.Servo4Val = Servo4Scroll.Value;
+            IRC.Servo5Val = Servo5Scroll.Value;
+            IRC.UsePreviousValues = cbSaveValues.Checked;
 
-            SaveToXML<IronManConfig>(IMC, "Config.xml");
+            SaveToXML<IRISConfig>(IRC, "Config.xml");
             SaveToXML<List<List<PickupPoint>>>(PickupMatrix, "ListOfPickupPoints.xml");
         }
 
@@ -775,7 +800,7 @@ namespace IronMan
 
         private void btnOpenRobotConfig_Click(object sender, EventArgs e)
         {
-            FrmRobotConfig frm = new FrmRobotConfig(IMC);
+            FrmRobotConfig frm = new FrmRobotConfig(IRC);
             frm.ShowDialog();
         }
 

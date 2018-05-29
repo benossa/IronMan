@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
 
-namespace IronMan
+namespace IRIS
 {
 
     public partial class Main : Form

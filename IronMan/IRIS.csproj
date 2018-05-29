@@ -7,8 +7,8 @@
     <ProjectGuid>{439F689A-F34D-44EF-B6AE-49D0EB0997D4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IronMan</RootNamespace>
-    <AssemblyName>IronMan</AssemblyName>
+    <RootNamespace>IRIS</RootNamespace>
+    <AssemblyName>IRIS</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -47,6 +47,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>33871879_431328047328924_104059292281208832_n_yth_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DirectShowLib-2005">
       <HintPath>..\..\..\..\..\Dropbox\FIT-CC Robot\DirectShowLib-2005.dll</HintPath>
@@ -74,7 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\IronManConfig.cs" />
+    <Compile Include="Classes\IRISConfig.cs" />
     <Compile Include="Classes\PickupPoint.cs" />
     <Compile Include="Forms\FrmRobotConfig.cs">
       <SubType>Form</SubType>
@@ -111,6 +114,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Forms\ShapeDetection.resx">
       <DependentUpon>ShapeDetection.cs</DependentUpon>
@@ -139,6 +143,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="33871879_431328047328924_104059292281208832_n_yth_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

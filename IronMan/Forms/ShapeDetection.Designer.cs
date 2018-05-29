@@ -1,4 +1,4 @@
-﻿namespace IronMan
+﻿namespace IRIS
 {
     partial class ShapeDetection
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShapeDetection));
             this.label1 = new System.Windows.Forms.Label();
             this.fileNameTextBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -1341,9 +1342,10 @@
             this.Controls.Add(this.Type2ImageBox);
             this.Controls.Add(this.Type1mageBox);
             this.Controls.Add(this.originalImageBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ShapeDetection";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ShapeDetection";
+            this.Text = "IRIS - Interactive Robotic Inteligent Sorting";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShapeDetection_FormClosing);
             this.Load += new System.EventHandler(this.ShapeDetection_Load);
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).EndInit();
