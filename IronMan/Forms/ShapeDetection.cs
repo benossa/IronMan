@@ -28,16 +28,17 @@ namespace IRIS
         {
             InitializeComponent();
             IRC = ReadFromXML<IRISConfig>("Config.xml");
-            PickupMatrix = new List<List<PickupPoint>>();
-
-            for (int i = 0; i < IRC.MatrixSizeX; i++)
-            {
-                PickupMatrix.Add(new List<PickupPoint>());
-                for (int j = 0; j < IRC.MatrixSizeY; j++)
-                {
-                    PickupMatrix[i].Add(new PickupPoint(0,0,0,false,i,j,0,0,0,0));
-                }
-            }
+            PickupList = new List<PickupPoint>();
+            
+            //PickupMatrix = new List<List<PickupPoint>>();
+            //for (int i = 0; i < IRC.MatrixSizeX; i++)
+            //{
+            //    PickupMatrix.Add(new List<PickupPoint>());
+            //    for (int j = 0; j < IRC.MatrixSizeY; j++)
+            //    {
+            //        PickupMatrix[i].Add(new PickupPoint(0,0,0,false,i,j,0,0,0,0));
+            //    }
+            //}
             PickupObjects = new List<PickupObject>();
             serial = new SerialPort();
         }
@@ -47,7 +48,8 @@ namespace IRIS
         private Image<Gray, Byte> Type2Img { get; set; }
         private List<PickupObject> PickupObjects { get; set; }
         private PickupObject RobotLocation { get; set; }
-        private List<List<PickupPoint>> PickupMatrix { get; set; }
+        //private List<List<PickupPoint>> PickupMatrix { get; set; }
+        private List<PickupPoint> PickupList { get; set; }
         private Point[] WorkingAreaPoints { get; set; }
         private bool TimerInUse { get; set; }
         private System.Timers.Timer timer { get; set; }
@@ -129,6 +131,8 @@ namespace IRIS
                                     obj.Size = approxContourSize;
                                     obj.Type = Type1 ? "Type 1" : "Type 2";
                                     obj.Angle = tempRect.Angle;
+                                    obj.InRange = IsObjectInRange(new Point(obj.CenterX, obj.CenterY));
+                                    obj.Distance = MeasureDistance(obj);
                                     PickupObjects.Add(obj);
                                     DisplayObjectInfo(obj, false);
                                 }
@@ -207,13 +211,13 @@ namespace IRIS
             };
             NewSourceImg.DrawPolyline(WorkingAreaPoints, true, new Bgr(Color.Yellow), 4);
 
-            foreach (var PP in PickupMatrix)
-            {
-                foreach (PickupPoint PO in PP.Where(X=>X.IsValid))
-                {
-                    NewSourceImg.Draw(new Rectangle(PO.StartX,PO.StartY, PO.EndX - PO.StartX, PO.EndY - PO.StartY), new Bgr(Color.Blue), 2);
-                }
-            }
+            //foreach (var PP in PickupMatrix)
+            //{
+            //    foreach (PickupPoint PO in PP.Where(X=>X.IsValid))
+            //    {
+            //        NewSourceImg.Draw(new Rectangle(PO.StartX,PO.StartY, PO.EndX - PO.StartX, PO.EndY - PO.StartY), new Bgr(Color.Blue), 2);
+            //    }
+            //}
             originalImageBox.Image = NewSourceImg.ToBitmap();
             originalImageBox.Refresh();
         }
@@ -270,45 +274,26 @@ namespace IRIS
 
         private void ShapeDetection_Load(object sender, EventArgs e)
         {
-            PickupMatrix = ReadFromXML<List<List<PickupPoint>>>("ListOfPickupPoints.xml");
-            Servo1Scroll.Maximum = IRC.Servo1Max;
-            Servo1Scroll.Minimum = IRC.Servo1Min;
-            Servo2Scroll.Maximum = IRC.Servo2Max;
-            Servo2Scroll.Minimum = IRC.Servo2Min;
-            Servo3Scroll.Maximum = IRC.Servo3Max;
-            Servo3Scroll.Minimum = IRC.Servo3Min;
-            Servo4Scroll.Maximum = IRC.Servo4Max;
-            Servo4Scroll.Minimum = IRC.Servo4Min;
-            Servo5Scroll.Maximum = IRC.Servo5Max;
-            Servo5Scroll.Minimum = IRC.Servo5Min;
+            //PickupMatrix = ReadFromXML<List<List<PickupPoint>>>("ListOfPickupPoints.xml");
+            PickupList = ReadFromXML<List<PickupPoint>>("ListOfPickupPoints.xml");
+            //PickupList.Add(new PickupPoint() { Distance = 300, Servo2Val = 137, Servo3Val = 85 });
+            Servo1Scroll.Maximum = IRC.ServoMaxPosition.Servo1Val;
+            Servo1Scroll.Minimum = IRC.ServoMinPosition.Servo1Val;
+            Servo2Scroll.Maximum = IRC.ServoMaxPosition.Servo2Val;
+            Servo2Scroll.Minimum = IRC.ServoMinPosition.Servo2Val;
+            Servo3Scroll.Maximum = IRC.ServoMaxPosition.Servo3Val;
+            Servo3Scroll.Minimum = IRC.ServoMinPosition.Servo3Val;
+            Servo4Scroll.Maximum = IRC.ServoMaxPosition.Servo4Val;
+            Servo4Scroll.Minimum = IRC.ServoMinPosition.Servo4Val;
+            Servo5Scroll.Maximum = IRC.ServoMaxPosition.Servo5Val;
+            Servo5Scroll.Minimum = IRC.ServoMinPosition.Servo5Val;
 
             cbSaveValues.Checked = IRC.UsePreviousValues;
+
             if(cbSaveValues.Checked)
-            {
-                Servo1Scroll.Value = IRC.Servo1Val;
-                Servo2Scroll.Value = IRC.Servo2Val;
-                Servo3Scroll.Value = IRC.Servo3Val;
-                Servo4Scroll.Value = IRC.Servo4Val;
-                Servo5Scroll.Value = IRC.Servo5Val;
-                lblServo1Value.Text = IRC.Servo1Val.ToString();
-                lblServo2Value.Text = IRC.Servo2Val.ToString();
-                lblServo3Value.Text = IRC.Servo3Val.ToString();
-                lblServo4Value.Text = IRC.Servo4Val.ToString();
-                lblServo5Value.Text = IRC.Servo5Val.ToString();
-            }
+                DisplayServoValues(IRC.ServoPreviousPosition);
             else
-            {
-                Servo1Scroll.Value = IRC.Servo1Def;
-                Servo2Scroll.Value = IRC.Servo2Def;
-                Servo3Scroll.Value = IRC.Servo3Def;
-                Servo4Scroll.Value = IRC.Servo4Def;
-                Servo5Scroll.Value = IRC.Servo5Def;
-                lblServo1Value.Text = IRC.Servo1Def.ToString();
-                lblServo2Value.Text = IRC.Servo2Def.ToString();
-                lblServo3Value.Text = IRC.Servo3Def.ToString();
-                lblServo4Value.Text = IRC.Servo4Def.ToString();
-                lblServo5Value.Text = IRC.Servo5Def.ToString();
-            }
+                DisplayServoValues(IRC.ServoDefaultPosition);
             //IZ DO SADA NE RAZJASNJENIH RAZLOGA NULIRA SVE VRIJEDNOSTI Type1hue i Type1Val ako Bar-u dodjelujem vrijednost direktno
             // npr Bar1.Value = IMC.Type1HueMin; tada ce Type1HueMax i svi ostali postati = 0;
 
@@ -469,22 +454,17 @@ namespace IRIS
             if (IsRobot)
             {
                 tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
-                tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
+                tbCoordinates.Text += $"Center(X,Y): {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
             }
             else
             {
-                obj.InRange = IsObjectInRange(new Point(obj.CenterX,obj.CenterY));
-                //tbCoordinates.Text += $"Type: {obj.Type}" + Environment.NewLine;
-                tbCoordinates.Text += $"Size: {obj.Size}" + Environment.NewLine;
-                //tbCoordinates.Text += $"Angle: {obj.Angle}" + Environment.NewLine;
-                tbCoordinates.Text += $"Center: {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
+                tbCoordinates.Text += $"Type: {obj.Type}, Size: {obj.Size}" + Environment.NewLine;
+                tbCoordinates.Text += $"Center(X,Y): {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
                 tbCoordinates.Text += $"In Range: {obj.InRange}" + Environment.NewLine;
-                //tbCoordinates.Text += $"Servo1 Value: {MeasureAngle(obj)}" + Environment.NewLine;
-                //tbCoordinates.Text += $"Distance (mm): {(obj)}" + Environment.NewLine;
+                tbCoordinates.Text += $"Distance (mm): {(obj.Distance)}" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
-                
             }
         }
 
@@ -493,38 +473,23 @@ namespace IRIS
             if (!PickupObjects.Any()) return;
             tbServoValues.Clear();
 
-            foreach (PickupObject PO in PickupObjects)
+            foreach (PickupObject PO in PickupObjects.Where(X => X.InRange).OrderBy(X=>X.Distance))
             {
-                //foreach (var Rows in PickupMatrix)
-                //{
-                    PickupPoint P = new PickupPoint(MeasureAngle(PO));
-                    SendCommands("Servo5", "87"); Thread.Sleep(300);
-                    SendCommands("Servo1", P.Servo1Val.ToString()); Thread.Sleep(300);
-                    MeasureDistance(PO, P);
-                    SendCommands("Servo3", P.Servo3Val.ToString()); Thread.Sleep(300);
-                    SendCommands("Servo2", P.Servo2Val.ToString()); Thread.Sleep(300);
-                    SendCommands("Servo5", "42"); Thread.Sleep(300);
-
-                    //PickupPoint PP = Rows.Where(X => PO.CenterX >= X.StartX && PO.CenterX <= X.EndX && PO.CenterY >= X.StartY && PO.CenterY <= X.EndY).FirstOrDefault();
-                    //if (PP != null && PO.InRange)
-                    //{
-                    //    if (PP.Servo1Val == 0 || PP.Servo2Val == 0 || PP.Servo3Val == 0)
-                    //        continue;
-                    //    PP.HasObject = true;
-                    //    PP.ObjectType = PO.Type;
-                    //    tbServoValues.Text += $"X: {PP.X}  Y: {PP.Y}  Type: {PP.ObjectType}" + Environment.NewLine;
-                    //    tbServoValues.Text += $"StartX: {PP.StartX}   EndX: {PP.EndX}" + Environment.NewLine;
-                    //    tbServoValues.Text += $"S1: {PP.Servo1Val}  S2: {PP.Servo2Val}  S3: {PP.Servo3Val}" + Environment.NewLine;
-                    //    SendCommands("Servo5", "87"); Thread.Sleep(300);
-                    //    SendCommands("Servo1", MeasureAngle(PO).ToString()); Thread.Sleep(300);
-                    //    SendCommands("Servo3", PP.Servo3Val.ToString()); Thread.Sleep(300);
-                    //    SendCommands("Servo2", PP.Servo2Val.ToString()); Thread.Sleep(300);
-                    //    SendCommands("Servo5", "42"); Thread.Sleep(300);
-                    //    GoToDropoffPos(PP.ObjectType);
-                    //}
-                //}
+                int Distance = MeasureDistance(PO);
+                PickupPoint P = PickupList.Where(X => X.Distance == Distance).FirstOrDefault();
+                if (P == null) { MessageBox.Show("Distance is not defined."); continue; }
+                tbServoValues.Text += $"Servo2: {P.Servo2Val}, Servo3: { P.Servo3Val}" + Environment.NewLine;
+                tbServoValues.Text += $"Distance: {P.Distance.ToString()}" + Environment.NewLine;
+                SendCommands("Servo5", "87"); Thread.Sleep(500);
+                SendCommands("Servo2", "86"); Thread.Sleep(500);
+                SendCommands("Servo3", "124"); Thread.Sleep(500);
+                SendCommands("Servo1", MeasureAngle(PO).ToString()); Thread.Sleep(500);
+                SendCommands("Servo3", P.Servo3Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo2", P.Servo2Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo5", "44"); Thread.Sleep(1000);
+                GoToDropoffPos(PO.Type);
             }
-            //GoToResetPos();
+            GoToResetPos();
         }
 
         private int MeasureAngle(PickupObject PO)
@@ -532,35 +497,33 @@ namespace IRIS
             //X1 je robot X2 je objekat
             //Korijen iz (x2-x1)^2 + (Y2-Y1)^2
             double SideC = (PO.CenterX > RobotLocation.CenterX) ? PO.CenterX - RobotLocation.CenterX : RobotLocation.CenterX - PO.CenterX;
-            double SideB = Math.Sqrt(Math.Pow(PO.CenterX - RobotLocation.CenterX,2) + Math.Pow(PO.CenterY - RobotLocation.CenterY,2));
+            double SideB = Math.Sqrt(Math.Pow(PO.CenterX - RobotLocation.CenterX,2) + Math.Pow(PO.CenterY - (RobotLocation.CenterY + IRC.RobotShapeCenterRotation),2));
             double SideA = Math.Sqrt(Math.Pow(SideB, 2) - Math.Pow(SideC, 2));
             double Angle = Math.Acos(SideA / SideB) * 180 / 3.14;
-            Angle = PO.CenterX > RobotLocation.CenterX ? IRC.Servo1Def + Angle : IRC.Servo1Def - Angle;
+            Angle = PO.CenterX > RobotLocation.CenterX ? IRC.ServoDefaultPosition.Servo1Val + Angle : IRC.ServoDefaultPosition.Servo1Val - Angle;
             return (int)Math.Round(Angle);
         }
 
-        private void MeasureDistance(PickupObject PO, PickupPoint PP)
+        private int MeasureDistance(PickupObject PO)
         {
             double PPCM = IRC.PixelsPerCM;//Default 15.2144186; //Pixels per CM
             double SideB = Math.Sqrt(Math.Pow(PO.CenterX - RobotLocation.CenterX, 2) + Math.Pow(PO.CenterY - RobotLocation.CenterY, 2));
             SideB = (SideB / PPCM) * 10; // pretvorimo pixele u cm pa u mm
             double SideA = IRC.BaseHeightMM;
             double SideC = Math.Sqrt(Math.Pow(SideA, 2) + Math.Pow(SideB, 2));
+
             //---------------------------------------------------------------------------------------------------
-            double AngleA = (Math.Pow(IRC.BaseLengthMM, 2) + Math.Pow(SideC, 2) - Math.Pow(IRC.ArmLengthMM, 2)) / (2 * IRC.BaseLengthMM * SideC);
+            SideA = IRC.ArmLengthMM;
+            SideB = IRC.BaseLengthMM;
+            double AngleA = (Math.Pow(SideB, 2) + Math.Pow(SideC, 2) - Math.Pow(SideA, 2)) / (2 * SideB * SideC);
             AngleA = Math.Acos(AngleA) * 180 / 3.14;
 
-            double AngleC = (Math.Pow(SideC, 2) + Math.Pow(IRC.ArmLengthMM, 2) - Math.Pow(IRC.BaseLengthMM, 2)) / (2 * SideC * IRC.ArmLengthMM);
-            AngleC = Math.Acos(AngleC) * 180 / 3.14;
+            double AngleB = (Math.Pow(SideC, 2) + Math.Pow(SideA, 2) - Math.Pow(SideB, 2)) / (2 * SideC * SideA);
+            AngleB = Math.Acos(AngleB) * 180 / 3.14;
 
-            double AngleB = 180 - AngleC - AngleA;
+            double AngleC = 180 - AngleB - AngleA;
             //---------------------------------------------------------------------------------------------------
-            PP.Servo2Val = (int)Math.Round(AngleA) + IRC.Servo2Zero;
-            PP.Servo3Val = IRC.Servo3Zero - (int)Math.Round(AngleB);
-            tbServoValues.Text += $"Servo2: {PP.Servo2Val}, Servo3: { PP.Servo3Val}" + Environment.NewLine;
-            //tbServoValues.Text += $"Angle A: {Math.Round(AngleA, 3)}, Angle B: {Math.Round(AngleB, 3)}, Angle C: {Math.Round(AngleC, 3)}" + Environment.NewLine;
-            //tbServoValues.Text += $"Side A: {IRC.ArmLengthMM}, Side B: {IRC.BaseLengthMM}, Side C: {Math.Round(SideC, 3)}" + Environment.NewLine;
-            //return SideC.ToString();
+            return (int)Math.Round(SideC);
         }
 
         private void Servo1Scroll_MouseCaptureChanged(object sender, EventArgs e)
@@ -601,39 +564,48 @@ namespace IRIS
 
         private void GoToResetPos()
         {
-            SendCommands("Servo3", IRC.Servo3Def.ToString()); Thread.Sleep(500);
-            SendCommands("Servo2", IRC.Servo2Def.ToString()); Thread.Sleep(500);
-            SendCommands("Servo1", IRC.Servo1Def.ToString()); Thread.Sleep(500);
-            SendCommands("Servo4", IRC.Servo4Def.ToString()); Thread.Sleep(500);
-            SendCommands("Servo5", IRC.Servo5Def.ToString()); Thread.Sleep(500);
-
-            Servo1Scroll.Value = IRC.Servo1Def;
-            Servo2Scroll.Value = IRC.Servo2Def;
-            Servo3Scroll.Value = IRC.Servo3Def;
-            Servo4Scroll.Value = IRC.Servo4Def;
-            Servo5Scroll.Value = IRC.Servo5Def;
+            SendCommands("Servo3", IRC.ServoDefaultPosition.Servo3Val.ToString()); Thread.Sleep(600);
+            SendCommands("Servo2", IRC.ServoDefaultPosition.Servo2Val.ToString()); Thread.Sleep(600);
+            SendCommands("Servo1", IRC.ServoDefaultPosition.Servo1Val.ToString()); Thread.Sleep(600);
+            SendCommands("Servo4", IRC.ServoDefaultPosition.Servo4Val.ToString()); Thread.Sleep(600);
+            SendCommands("Servo5", IRC.ServoDefaultPosition.Servo5Val.ToString());
+            DisplayServoValues(IRC.ServoDefaultPosition);
         }
 
         private void GoToDropoffPos(string Type)
         {
             if(Type == "Type 1")
             {
-                SendCommands("Servo2", "60"); Thread.Sleep(500);
-                SendCommands("Servo3", "67"); Thread.Sleep(500);
-                SendCommands("Servo1", "170"); Thread.Sleep(500);
-                SendCommands("Servo5", "87"); Thread.Sleep(500);
-
-                Servo1Scroll.Value = IRC.Servo1Def;
-                Servo2Scroll.Value = IRC.Servo2Def;
-                Servo3Scroll.Value = IRC.Servo3Def;
-                Servo4Scroll.Value = IRC.Servo4Def;
-                Servo5Scroll.Value = IRC.Servo5Def;
+                SendCommands("Servo2", IRC.DropType1Position.Servo2Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo3", IRC.DropType1Position.Servo3Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo1", IRC.DropType1Position.Servo1Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo5", IRC.DropType1Position.Servo5Val.ToString()); Thread.Sleep(500);
+                DisplayServoValues(IRC.DropType1Position);
             }
             else
             {
-
+                SendCommands("Servo2", IRC.DropType2Position.Servo2Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo3", IRC.DropType2Position.Servo3Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo1", IRC.DropType2Position.Servo1Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo5", IRC.DropType2Position.Servo5Val.ToString()); Thread.Sleep(500);
+                DisplayServoValues(IRC.DropType2Position);
             }
+            
+        }
 
+        private void DisplayServoValues(PickupPoint PP)
+        {
+            Servo1Scroll.Value = PP.Servo1Val;
+            Servo2Scroll.Value = PP.Servo2Val;
+            Servo3Scroll.Value = PP.Servo3Val;
+            Servo4Scroll.Value = PP.Servo4Val;
+            Servo5Scroll.Value = PP.Servo5Val;
+
+            lblServo1Value.Text = Servo1Scroll.Value.ToString();
+            lblServo2Value.Text = Servo2Scroll.Value.ToString();
+            lblServo3Value.Text = Servo3Scroll.Value.ToString();
+            lblServo4Value.Text = Servo4Scroll.Value.ToString();
+            lblServo5Value.Text = Servo5Scroll.Value.ToString();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -718,27 +690,15 @@ namespace IRIS
             IRC.ComPortIndex = cbSerialPort.SelectedIndex;
             IRC.BaudRateIndex = cbBaudRate.SelectedIndex;
 
-            IRC.Servo1Min = Servo1Scroll.Minimum;
-            IRC.Servo2Min = Servo2Scroll.Minimum;
-            IRC.Servo3Min = Servo3Scroll.Minimum;
-            IRC.Servo4Min = Servo4Scroll.Minimum;
-            IRC.Servo5Min = Servo5Scroll.Minimum;
-
-            IRC.Servo1Max = Servo1Scroll.Maximum;
-            IRC.Servo2Max = Servo2Scroll.Maximum;
-            IRC.Servo3Max = Servo3Scroll.Maximum;
-            IRC.Servo4Max = Servo4Scroll.Maximum;
-            IRC.Servo5Max = Servo5Scroll.Maximum;
-
-            IRC.Servo1Val = Servo1Scroll.Value;
-            IRC.Servo2Val = Servo2Scroll.Value;
-            IRC.Servo3Val = Servo3Scroll.Value;
-            IRC.Servo4Val = Servo4Scroll.Value;
-            IRC.Servo5Val = Servo5Scroll.Value;
+            IRC.ServoPreviousPosition.Servo1Val = Servo1Scroll.Value;
+            IRC.ServoPreviousPosition.Servo2Val = Servo2Scroll.Value;
+            IRC.ServoPreviousPosition.Servo3Val = Servo3Scroll.Value;
+            IRC.ServoPreviousPosition.Servo4Val = Servo4Scroll.Value;
+            IRC.ServoPreviousPosition.Servo5Val = Servo5Scroll.Value;
             IRC.UsePreviousValues = cbSaveValues.Checked;
 
             SaveToXML<IRISConfig>(IRC, "Config.xml");
-            SaveToXML<List<List<PickupPoint>>>(PickupMatrix, "ListOfPickupPoints.xml");
+            SaveToXML<List<PickupPoint>>(PickupList, "ListOfPickupPoints.xml");
         }
 
         public void SaveToXML<T>(T serializableObject, string _FileName)
@@ -749,7 +709,6 @@ namespace IRIS
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 XmlSerializer serializer = new XmlSerializer(serializableObject.GetType());
-                //XmlSerializer serializer = XmlSerializer.FromTypes(new[] { typeof(IronManConfig) })[0];
                 using (MemoryStream stream = new MemoryStream())
                 {
                     serializer.Serialize(stream, serializableObject);
@@ -806,30 +765,30 @@ namespace IRIS
 
         private void button6_Click(object sender, EventArgs e)
         {
-            int X = int.Parse(tbMatrixX.Text);
-            int Y = int.Parse(tbMatrixY.Text);
-            PickupPoint PO = PickupMatrix[X][Y];
-            if(!cbIgnoreXY.Checked)
-            {
-                PO.StartX = int.Parse(tbStartX.Text);
-                PO.StartY = int.Parse(tbStartY.Text);
-                PO.EndX = int.Parse(tbEndX.Text);
-                PO.EndY = int.Parse(tbEndY.Text);
-            }
-            if(string.IsNullOrWhiteSpace(tbS1Val.Text) || string.IsNullOrWhiteSpace(tbS2Val.Text) || string.IsNullOrWhiteSpace(tbS3Val.Text))
-            {
-                PO.Servo1Val = Servo1Scroll.Value;
-                PO.Servo2Val = Servo2Scroll.Value;
-                PO.Servo3Val = Servo3Scroll.Value;
-            }
-            else
-            {
-                PO.Servo1Val = int.Parse(tbS1Val.Text);
-                PO.Servo2Val = int.Parse(tbS2Val.Text);
-                PO.Servo3Val = int.Parse(tbS3Val.Text);
-            }
+            //int X = int.Parse(tbMatrixX.Text);
+            //int Y = int.Parse(tbMatrixY.Text);
+            //PickupPoint PO = PickupMatrix[X][Y];
+            //if(!cbIgnoreXY.Checked)
+            //{
+            //    PO.StartX = int.Parse(tbStartX.Text);
+            //    PO.StartY = int.Parse(tbStartY.Text);
+            //    PO.EndX = int.Parse(tbEndX.Text);
+            //    PO.EndY = int.Parse(tbEndY.Text);
+            //}
+            //if(string.IsNullOrWhiteSpace(tbS1Val.Text) || string.IsNullOrWhiteSpace(tbS2Val.Text) || string.IsNullOrWhiteSpace(tbS3Val.Text))
+            //{
+            //    PO.Servo1Val = Servo1Scroll.Value;
+            //    PO.Servo2Val = Servo2Scroll.Value;
+            //    PO.Servo3Val = Servo3Scroll.Value;
+            //}
+            //else
+            //{
+            //    PO.Servo1Val = int.Parse(tbS1Val.Text);
+            //    PO.Servo2Val = int.Parse(tbS2Val.Text);
+            //    PO.Servo3Val = int.Parse(tbS3Val.Text);
+            //}
 
-            PO.IsValid = true;
+            //PO.IsValid = true;
         }
 
         private void originalImageBox_DoubleClick(object sender, EventArgs e)
@@ -840,23 +799,35 @@ namespace IRIS
         }
 
         private void button7_Click(object sender, EventArgs e)
-        { }
+        {
+            double Samples = IRC.PickupPointSamples;
+            double DeltaServo2 = (IRC.PickupPointEnd.Servo2Val - IRC.PickupPointStart.Servo2Val) / Samples;
+            double DeltaServo3 = (IRC.PickupPointEnd.Servo3Val - IRC.PickupPointStart.Servo3Val) / Samples;
+            double DeltaDistance = (IRC.PickupPointEnd.Distance - IRC.PickupPointStart.Distance) / Samples;
+            PickupList = new List<PickupPoint>();
+            for (int i = 0; i <= Samples; i++)
+            {
+                double NewDistance = IRC.PickupPointStart.Distance + (i * DeltaDistance);
+                int Servo2 = (int)Math.Round(IRC.PickupPointStart.Servo2Val + (i * DeltaServo2));
+                int Servo3 = (int)Math.Round(IRC.PickupPointStart.Servo3Val + (i * DeltaServo3));
+                PickupList.Add(new PickupPoint { Distance = (int)Math.Round(NewDistance), Servo2Val = Servo2 , Servo3Val = Servo3});
+            }
+        }
 
         private void btnSearchMatrix_Click(object sender, EventArgs e)
         {
-            PickupPoint PP = PickupMatrix[int.Parse(tbMatrixX.Text)][int.Parse(tbMatrixY.Text)];
-            tbS1Val.Text = PP.Servo1Val.ToString();
-            tbS2Val.Text = PP.Servo2Val.ToString();
-            tbS3Val.Text = PP.Servo3Val.ToString();
-            tbEndX.Text = PP.EndX.ToString();
-            tbEndY.Text = PP.EndY.ToString();
-            tbStartX.Text = PP.StartX.ToString();
-            tbStartY.Text = PP.StartY.ToString();
+            //PickupPoint PP = PickupMatrix[int.Parse(tbMatrixX.Text)][int.Parse(tbMatrixY.Text)];
+            //tbS1Val.Text = PP.Servo1Val.ToString();
+            //tbS2Val.Text = PP.Servo2Val.ToString();
+            //tbS3Val.Text = PP.Servo3Val.ToString();
+            //tbEndX.Text = PP.EndX.ToString();
+            //tbEndY.Text = PP.EndY.ToString();
+            //tbStartX.Text = PP.StartX.ToString();
+            //tbStartY.Text = PP.StartY.ToString();
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

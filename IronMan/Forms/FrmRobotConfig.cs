@@ -37,11 +37,11 @@ namespace IRIS.Forms
             tbWAEMY.Text = IMC.WAMaxMiddle.Y.ToString();
             tbWAEEY.Text = IMC.WAMaxEnd.Y.ToString();
 
-            tbSR1.Text = IMC.Servo1Def.ToString();
-            tbSR2.Text = IMC.Servo2Def.ToString();
-            tbSR3.Text = IMC.Servo3Def.ToString();
-            tbSR4.Text = IMC.Servo4Def.ToString();
-            tbSR5.Text = IMC.Servo5Def.ToString();
+            tbSR1.Text = IMC.ServoDefaultPosition.Servo1Val.ToString();
+            tbSR2.Text = IMC.ServoDefaultPosition.Servo2Val.ToString();
+            tbSR3.Text = IMC.ServoDefaultPosition.Servo3Val.ToString();
+            tbSR4.Text = IMC.ServoDefaultPosition.Servo4Val.ToString();
+            tbSR5.Text = IMC.ServoDefaultPosition.Servo5Val.ToString();
         }
 
         private void FrmRobotConfig_FormClosing(object sender, FormClosingEventArgs e)
@@ -55,11 +55,11 @@ namespace IRIS.Forms
             IMC.WAMaxMiddle = new Point(int.Parse(tbWAEMX.Text), int.Parse(tbWAEMY.Text));
             IMC.WAMaxEnd   = new Point(int.Parse(tbWAEEX.Text), int.Parse(tbWAEEY.Text));
 
-            IMC.Servo1Def = int.Parse(tbSR1.Text);
-            IMC.Servo2Def  = int.Parse(tbSR2.Text);
-            IMC.Servo3Def   = int.Parse(tbSR3.Text);
-            IMC.Servo4Def    = int.Parse(tbSR4.Text);
-            IMC.Servo5Def = int.Parse(tbSR5.Text);
+            IMC.ServoDefaultPosition.Servo1Val = int.Parse(tbSR1.Text);
+            IMC.ServoDefaultPosition.Servo2Val = int.Parse(tbSR2.Text);
+            IMC.ServoDefaultPosition.Servo3Val = int.Parse(tbSR3.Text);
+            IMC.ServoDefaultPosition.Servo4Val = int.Parse(tbSR4.Text);
+            IMC.ServoDefaultPosition.Servo5Val = int.Parse(tbSR5.Text);
         }
 
     }

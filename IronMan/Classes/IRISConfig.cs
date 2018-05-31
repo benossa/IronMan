@@ -1,4 +1,5 @@
 ﻿//using IRIS.Classes;
+using IRIS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -30,9 +31,12 @@ namespace IRIS
                
         public int RobotShapeX { get; set; }
         public int RobotShapeY { get; set; }
+        public int RobotShapeCenterRotation { get; set; }
         public int RobotShapeWidth { get; set; }
         public int RobotShapeHeight { get; set; }
-               
+        public PickupPoint PickupPointStart { get; set; }
+        public PickupPoint PickupPointEnd { get; set; }
+        public int PickupPointSamples { get; set; }
         //WA = working Area
         public Point WAMaxStart { get; set; }
         public Point WAMaxMiddle { get; set; }
@@ -56,34 +60,12 @@ namespace IRIS
 
         public bool UsePreviousValues { get; set; }
         public bool UseProgramming { get; set; }
-        public int Servo1Def { get; set; }
-        public int Servo2Def { get; set; }
-        public int Servo3Def { get; set; }
-        public int Servo4Def { get; set; }
-        public int Servo5Def { get; set; }
 
-        public int Servo1Min { get; set; }
-        public int Servo2Min { get; set; }
-        public int Servo3Min { get; set; }
-        public int Servo4Min { get; set; }
-        public int Servo5Min { get; set; }
-
-        public int Servo1Max { get; set; }
-        public int Servo2Max { get; set; }
-        public int Servo3Max { get; set; }
-        public int Servo4Max { get; set; }
-        public int Servo5Max { get; set; }
-
-        public int Servo1Val { get; set; }
-        public int Servo2Val { get; set; }
-        public int Servo3Val { get; set; }
-        public int Servo4Val { get; set; }
-        public int Servo5Val { get; set; }
-
-        public int Servo1Zero { get; set; }
-        public int Servo2Zero { get; set; }
-        public int Servo3Zero { get; set; }
-        public int Servo4Zero { get; set; }
-        public int Servo5Zero { get; set; }
+        public PickupPoint ServoDefaultPosition { get; set; }
+        public PickupPoint ServoMinPosition { get; set; }
+        public PickupPoint ServoMaxPosition { get; set; }
+        public PickupPoint ServoPreviousPosition { get; set; }
+        public PickupPoint DropType1Position { get; set; }
+        public PickupPoint DropType2Position { get; set; }
     }
 }

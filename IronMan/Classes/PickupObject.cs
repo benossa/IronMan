@@ -14,5 +14,6 @@ namespace IRIS
         public double Size { get; set; }
         public float Angle { get; set; }
         public bool InRange { get; set; }
+        public int Distance { get; set; }
     }
 }

@@ -106,7 +106,6 @@
             this.Servo4Scroll = new System.Windows.Forms.HScrollBar();
             this.lblServo4Value = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
-            this.label28 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
@@ -949,15 +948,6 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(1301, 449);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(41, 13);
-            this.label28.TabIndex = 52;
-            this.label28.Text = "label28";
-            // 
             // label29
             // 
             this.label29.AutoSize = true;
@@ -1280,7 +1270,7 @@
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(177, 43);
             this.button7.TabIndex = 63;
-            this.button7.Text = "Test";
+            this.button7.Text = "Calibrate Pickup Points";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
@@ -1300,7 +1290,6 @@
             this.Controls.Add(this.label31);
             this.Controls.Add(this.label30);
             this.Controls.Add(this.label29);
-            this.Controls.Add(this.label28);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.Servo5Scroll);
             this.Controls.Add(this.lblServo5Value);
@@ -1461,7 +1450,6 @@
         private System.Windows.Forms.HScrollBar Servo4Scroll;
         private System.Windows.Forms.Label lblServo4Value;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label31;
