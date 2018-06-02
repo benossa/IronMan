@@ -77,15 +77,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.tbRobotPosWidth = new System.Windows.Forms.TextBox();
-            this.tbRobotPosHeight = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.tbRobotPosY = new System.Windows.Forms.TextBox();
-            this.tbRobotPosX = new System.Windows.Forms.TextBox();
-            this.btnCloseSerial = new System.Windows.Forms.Button();
+            this.cbAutoSort = new System.Windows.Forms.CheckBox();
             this.btnOpenSerial = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
             this.cbBaudRate = new System.Windows.Forms.ComboBox();
@@ -114,30 +106,12 @@
             this.btnOpenRobotConfig = new System.Windows.Forms.Button();
             this.cbSaveValues = new System.Windows.Forms.CheckBox();
             this.tbServoValues = new System.Windows.Forms.TextBox();
-            this.button6 = new System.Windows.Forms.Button();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.tbMatrixY = new System.Windows.Forms.TextBox();
-            this.tbMatrixX = new System.Windows.Forms.TextBox();
             this.GBProgramming = new System.Windows.Forms.GroupBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
-            this.cbIgnoreXY = new System.Windows.Forms.CheckBox();
-            this.tbStartX = new System.Windows.Forms.TextBox();
-            this.tbEndY = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.tbStartY = new System.Windows.Forms.TextBox();
-            this.label37 = new System.Windows.Forms.Label();
-            this.tbEndX = new System.Windows.Forms.TextBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.tbS3Val = new System.Windows.Forms.TextBox();
-            this.btnSearchMatrix = new System.Windows.Forms.Button();
-            this.tbS2Val = new System.Windows.Forms.TextBox();
-            this.tbS1Val = new System.Windows.Forms.TextBox();
             this.button7 = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type1mageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Type2ImageBox)).BeginInit();
@@ -158,8 +132,6 @@
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.GBProgramming.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -177,7 +149,7 @@
             this.fileNameTextBox.Name = "fileNameTextBox";
             this.fileNameTextBox.Size = new System.Drawing.Size(103, 20);
             this.fileNameTextBox.TabIndex = 1;
-            this.fileNameTextBox.Text = "Slika2.png";
+            this.fileNameTextBox.Text = "SourceImg.jpeg";
             // 
             // button1
             // 
@@ -465,10 +437,10 @@
             // 
             // tbCoordinates
             // 
-            this.tbCoordinates.Location = new System.Drawing.Point(950, 449);
+            this.tbCoordinates.Location = new System.Drawing.Point(950, 461);
             this.tbCoordinates.Multiline = true;
             this.tbCoordinates.Name = "tbCoordinates";
-            this.tbCoordinates.Size = new System.Drawing.Size(187, 265);
+            this.tbCoordinates.Size = new System.Drawing.Size(187, 253);
             this.tbCoordinates.TabIndex = 18;
             // 
             // tbSizeMin
@@ -624,116 +596,29 @@
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.label21);
-            this.groupBox8.Controls.Add(this.label22);
-            this.groupBox8.Controls.Add(this.tbRobotPosWidth);
-            this.groupBox8.Controls.Add(this.tbRobotPosHeight);
-            this.groupBox8.Controls.Add(this.label20);
-            this.groupBox8.Controls.Add(this.label19);
-            this.groupBox8.Controls.Add(this.tbRobotPosY);
-            this.groupBox8.Controls.Add(this.tbRobotPosX);
+            this.groupBox8.Controls.Add(this.cbAutoSort);
             this.groupBox8.Location = new System.Drawing.Point(828, 12);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(309, 50);
             this.groupBox8.TabIndex = 30;
             this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Robot Position";
+            this.groupBox8.Text = "Control";
             // 
-            // label21
+            // cbAutoSort
             // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label21.Location = new System.Drawing.Point(161, 20);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(25, 17);
-            this.label21.TabIndex = 36;
-            this.label21.Text = "W:";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label22.Location = new System.Drawing.Point(234, 20);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(22, 17);
-            this.label22.TabIndex = 35;
-            this.label22.Text = "H:";
-            // 
-            // tbRobotPosWidth
-            // 
-            this.tbRobotPosWidth.Location = new System.Drawing.Point(186, 19);
-            this.tbRobotPosWidth.Name = "tbRobotPosWidth";
-            this.tbRobotPosWidth.Size = new System.Drawing.Size(41, 20);
-            this.tbRobotPosWidth.TabIndex = 34;
-            this.tbRobotPosWidth.Text = "310";
-            this.tbRobotPosWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbRobotPosWidth.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadRobotPosition);
-            // 
-            // tbRobotPosHeight
-            // 
-            this.tbRobotPosHeight.Location = new System.Drawing.Point(256, 19);
-            this.tbRobotPosHeight.Name = "tbRobotPosHeight";
-            this.tbRobotPosHeight.Size = new System.Drawing.Size(44, 20);
-            this.tbRobotPosHeight.TabIndex = 33;
-            this.tbRobotPosHeight.Text = "25";
-            this.tbRobotPosHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbRobotPosHeight.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadRobotPosition);
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label20.Location = new System.Drawing.Point(84, 20);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(21, 17);
-            this.label20.TabIndex = 32;
-            this.label20.Text = "Y:";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label19.Location = new System.Drawing.Point(6, 20);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(21, 17);
-            this.label19.TabIndex = 31;
-            this.label19.Text = "X:";
-            // 
-            // tbRobotPosY
-            // 
-            this.tbRobotPosY.Location = new System.Drawing.Point(105, 19);
-            this.tbRobotPosY.Name = "tbRobotPosY";
-            this.tbRobotPosY.Size = new System.Drawing.Size(41, 20);
-            this.tbRobotPosY.TabIndex = 1;
-            this.tbRobotPosY.Text = "0";
-            this.tbRobotPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbRobotPosY.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadRobotPosition);
-            // 
-            // tbRobotPosX
-            // 
-            this.tbRobotPosX.Location = new System.Drawing.Point(27, 19);
-            this.tbRobotPosX.Name = "tbRobotPosX";
-            this.tbRobotPosX.Size = new System.Drawing.Size(44, 20);
-            this.tbRobotPosX.TabIndex = 0;
-            this.tbRobotPosX.Text = "630";
-            this.tbRobotPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbRobotPosX.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadRobotPosition);
-            // 
-            // btnCloseSerial
-            // 
-            this.btnCloseSerial.Location = new System.Drawing.Point(1153, 146);
-            this.btnCloseSerial.Name = "btnCloseSerial";
-            this.btnCloseSerial.Size = new System.Drawing.Size(177, 23);
-            this.btnCloseSerial.TabIndex = 38;
-            this.btnCloseSerial.Text = "Close Serial";
-            this.btnCloseSerial.UseVisualStyleBackColor = true;
-            this.btnCloseSerial.Click += new System.EventHandler(this.btnCloseSerial_Click);
+            this.cbAutoSort.AutoSize = true;
+            this.cbAutoSort.Location = new System.Drawing.Point(9, 21);
+            this.cbAutoSort.Name = "cbAutoSort";
+            this.cbAutoSort.Size = new System.Drawing.Size(135, 17);
+            this.cbAutoSort.TabIndex = 0;
+            this.cbAutoSort.Text = "Automatically sort items";
+            this.cbAutoSort.UseVisualStyleBackColor = true;
             // 
             // btnOpenSerial
             // 
-            this.btnOpenSerial.Location = new System.Drawing.Point(1153, 117);
+            this.btnOpenSerial.Location = new System.Drawing.Point(1153, 111);
             this.btnOpenSerial.Name = "btnOpenSerial";
-            this.btnOpenSerial.Size = new System.Drawing.Size(177, 23);
+            this.btnOpenSerial.Size = new System.Drawing.Size(177, 42);
             this.btnOpenSerial.TabIndex = 37;
             this.btnOpenSerial.Text = "Open Serial";
             this.btnOpenSerial.UseVisualStyleBackColor = true;
@@ -1019,65 +904,16 @@
             // 
             // tbServoValues
             // 
-            this.tbServoValues.Location = new System.Drawing.Point(757, 449);
+            this.tbServoValues.Location = new System.Drawing.Point(757, 461);
             this.tbServoValues.Multiline = true;
             this.tbServoValues.Name = "tbServoValues";
-            this.tbServoValues.Size = new System.Drawing.Size(187, 265);
+            this.tbServoValues.Size = new System.Drawing.Size(187, 253);
             this.tbServoValues.TabIndex = 60;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(4, 211);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(177, 24);
-            this.button6.TabIndex = 61;
-            this.button6.Text = "Save Servo Values";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label32.Location = new System.Drawing.Point(73, 20);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(21, 17);
-            this.label32.TabIndex = 40;
-            this.label32.Text = "Y:";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label33.Location = new System.Drawing.Point(5, 20);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(21, 17);
-            this.label33.TabIndex = 39;
-            this.label33.Text = "X:";
-            // 
-            // tbMatrixY
-            // 
-            this.tbMatrixY.Location = new System.Drawing.Point(93, 19);
-            this.tbMatrixY.Name = "tbMatrixY";
-            this.tbMatrixY.Size = new System.Drawing.Size(41, 20);
-            this.tbMatrixY.TabIndex = 38;
-            this.tbMatrixY.Text = "0";
-            this.tbMatrixY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbMatrixX
-            // 
-            this.tbMatrixX.Location = new System.Drawing.Point(27, 19);
-            this.tbMatrixX.Name = "tbMatrixX";
-            this.tbMatrixX.Size = new System.Drawing.Size(44, 20);
-            this.tbMatrixX.TabIndex = 37;
-            this.tbMatrixX.Text = "0";
-            this.tbMatrixX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // GBProgramming
             // 
             this.GBProgramming.Controls.Add(this.groupBox10);
             this.GBProgramming.Controls.Add(this.groupBox9);
-            this.GBProgramming.Controls.Add(this.button6);
             this.GBProgramming.Location = new System.Drawing.Point(566, 444);
             this.GBProgramming.Name = "GBProgramming";
             this.GBProgramming.Size = new System.Drawing.Size(185, 239);
@@ -1087,17 +923,6 @@
             // 
             // groupBox10
             // 
-            this.groupBox10.Controls.Add(this.label39);
-            this.groupBox10.Controls.Add(this.label38);
-            this.groupBox10.Controls.Add(this.cbIgnoreXY);
-            this.groupBox10.Controls.Add(this.tbStartX);
-            this.groupBox10.Controls.Add(this.tbEndY);
-            this.groupBox10.Controls.Add(this.label35);
-            this.groupBox10.Controls.Add(this.label36);
-            this.groupBox10.Controls.Add(this.label34);
-            this.groupBox10.Controls.Add(this.tbStartY);
-            this.groupBox10.Controls.Add(this.label37);
-            this.groupBox10.Controls.Add(this.tbEndX);
             this.groupBox10.Location = new System.Drawing.Point(6, 111);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(173, 100);
@@ -1105,164 +930,14 @@
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Pixel range";
             // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label39.Location = new System.Drawing.Point(116, 15);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(33, 17);
-            this.label39.TabIndex = 71;
-            this.label39.Text = "End";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label38.Location = new System.Drawing.Point(39, 14);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(38, 17);
-            this.label38.TabIndex = 70;
-            this.label38.Text = "Start";
-            // 
-            // cbIgnoreXY
-            // 
-            this.cbIgnoreXY.AutoSize = true;
-            this.cbIgnoreXY.Checked = true;
-            this.cbIgnoreXY.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbIgnoreXY.Location = new System.Drawing.Point(39, 79);
-            this.cbIgnoreXY.Name = "cbIgnoreXY";
-            this.cbIgnoreXY.Size = new System.Drawing.Size(110, 17);
-            this.cbIgnoreXY.TabIndex = 63;
-            this.cbIgnoreXY.Text = "Ignore X,Y values";
-            this.cbIgnoreXY.UseVisualStyleBackColor = true;
-            // 
-            // tbStartX
-            // 
-            this.tbStartX.Location = new System.Drawing.Point(36, 33);
-            this.tbStartX.Name = "tbStartX";
-            this.tbStartX.Size = new System.Drawing.Size(44, 20);
-            this.tbStartX.TabIndex = 62;
-            this.tbStartX.Text = "0";
-            this.tbStartX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbEndY
-            // 
-            this.tbEndY.Location = new System.Drawing.Point(112, 59);
-            this.tbEndY.Name = "tbEndY";
-            this.tbEndY.Size = new System.Drawing.Size(41, 20);
-            this.tbEndY.TabIndex = 67;
-            this.tbEndY.Text = "0";
-            this.tbEndY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label35.Location = new System.Drawing.Point(17, 34);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(21, 17);
-            this.label35.TabIndex = 64;
-            this.label35.Text = "X:";
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label36.Location = new System.Drawing.Point(91, 60);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(21, 17);
-            this.label36.TabIndex = 69;
-            this.label36.Text = "Y:";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label34.Location = new System.Drawing.Point(16, 57);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(21, 17);
-            this.label34.TabIndex = 65;
-            this.label34.Text = "Y:";
-            // 
-            // tbStartY
-            // 
-            this.tbStartY.Location = new System.Drawing.Point(36, 56);
-            this.tbStartY.Name = "tbStartY";
-            this.tbStartY.Size = new System.Drawing.Size(44, 20);
-            this.tbStartY.TabIndex = 63;
-            this.tbStartY.Text = "0";
-            this.tbStartY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label37.Location = new System.Drawing.Point(92, 34);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(21, 17);
-            this.label37.TabIndex = 68;
-            this.label37.Text = "X:";
-            // 
-            // tbEndX
-            // 
-            this.tbEndX.Location = new System.Drawing.Point(112, 33);
-            this.tbEndX.Name = "tbEndX";
-            this.tbEndX.Size = new System.Drawing.Size(41, 20);
-            this.tbEndX.TabIndex = 66;
-            this.tbEndX.Text = "0";
-            this.tbEndX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // groupBox9
             // 
-            this.groupBox9.Controls.Add(this.tbS3Val);
-            this.groupBox9.Controls.Add(this.btnSearchMatrix);
-            this.groupBox9.Controls.Add(this.tbMatrixX);
-            this.groupBox9.Controls.Add(this.tbS2Val);
-            this.groupBox9.Controls.Add(this.label33);
-            this.groupBox9.Controls.Add(this.tbS1Val);
-            this.groupBox9.Controls.Add(this.label32);
-            this.groupBox9.Controls.Add(this.tbMatrixY);
             this.groupBox9.Location = new System.Drawing.Point(6, 17);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(173, 88);
             this.groupBox9.TabIndex = 70;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Matrix Index";
-            // 
-            // tbS3Val
-            // 
-            this.tbS3Val.Location = new System.Drawing.Point(118, 59);
-            this.tbS3Val.Name = "tbS3Val";
-            this.tbS3Val.Size = new System.Drawing.Size(37, 20);
-            this.tbS3Val.TabIndex = 74;
-            this.tbS3Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // btnSearchMatrix
-            // 
-            this.btnSearchMatrix.Location = new System.Drawing.Point(137, 18);
-            this.btnSearchMatrix.Name = "btnSearchMatrix";
-            this.btnSearchMatrix.Size = new System.Drawing.Size(30, 23);
-            this.btnSearchMatrix.TabIndex = 41;
-            this.btnSearchMatrix.Text = "?";
-            this.btnSearchMatrix.UseVisualStyleBackColor = true;
-            this.btnSearchMatrix.Click += new System.EventHandler(this.btnSearchMatrix_Click);
-            // 
-            // tbS2Val
-            // 
-            this.tbS2Val.Location = new System.Drawing.Point(75, 59);
-            this.tbS2Val.Name = "tbS2Val";
-            this.tbS2Val.Size = new System.Drawing.Size(37, 20);
-            this.tbS2Val.TabIndex = 73;
-            this.tbS2Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbS1Val
-            // 
-            this.tbS1Val.Location = new System.Drawing.Point(32, 59);
-            this.tbS1Val.Name = "tbS1Val";
-            this.tbS1Val.Size = new System.Drawing.Size(37, 20);
-            this.tbS1Val.TabIndex = 72;
-            this.tbS1Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button7
             // 
@@ -1274,12 +949,32 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(1000, 444);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(77, 13);
+            this.label19.TabIndex = 64;
+            this.label19.Text = "Items detected";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(819, 444);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(64, 13);
+            this.label20.TabIndex = 65;
+            this.label20.Text = "Items sorted";
+            // 
             // ShapeDetection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1342, 722);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.label19);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.GBProgramming);
             this.Controls.Add(this.tbServoValues);
@@ -1303,7 +998,6 @@
             this.Controls.Add(this.lblServo2Value);
             this.Controls.Add(this.Servo1Scroll);
             this.Controls.Add(this.lblServo1Value);
-            this.Controls.Add(this.btnCloseSerial);
             this.Controls.Add(this.btnOpenSerial);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.cbBaudRate);
@@ -1363,10 +1057,6 @@
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.GBProgramming.ResumeLayout(false);
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1421,15 +1111,6 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button btnTimer;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.TextBox tbRobotPosY;
-        private System.Windows.Forms.TextBox tbRobotPosX;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox tbRobotPosWidth;
-        private System.Windows.Forms.TextBox tbRobotPosHeight;
-        private System.Windows.Forms.Button btnCloseSerial;
         private System.Windows.Forms.Button btnOpenSerial;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.ComboBox cbBaudRate;
@@ -1458,30 +1139,13 @@
         private System.Windows.Forms.Button btnOpenRobotConfig;
         private System.Windows.Forms.CheckBox cbSaveValues;
         private System.Windows.Forms.TextBox tbServoValues;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.TextBox tbMatrixY;
-        private System.Windows.Forms.TextBox tbMatrixX;
         private System.Windows.Forms.GroupBox GBProgramming;
-        private System.Windows.Forms.TextBox tbEndY;
-        private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.TextBox tbEndX;
-        private System.Windows.Forms.Label label37;
-        private System.Windows.Forms.TextBox tbStartY;
-        private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.TextBox tbStartX;
-        private System.Windows.Forms.Label label35;
         private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.CheckBox cbIgnoreXY;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.TextBox tbS3Val;
-        private System.Windows.Forms.Button btnSearchMatrix;
-        private System.Windows.Forms.TextBox tbS2Val;
-        private System.Windows.Forms.TextBox tbS1Val;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.CheckBox cbAutoSort;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
     }
 }

@@ -63,9 +63,43 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tbSR2 = new System.Windows.Forms.TextBox();
             this.tbSR1 = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.tbRobotPosWidth = new System.Windows.Forms.TextBox();
+            this.tbRobotPosHeight = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tbRobotPosY = new System.Windows.Forms.TextBox();
+            this.tbRobotPosX = new System.Windows.Forms.TextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.tbDrop1S5 = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.tbDrop1S4 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.tbDrop1S3 = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.tbDrop1S2 = new System.Windows.Forms.TextBox();
+            this.tbDrop1S1 = new System.Windows.Forms.TextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.tbDrop2S5 = new System.Windows.Forms.TextBox();
+            this.tbDrop2S4 = new System.Windows.Forms.TextBox();
+            this.tbDrop2S3 = new System.Windows.Forms.TextBox();
+            this.tbDrop2S2 = new System.Windows.Forms.TextBox();
+            this.tbDrop2S1 = new System.Windows.Forms.TextBox();
             this.groupBox8.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox8
@@ -205,7 +239,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.tbWAEMX);
             this.groupBox1.Controls.Add(this.tbWAESX);
-            this.groupBox1.Location = new System.Drawing.Point(204, 12);
+            this.groupBox1.Location = new System.Drawing.Point(197, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(172, 117);
             this.groupBox1.TabIndex = 37;
@@ -430,11 +464,336 @@
             this.tbSR1.Text = "0";
             this.tbSR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label13);
+            this.groupBox3.Controls.Add(this.label22);
+            this.groupBox3.Controls.Add(this.tbRobotPosWidth);
+            this.groupBox3.Controls.Add(this.tbRobotPosHeight);
+            this.groupBox3.Controls.Add(this.label14);
+            this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Controls.Add(this.tbRobotPosY);
+            this.groupBox3.Controls.Add(this.tbRobotPosX);
+            this.groupBox3.Location = new System.Drawing.Point(382, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(172, 117);
+            this.groupBox3.TabIndex = 38;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Robot Position";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label13.Location = new System.Drawing.Point(90, 42);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(25, 17);
+            this.label13.TabIndex = 36;
+            this.label13.Text = "W:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label22.Location = new System.Drawing.Point(93, 67);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(22, 17);
+            this.label22.TabIndex = 35;
+            this.label22.Text = "H:";
+            // 
+            // tbRobotPosWidth
+            // 
+            this.tbRobotPosWidth.Location = new System.Drawing.Point(115, 41);
+            this.tbRobotPosWidth.Name = "tbRobotPosWidth";
+            this.tbRobotPosWidth.Size = new System.Drawing.Size(44, 20);
+            this.tbRobotPosWidth.TabIndex = 34;
+            this.tbRobotPosWidth.Text = "310";
+            this.tbRobotPosWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRobotPosHeight
+            // 
+            this.tbRobotPosHeight.Location = new System.Drawing.Point(115, 66);
+            this.tbRobotPosHeight.Name = "tbRobotPosHeight";
+            this.tbRobotPosHeight.Size = new System.Drawing.Size(44, 20);
+            this.tbRobotPosHeight.TabIndex = 33;
+            this.tbRobotPosHeight.Text = "25";
+            this.tbRobotPosHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label14.Location = new System.Drawing.Point(11, 68);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(21, 17);
+            this.label14.TabIndex = 32;
+            this.label14.Text = "Y:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label15.Location = new System.Drawing.Point(11, 43);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(21, 17);
+            this.label15.TabIndex = 31;
+            this.label15.Text = "X:";
+            // 
+            // tbRobotPosY
+            // 
+            this.tbRobotPosY.Location = new System.Drawing.Point(32, 67);
+            this.tbRobotPosY.Name = "tbRobotPosY";
+            this.tbRobotPosY.Size = new System.Drawing.Size(44, 20);
+            this.tbRobotPosY.TabIndex = 1;
+            this.tbRobotPosY.Text = "0";
+            this.tbRobotPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbRobotPosX
+            // 
+            this.tbRobotPosX.Location = new System.Drawing.Point(32, 42);
+            this.tbRobotPosX.Name = "tbRobotPosX";
+            this.tbRobotPosX.Size = new System.Drawing.Size(44, 20);
+            this.tbRobotPosX.TabIndex = 0;
+            this.tbRobotPosX.Text = "630";
+            this.tbRobotPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label16);
+            this.groupBox4.Controls.Add(this.tbDrop1S5);
+            this.groupBox4.Controls.Add(this.label17);
+            this.groupBox4.Controls.Add(this.tbDrop1S4);
+            this.groupBox4.Controls.Add(this.label18);
+            this.groupBox4.Controls.Add(this.tbDrop1S3);
+            this.groupBox4.Controls.Add(this.label23);
+            this.groupBox4.Controls.Add(this.label24);
+            this.groupBox4.Controls.Add(this.tbDrop1S2);
+            this.groupBox4.Controls.Add(this.tbDrop1S1);
+            this.groupBox4.Location = new System.Drawing.Point(197, 135);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(172, 156);
+            this.groupBox4.TabIndex = 42;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Type 1 drop position";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label16.Location = new System.Drawing.Point(20, 126);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(57, 17);
+            this.label16.TabIndex = 41;
+            this.label16.Text = "Servo 5";
+            // 
+            // tbDrop1S5
+            // 
+            this.tbDrop1S5.Location = new System.Drawing.Point(83, 125);
+            this.tbDrop1S5.Name = "tbDrop1S5";
+            this.tbDrop1S5.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop1S5.TabIndex = 40;
+            this.tbDrop1S5.Text = "0";
+            this.tbDrop1S5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label17.Location = new System.Drawing.Point(20, 100);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(57, 17);
+            this.label17.TabIndex = 39;
+            this.label17.Text = "Servo 4";
+            // 
+            // tbDrop1S4
+            // 
+            this.tbDrop1S4.Location = new System.Drawing.Point(83, 99);
+            this.tbDrop1S4.Name = "tbDrop1S4";
+            this.tbDrop1S4.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop1S4.TabIndex = 38;
+            this.tbDrop1S4.Text = "0";
+            this.tbDrop1S4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label18.Location = new System.Drawing.Point(20, 74);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(57, 17);
+            this.label18.TabIndex = 37;
+            this.label18.Text = "Servo 3";
+            // 
+            // tbDrop1S3
+            // 
+            this.tbDrop1S3.Location = new System.Drawing.Point(83, 73);
+            this.tbDrop1S3.Name = "tbDrop1S3";
+            this.tbDrop1S3.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop1S3.TabIndex = 36;
+            this.tbDrop1S3.Text = "0";
+            this.tbDrop1S3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label23.Location = new System.Drawing.Point(20, 48);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(57, 17);
+            this.label23.TabIndex = 35;
+            this.label23.Text = "Servo 2";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label24.Location = new System.Drawing.Point(21, 22);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(57, 17);
+            this.label24.TabIndex = 31;
+            this.label24.Text = "Servo 1";
+            // 
+            // tbDrop1S2
+            // 
+            this.tbDrop1S2.Location = new System.Drawing.Point(83, 47);
+            this.tbDrop1S2.Name = "tbDrop1S2";
+            this.tbDrop1S2.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop1S2.TabIndex = 1;
+            this.tbDrop1S2.Text = "0";
+            this.tbDrop1S2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbDrop1S1
+            // 
+            this.tbDrop1S1.Location = new System.Drawing.Point(83, 21);
+            this.tbDrop1S1.Name = "tbDrop1S1";
+            this.tbDrop1S1.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop1S1.TabIndex = 0;
+            this.tbDrop1S1.Text = "0";
+            this.tbDrop1S1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.tbDrop2S5);
+            this.groupBox5.Controls.Add(this.label25);
+            this.groupBox5.Controls.Add(this.tbDrop2S4);
+            this.groupBox5.Controls.Add(this.label26);
+            this.groupBox5.Controls.Add(this.tbDrop2S3);
+            this.groupBox5.Controls.Add(this.label27);
+            this.groupBox5.Controls.Add(this.tbDrop2S2);
+            this.groupBox5.Controls.Add(this.label28);
+            this.groupBox5.Controls.Add(this.tbDrop2S1);
+            this.groupBox5.Controls.Add(this.label29);
+            this.groupBox5.Location = new System.Drawing.Point(382, 135);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(172, 156);
+            this.groupBox5.TabIndex = 43;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Type 2 drop position";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label25.Location = new System.Drawing.Point(20, 126);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(57, 17);
+            this.label25.TabIndex = 41;
+            this.label25.Text = "Servo 5";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label26.Location = new System.Drawing.Point(20, 100);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(57, 17);
+            this.label26.TabIndex = 39;
+            this.label26.Text = "Servo 4";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label27.Location = new System.Drawing.Point(20, 74);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(57, 17);
+            this.label27.TabIndex = 37;
+            this.label27.Text = "Servo 3";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label28.Location = new System.Drawing.Point(20, 48);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(57, 17);
+            this.label28.TabIndex = 35;
+            this.label28.Text = "Servo 2";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label29.Location = new System.Drawing.Point(21, 22);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(57, 17);
+            this.label29.TabIndex = 31;
+            this.label29.Text = "Servo 1";
+            // 
+            // tbDrop2S5
+            // 
+            this.tbDrop2S5.Location = new System.Drawing.Point(84, 123);
+            this.tbDrop2S5.Name = "tbDrop2S5";
+            this.tbDrop2S5.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop2S5.TabIndex = 46;
+            this.tbDrop2S5.Text = "0";
+            this.tbDrop2S5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbDrop2S4
+            // 
+            this.tbDrop2S4.Location = new System.Drawing.Point(84, 97);
+            this.tbDrop2S4.Name = "tbDrop2S4";
+            this.tbDrop2S4.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop2S4.TabIndex = 45;
+            this.tbDrop2S4.Text = "0";
+            this.tbDrop2S4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbDrop2S3
+            // 
+            this.tbDrop2S3.Location = new System.Drawing.Point(84, 71);
+            this.tbDrop2S3.Name = "tbDrop2S3";
+            this.tbDrop2S3.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop2S3.TabIndex = 44;
+            this.tbDrop2S3.Text = "0";
+            this.tbDrop2S3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbDrop2S2
+            // 
+            this.tbDrop2S2.Location = new System.Drawing.Point(84, 45);
+            this.tbDrop2S2.Name = "tbDrop2S2";
+            this.tbDrop2S2.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop2S2.TabIndex = 43;
+            this.tbDrop2S2.Text = "0";
+            this.tbDrop2S2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbDrop2S1
+            // 
+            this.tbDrop2S1.Location = new System.Drawing.Point(84, 19);
+            this.tbDrop2S1.Name = "tbDrop2S1";
+            this.tbDrop2S1.Size = new System.Drawing.Size(44, 20);
+            this.tbDrop2S1.TabIndex = 42;
+            this.tbDrop2S1.Text = "0";
+            this.tbDrop2S1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // FrmRobotConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(387, 301);
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ClientSize = new System.Drawing.Size(566, 301);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox8);
@@ -453,6 +812,12 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -494,5 +859,36 @@
         private System.Windows.Forms.TextBox tbWAEEY;
         private System.Windows.Forms.TextBox tbWAEMY;
         private System.Windows.Forms.TextBox tbWAESY;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox tbRobotPosWidth;
+        private System.Windows.Forms.TextBox tbRobotPosHeight;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tbRobotPosY;
+        private System.Windows.Forms.TextBox tbRobotPosX;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox tbDrop1S5;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox tbDrop1S4;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox tbDrop1S3;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox tbDrop1S2;
+        private System.Windows.Forms.TextBox tbDrop1S1;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox tbDrop2S5;
+        private System.Windows.Forms.TextBox tbDrop2S4;
+        private System.Windows.Forms.TextBox tbDrop2S3;
+        private System.Windows.Forms.TextBox tbDrop2S2;
+        private System.Windows.Forms.TextBox tbDrop2S1;
     }
 }

@@ -59,7 +59,7 @@ namespace IRIS
         public int MatrixSizeY { get; set; }
 
         public bool UsePreviousValues { get; set; }
-        public bool UseProgramming { get; set; }
+        public bool UseCalibrating { get; set; }
 
         public PickupPoint ServoDefaultPosition { get; set; }
         public PickupPoint ServoMinPosition { get; set; }

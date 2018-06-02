@@ -29,16 +29,6 @@ namespace IRIS
             InitializeComponent();
             IRC = ReadFromXML<IRISConfig>("Config.xml");
             PickupList = new List<PickupPoint>();
-            
-            //PickupMatrix = new List<List<PickupPoint>>();
-            //for (int i = 0; i < IRC.MatrixSizeX; i++)
-            //{
-            //    PickupMatrix.Add(new List<PickupPoint>());
-            //    for (int j = 0; j < IRC.MatrixSizeY; j++)
-            //    {
-            //        PickupMatrix[i].Add(new PickupPoint(0,0,0,false,i,j,0,0,0,0));
-            //    }
-            //}
             PickupObjects = new List<PickupObject>();
             serial = new SerialPort();
         }
@@ -211,13 +201,6 @@ namespace IRIS
             };
             NewSourceImg.DrawPolyline(WorkingAreaPoints, true, new Bgr(Color.Yellow), 4);
 
-            //foreach (var PP in PickupMatrix)
-            //{
-            //    foreach (PickupPoint PO in PP.Where(X=>X.IsValid))
-            //    {
-            //        NewSourceImg.Draw(new Rectangle(PO.StartX,PO.StartY, PO.EndX - PO.StartX, PO.EndY - PO.StartY), new Bgr(Color.Blue), 2);
-            //    }
-            //}
             originalImageBox.Image = NewSourceImg.ToBitmap();
             originalImageBox.Refresh();
         }
@@ -268,8 +251,9 @@ namespace IRIS
             DetectRectangles(true);
             DetectRectangles(false);
             watch.Stop();
-            //button3_Click(null, null);
             label2.Text = (String.Format("Rectangles - {0} ms; ", watch.ElapsedMilliseconds));
+            if(cbAutoSort.Checked)
+                SortObjects();
         }
 
         private void ShapeDetection_Load(object sender, EventArgs e)
@@ -323,11 +307,6 @@ namespace IRIS
             label9.Text = "Min: " + Bar7.Value.ToString();
             label10.Text = "Max: " + Bar8.Value.ToString();
 
-
-            tbRobotPosX.Text = IRC.RobotShapeX.ToString();
-            tbRobotPosY.Text = IRC.RobotShapeY.ToString();
-            tbRobotPosWidth.Text = IRC.RobotShapeWidth.ToString();
-            tbRobotPosHeight.Text = IRC.RobotShapeHeight.ToString();
             tbSizeMax.Text = IRC.SizeTresholxMax.ToString();
             tbSizeMin.Text = IRC.SizeTresholdMin.ToString();
             tbCannyTreshold.Text = IRC.CannyTreshold.ToString();
@@ -347,8 +326,8 @@ namespace IRIS
             cbSerialPort.SelectedIndex = IRC.ComPortIndex;
             cbBaudRate.SelectedIndex = IRC.BaudRateIndex;
             SerialData = "";
-            GBProgramming.Visible = IRC.UseProgramming;
-            tbServoValues.Visible = IRC.UseProgramming;
+            GBProgramming.Visible = IRC.UseCalibrating;
+            tbServoValues.Visible = IRC.UseCalibrating;
         }
 
         public void HandleTimerElapsed(object sender, ElapsedEventArgs e)
@@ -426,23 +405,11 @@ namespace IRIS
 
         private void btnOpenSerial_Click(object sender, EventArgs e)
         {
-            OpenSerialPort();
-        }
-
-        private void btnCloseSerial_Click(object sender, EventArgs e)
-        {
-            if (serial.IsOpen)
-                serial.Close();
-            lblPortStatus.Text = serial.IsOpen ? "Open" : "Closed";
+            OpenSerialPort(sender,e);
         }
 
         private void ReadRobotPosition(object sender, KeyEventArgs e)
         {
-            IRC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
-            IRC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
-            IRC.RobotShapeX = int.Parse(tbRobotPosX.Text);
-            IRC.RobotShapeY = int.Parse(tbRobotPosY.Text);
-
             if (RobotLocation == null) RobotLocation = new PickupObject();
             RobotLocation.CenterX = IRC.RobotShapeX + IRC.RobotShapeWidth / 2;
             RobotLocation.CenterY = IRC.RobotShapeY + IRC.RobotShapeHeight / 2;
@@ -457,6 +424,15 @@ namespace IRIS
                 tbCoordinates.Text += $"Center(X,Y): {obj.CenterX}, {obj.CenterY}" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
+                if (IRC.UseCalibrating)
+                {
+                    SourceImg.DrawPolyline(new Point[2] { new Point(RobotLocation.CenterX, 0), new Point(RobotLocation.CenterX, RobotLocation.CenterY) }, true, new Bgr(Color.Green), 2);
+                    SourceImg.DrawPolyline(new Point[3] {
+                        new Point(0, RobotLocation.CenterY),
+                        new Point(ImageWidth,RobotLocation.CenterY),
+                        new Point(RobotLocation.CenterX, RobotLocation.CenterY),
+                    }, true, new Bgr(Color.Green), 2);
+                }
             }
             else
             {
@@ -465,27 +441,34 @@ namespace IRIS
                 tbCoordinates.Text += $"In Range: {obj.InRange}" + Environment.NewLine;
                 tbCoordinates.Text += $"Distance (mm): {(obj.Distance)}" + Environment.NewLine;
                 tbCoordinates.Text += "------------------------------" + Environment.NewLine;
+
             }
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            SortObjects();
+        }
+
+        private void SortObjects()
+        {
             if (!PickupObjects.Any()) return;
             tbServoValues.Clear();
 
-            foreach (PickupObject PO in PickupObjects.Where(X => X.InRange).OrderBy(X=>X.Distance))
+            foreach (PickupObject PO in PickupObjects.Where(X => X.InRange).OrderBy(X => X.Distance))
             {
                 int Distance = MeasureDistance(PO);
                 PickupPoint P = PickupList.Where(X => X.Distance == Distance).FirstOrDefault();
                 if (P == null) { MessageBox.Show("Distance is not defined."); continue; }
                 tbServoValues.Text += $"Servo2: {P.Servo2Val}, Servo3: { P.Servo3Val}" + Environment.NewLine;
                 tbServoValues.Text += $"Distance: {P.Distance.ToString()}" + Environment.NewLine;
-                SendCommands("Servo5", "87"); Thread.Sleep(500);
-                SendCommands("Servo2", "86"); Thread.Sleep(500);
-                SendCommands("Servo3", "124"); Thread.Sleep(500);
-                SendCommands("Servo1", MeasureAngle(PO).ToString()); Thread.Sleep(500);
-                SendCommands("Servo3", P.Servo3Val.ToString()); Thread.Sleep(500);
-                SendCommands("Servo2", P.Servo2Val.ToString()); Thread.Sleep(500);
+                SendCommands("Servo5", "87"); Thread.Sleep(1000);
+                SendCommands("Servo2", "86"); Thread.Sleep(1000);
+                SendCommands("Servo3", "124"); Thread.Sleep(1000);
+                SendCommands("Servo1", MeasureAngle(PO).ToString()); Thread.Sleep(1000);
+                SendCommands("Servo3", P.Servo3Val.ToString()); Thread.Sleep(1000);
+                SendCommands("Servo2", P.Servo2Val.ToString()); Thread.Sleep(1000);
                 SendCommands("Servo5", "44"); Thread.Sleep(1000);
                 GoToDropoffPos(PO.Type);
             }
@@ -611,37 +594,24 @@ namespace IRIS
         private void button5_Click(object sender, EventArgs e)
         {
             ShapeDetection_Load(sender, e);
-            //SendCommands("Servo1", "28"); Thread.Sleep(2000);
-            //SendCommands("Servo3", "120"); Thread.Sleep(2000);
-            //SendCommands("Servo2", "101"); Thread.Sleep(2000);
-            //SendCommands("Servo5", "29"); Thread.Sleep(2000);
-
-            //SendCommands("Servo2", "86"); Thread.Sleep(2000);
-            //SendCommands("Servo1", "90"); Thread.Sleep(2000);
-            //SendCommands("Servo2", "122"); Thread.Sleep(2000);
-            //SendCommands("Servo3", "80"); Thread.Sleep(2000);
-            //SendCommands("Servo5", "55"); Thread.Sleep(2000);
-            ////reset
-            //SendCommands("Servo1", "92"); Thread.Sleep(100);
-            //SendCommands("Servo2", "5"); Thread.Sleep(100);
-            //SendCommands("Servo3", "70"); Thread.Sleep(100);
-            //SendCommands("Servo4", "6"); Thread.Sleep(100);
-            //SendCommands("Servo5", "50"); Thread.Sleep(100);
         }
 
-        private void OpenSerialPort()
+        private void OpenSerialPort(object sender, EventArgs e)
         {
-            if (serial != null)
-                if (serial.IsOpen) serial.Close();
             try
             {
-                serial = new SerialPort(cbSerialPort.Text, int.Parse(cbBaudRate.Text), Parity.None, 8, StopBits.One);
-                serial.Open();
-                //serial.DiscardOutBuffer();
-                //serial.DiscardInBuffer();
-                //serial.DataReceived += ReadSerialData;
-                //SerialData = "";
+                if (serial != null)
+                    if (serial.IsOpen)
+                    {
+                        serial.Close();
+                    }
+                    else
+                    {
+                        serial = new SerialPort(cbSerialPort.Text, int.Parse(cbBaudRate.Text), Parity.None, 8, StopBits.One);
+                        serial.Open();
+                    }
                 lblPortStatus.Text = serial.IsOpen ? "Opened" : "Closed";
+                btnOpenSerial.Text = serial.IsOpen ? "Close Serial" : "Open Serial";
             }
             catch (Exception ex)
             {
@@ -675,17 +645,10 @@ namespace IRIS
             IRC.Type2ValMin = Bar7.Value;
             IRC.Type2ValMax = Bar8.Value;
 
-            
-
             IRC.SizeTresholxMax = int.Parse(tbSizeMax.Text);
             IRC.SizeTresholdMin = int.Parse(tbSizeMin.Text);
             IRC.CannyTreshold = int.Parse(tbCannyTreshold.Text);
             IRC.CannyTresholdLinking = int.Parse(tbCannyTresholdLink.Text);
-
-            IRC.RobotShapeX = int.Parse(tbRobotPosX.Text);
-            IRC.RobotShapeY = int.Parse(tbRobotPosY.Text);
-            IRC.RobotShapeWidth = int.Parse(tbRobotPosWidth.Text);
-            IRC.RobotShapeHeight = int.Parse(tbRobotPosHeight.Text);
 
             IRC.ComPortIndex = cbSerialPort.SelectedIndex;
             IRC.BaudRateIndex = cbBaudRate.SelectedIndex;
@@ -794,7 +757,12 @@ namespace IRIS
         private void originalImageBox_DoubleClick(object sender, EventArgs e)
         {
             if (originalImageBox.Image == null) return;
-            originalImageBox.Image.Save("SourceImg.jpeg", ImageFormat.Jpeg);
+            int Counter = 1;
+            while(File.Exists($"SourceImg{Counter}.jpeg"))
+            {
+                Counter++;
+            }
+            originalImageBox.Image.Save($"SourceImg{Counter}.jpeg", ImageFormat.Jpeg);
             MessageBox.Show("Image Saved");
         }
 
