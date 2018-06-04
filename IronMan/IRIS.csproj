@@ -79,6 +79,12 @@
   <ItemGroup>
     <Compile Include="Classes\IRISConfig.cs" />
     <Compile Include="Classes\PickupPoint.cs" />
+    <Compile Include="Forms\FrmCameraSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmCameraSettings.Designer.cs">
+      <DependentUpon>FrmCameraSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmRobotConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,9 @@
     <Compile Include="Forms\ShapeDetection.Designer.cs">
       <DependentUpon>ShapeDetection.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\FrmCameraSettings.resx">
+      <DependentUpon>FrmCameraSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmRobotConfig.resx">
       <DependentUpon>FrmRobotConfig.cs</DependentUpon>
     </EmbeddedResource>
